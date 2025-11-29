@@ -109,3 +109,38 @@ suite('adjustRangeForVisualLine', () => {
         assert.strictEqual(text, 'only line', 'Should include entire line content');
     });
 });
+
+suite('line.rangeIncludingLineBreak behavior', () => {
+    test('should include line break for middle lines', async () => {
+        const doc = await vscode.workspace.openTextDocument({ content: 'line1\nline2\nline3' });
+        const line = doc.lineAt(1); // line2
+
+        const range = line.rangeIncludingLineBreak;
+        const text = doc.getText(range);
+
+        // Should include line2 and its newline
+        assert.strictEqual(text, 'line2\n', 'Should include newline for middle line');
+    });
+
+    test('should NOT include line break for last line without trailing newline', async () => {
+        const doc = await vscode.workspace.openTextDocument({ content: 'line1\nline2\nline3' });
+        const line = doc.lineAt(2); // line3 (last line, no trailing newline)
+
+        const range = line.rangeIncludingLineBreak;
+        const text = doc.getText(range);
+
+        // Does NOT include newline because there isn't one
+        assert.strictEqual(text, 'line3', 'Does NOT include newline for last line without trailing newline');
+    });
+
+    test('should include line break for last line with trailing newline', async () => {
+        const doc = await vscode.workspace.openTextDocument({ content: 'line1\nline2\nline3\n' });
+        const line = doc.lineAt(2); // line3 (has trailing newline)
+
+        const range = line.rangeIncludingLineBreak;
+        const text = doc.getText(range);
+
+        // Should include the newline
+        assert.strictEqual(text, 'line3\n', 'Should include newline for last line with trailing newline');
+    });
+});
