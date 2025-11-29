@@ -46,7 +46,7 @@ export function findNearerPosition(
         : Math.min(document.offsetAt(document.lineAt(document.lineCount - 1).range.end), offset + maxOffsetWidth);
     const delta = direction === 'before' ? -1 : 1;
 
-    while (minOffset <= offset && offset < maxOffset) {
+    while (minOffset <= Math.min(offset, offset + delta) && Math.max(offset, offset + delta) <= maxOffset) {
         const char = getTextOfOffsetRange(document, offset, offset + delta);
         if (predicate(char)) return document.positionAt(offset);
         offset += delta;

@@ -971,6 +971,86 @@ suite('findCurrentArgument', () => {
     });
 });
 
+suite('findNearerPosition - F/T motion at line end', () => {
+    test('should find character before when at line end (F motion)', async () => {
+        const doc = await vscode.workspace.openTextDocument({ content: 'hello world' });
+        // Position (0, 11): at end of line (after 'd')
+        const position = new Position(0, 11);
+        const predicate = (ch: string) => ch === 'o';
+
+        const result = findNearerPosition(doc, predicate, 'before', position, { withinLine: true });
+
+        // Should find 'o' in "world" at position (0, 7)
+        // findNearerPosition returns position where previous character matches
+        assert.ok(result !== undefined, 'Should find character before line end');
+        assert.deepStrictEqual(result, new Position(0, 8), 'Should find second "o" in "world"');
+    });
+
+    test('should find character before when at line end (T motion)', async () => {
+        const doc = await vscode.workspace.openTextDocument({ content: 'hello world' });
+        // Position (0, 11): at end of line (after 'd')
+        const position = new Position(0, 11);
+        const predicate = (ch: string) => ch === 'r';
+
+        const result = findNearerPosition(doc, predicate, 'before', position, { withinLine: true });
+
+        // Should find 'r' in "world" at position (0, 8)
+        assert.ok(result !== undefined, 'Should find character before line end');
+        assert.deepStrictEqual(result, new Position(0, 9), 'Should find "r" in "world"');
+    });
+
+    test('should find first character when searching backward from line end', async () => {
+        const doc = await vscode.workspace.openTextDocument({ content: 'abcde' });
+        // Position (0, 5): at end of line (after 'e')
+        const position = new Position(0, 5);
+        const predicate = (ch: string) => ch === 'a';
+
+        const result = findNearerPosition(doc, predicate, 'before', position, { withinLine: true });
+
+        // Should find 'a' at position (0, 1)
+        assert.ok(result !== undefined, 'Should find first character from line end');
+        assert.deepStrictEqual(result, new Position(0, 1), 'Should find "a" at beginning');
+    });
+
+    test('should handle when character is not found from line end', async () => {
+        const doc = await vscode.workspace.openTextDocument({ content: 'hello world' });
+        // Position (0, 11): at end of line (after 'd')
+        const position = new Position(0, 11);
+        const predicate = (ch: string) => ch === 'x';
+
+        const result = findNearerPosition(doc, predicate, 'before', position, { withinLine: true });
+
+        // Should return undefined when character not found
+        assert.strictEqual(result, undefined, 'Should return undefined when character not found');
+    });
+
+    test('should find character forward from beginning of line (f motion)', async () => {
+        const doc = await vscode.workspace.openTextDocument({ content: 'hello world' });
+        // Position (0, 0): at beginning of line
+        const position = new Position(0, 0);
+        const predicate = (ch: string) => ch === 'w';
+
+        const result = findNearerPosition(doc, predicate, 'after', position, { withinLine: true });
+
+        // Should find 'w' in "world"
+        assert.ok(result !== undefined, 'Should find character forward from line start');
+        assert.deepStrictEqual(result, new Position(0, 6), 'Should find "w" in "world"');
+    });
+
+    test('should find character before from middle of line', async () => {
+        const doc = await vscode.workspace.openTextDocument({ content: 'hello world' });
+        // Position (0, 6): before 'w' in "world"
+        const position = new Position(0, 6);
+        const predicate = (ch: string) => ch === 'e';
+
+        const result = findNearerPosition(doc, predicate, 'before', position, { withinLine: true });
+
+        // Should find 'e' in "hello"
+        assert.ok(result !== undefined, 'Should find character before from middle');
+        assert.deepStrictEqual(result, new Position(0, 2), 'Should find "e" in "hello"');
+    });
+});
+
 suite('findInnerWordAtBoundary', () => {
     test('should select word when cursor is at boundary before variable - foo(|variable)', async () => {
         const doc = await vscode.workspace.openTextDocument({ content: 'foo(variable)' });
