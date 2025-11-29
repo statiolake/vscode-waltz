@@ -91,7 +91,10 @@ function onDidChangeConfiguration(vimState: VimState, e: ConfigurationChangeEven
     }
 }
 
-export async function activate(context: ExtensionContext): Promise<void> {
+// Store vimState globally for testing
+let globalVimState: VimState | undefined;
+
+export async function activate(context: ExtensionContext): Promise<{ getVimState: () => VimState }> {
     // Create comment config provider
     globalCommentConfigProvider = new CommentConfigProvider();
 
@@ -115,6 +118,9 @@ export async function activate(context: ExtensionContext): Promise<void> {
         keptColumn: null,
         lastFt: undefined,
     };
+
+    // Store globally for testing
+    globalVimState = vimState;
 
     context.subscriptions.push(
         vscode.window.onDidChangeActiveTextEditor((editor) => onDidChangeActiveTextEditor(vimState, editor)),
@@ -188,4 +194,14 @@ export async function activate(context: ExtensionContext): Promise<void> {
     if (vscode.window.activeTextEditor) {
         await onDidChangeActiveTextEditor(vimState, vscode.window.activeTextEditor);
     }
+
+    // Return API for testing
+    return {
+        getVimState: () => {
+            if (!globalVimState) {
+                throw new Error('VimState not initialized');
+            }
+            return globalVimState;
+        },
+    };
 }

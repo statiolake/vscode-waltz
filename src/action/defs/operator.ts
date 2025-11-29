@@ -28,10 +28,24 @@ export function buildOperatorActions(
             execute: async (context, matches) => {
                 if (matches.length === 0) return;
 
-                const contents = matches.map((match) => ({
-                    text: context.document.getText(match.range),
-                    isLinewise: match.isLinewise ?? false,
-                }));
+                const contents = matches.map((match) => {
+                    let text = context.document.getText(match.range);
+                    const isLinewise = match.isLinewise ?? false;
+
+                    // For linewise operations, strip leading/trailing newlines from register content
+                    if (isLinewise) {
+                        // Strip leading newline (for last line without trailing newline case)
+                        if (text.startsWith('\n')) {
+                            text = text.slice(1);
+                        }
+                        // Strip trailing newline (for normal line case)
+                        if (text.endsWith('\n')) {
+                            text = text.slice(0, -1);
+                        }
+                    }
+
+                    return { text, isLinewise };
+                });
 
                 await setRegisterContents(context.vimState, contents);
 
@@ -58,10 +72,24 @@ export function buildOperatorActions(
             execute: async (context, matches) => {
                 if (matches.length === 0) return;
 
-                const contents = matches.map((match) => ({
-                    text: context.document.getText(match.range),
-                    isLinewise: match.isLinewise ?? false,
-                }));
+                const contents = matches.map((match) => {
+                    let text = context.document.getText(match.range);
+                    const isLinewise = match.isLinewise ?? false;
+
+                    // For linewise operations, strip leading/trailing newlines from register content
+                    if (isLinewise) {
+                        // Strip leading newline (for last line without trailing newline case)
+                        if (text.startsWith('\n')) {
+                            text = text.slice(1);
+                        }
+                        // Strip trailing newline (for normal line case)
+                        if (text.endsWith('\n')) {
+                            text = text.slice(0, -1);
+                        }
+                    }
+
+                    return { text, isLinewise };
+                });
 
                 await setRegisterContents(context.vimState, contents);
             },
@@ -82,10 +110,24 @@ export function buildOperatorActions(
             execute: async (context, matches) => {
                 if (matches.length === 0) return;
 
-                const contents = matches.map((match) => ({
-                    text: context.document.getText(match.range),
-                    isLinewise: match.isLinewise ?? false,
-                }));
+                const contents = matches.map((match) => {
+                    let text = context.document.getText(match.range);
+                    const isLinewise = match.isLinewise ?? false;
+
+                    // For linewise operations, strip leading/trailing newlines from register content
+                    if (isLinewise) {
+                        // Strip leading newline (for last line without trailing newline case)
+                        if (text.startsWith('\n')) {
+                            text = text.slice(1);
+                        }
+                        // Strip trailing newline (for normal line case)
+                        if (text.endsWith('\n')) {
+                            text = text.slice(0, -1);
+                        }
+                    }
+
+                    return { text, isLinewise };
+                });
 
                 await setRegisterContents(context.vimState, contents);
 
@@ -136,10 +178,24 @@ export function buildOperatorActions(
             modes: ['visual', 'visualLine'],
             execute: async (context) => {
                 const ranges = getAdjustedSelectionRangesIfVisualLine(context);
-                const contents = ranges.map((range) => ({
-                    text: context.document.getText(range),
-                    isLinewise: context.vimState.mode === 'visualLine',
-                }));
+                const isLinewise = context.vimState.mode === 'visualLine';
+                const contents = ranges.map((range) => {
+                    let text = context.document.getText(range);
+
+                    // For linewise operations, strip leading/trailing newlines from register content
+                    if (isLinewise) {
+                        // Strip leading newline (for last line without trailing newline case)
+                        if (text.startsWith('\n')) {
+                            text = text.slice(1);
+                        }
+                        // Strip trailing newline (for normal line case)
+                        if (text.endsWith('\n')) {
+                            text = text.slice(0, -1);
+                        }
+                    }
+
+                    return { text, isLinewise };
+                });
 
                 await setRegisterContents(context.vimState, contents);
 
@@ -157,10 +213,24 @@ export function buildOperatorActions(
             modes: ['visual', 'visualLine'],
             execute: async (context) => {
                 const ranges = getAdjustedSelectionRangesIfVisualLine(context);
-                const contents = ranges.map((range) => ({
-                    text: context.document.getText(range),
-                    isLinewise: context.vimState.mode === 'visualLine',
-                }));
+                const isLinewise = context.vimState.mode === 'visualLine';
+                const contents = ranges.map((range) => {
+                    let text = context.document.getText(range);
+
+                    // For linewise operations, strip leading/trailing newlines from register content
+                    if (isLinewise) {
+                        // Strip leading newline (for last line without trailing newline case)
+                        if (text.startsWith('\n')) {
+                            text = text.slice(1);
+                        }
+                        // Strip trailing newline (for normal line case)
+                        if (text.endsWith('\n')) {
+                            text = text.slice(0, -1);
+                        }
+                    }
+
+                    return { text, isLinewise };
+                });
 
                 await setRegisterContents(context.vimState, contents);
 
@@ -174,10 +244,24 @@ export function buildOperatorActions(
             modes: ['visual', 'visualLine'],
             execute: async (context) => {
                 const ranges = getAdjustedSelectionRangesIfVisualLine(context);
-                const contents = ranges.map((range) => ({
-                    text: context.document.getText(range),
-                    isLinewise: context.vimState.mode === 'visualLine',
-                }));
+                const isLinewise = context.vimState.mode === 'visualLine';
+                const contents = ranges.map((range) => {
+                    let text = context.document.getText(range);
+
+                    // For linewise operations, strip leading/trailing newlines from register content
+                    if (isLinewise) {
+                        // Strip leading newline (for last line without trailing newline case)
+                        if (text.startsWith('\n')) {
+                            text = text.slice(1);
+                        }
+                        // Strip trailing newline (for normal line case)
+                        if (text.endsWith('\n')) {
+                            text = text.slice(0, -1);
+                        }
+                    }
+
+                    return { text, isLinewise };
+                });
 
                 await setRegisterContents(context.vimState, contents);
 
