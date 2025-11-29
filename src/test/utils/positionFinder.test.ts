@@ -14,6 +14,7 @@ import {
     findMatchingBracket,
     findMatchingTag,
     findNearerPosition,
+    findNextLineStart,
     findParagraphBoundary,
     findWordBoundary,
 } from '../../utils/positionFinder';
@@ -1061,6 +1062,54 @@ suite('findNearerPosition - F/T motion at line end', () => {
         // Should find 'e' in "hello"
         assert.ok(result !== undefined, 'Should find character before from middle');
         assert.deepStrictEqual(result, new Position(0, 2), 'Should find "e" in "hello"');
+    });
+});
+
+suite('findNextLineStart', () => {
+    test('should find next line start in middle of document', async () => {
+        const doc = await vscode.workspace.openTextDocument({ content: 'line1\nline2\nline3' });
+        // Position (0, 3): in middle of line1
+        const position = new Position(0, 3);
+
+        const result = findNextLineStart(doc, position);
+
+        // Should find start of line2
+        assert.deepStrictEqual(result, new Position(1, 0));
+    });
+
+    test('should find next line start from line end', async () => {
+        const doc = await vscode.workspace.openTextDocument({ content: 'line1\nline2\nline3' });
+        // Position (0, 5): at end of line1
+        const position = new Position(0, 5);
+
+        const result = findNextLineStart(doc, position);
+
+        // Should find start of line2
+        assert.deepStrictEqual(result, new Position(1, 0));
+    });
+
+    test('should handle last line WITHOUT trailing newline', async () => {
+        const doc = await vscode.workspace.openTextDocument({ content: 'line1\nline2\nline3' });
+        // Position (2, 3): in middle of last line (line3)
+        const position = new Position(2, 3);
+
+        const result = findNextLineStart(doc, position);
+
+        // Since there's no next line, should return end of the last line
+        // This allows Visual Line mode to include the entire last line
+        const lastLine = doc.lineAt(2);
+        assert.deepStrictEqual(result, lastLine.range.end, 'Should return end of last line');
+    });
+
+    test('should handle last line WITH trailing newline', async () => {
+        const doc = await vscode.workspace.openTextDocument({ content: 'line1\nline2\nline3\n' });
+        // Position (2, 3): in middle of line3 (which has a trailing newline)
+        const position = new Position(2, 3);
+
+        const result = findNextLineStart(doc, position);
+
+        // Should find start of empty line4 (the line after the trailing newline)
+        assert.deepStrictEqual(result, new Position(3, 0));
     });
 });
 

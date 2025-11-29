@@ -57,10 +57,19 @@ export function findNearerPosition(
 
 /**
  * 次の行の先頭を探す
+ * 最終行の場合は、その行の末尾を返す（Visual Line モードで最終行を含めるため）
  */
 export function findNextLineStart(document: TextDocument, position: Position): Position {
-    const nextLine = document.lineAt(Math.min(document.lineCount - 1, position.line + 1));
-    return nextLine.range.start;
+    const currentLine = position.line;
+    const lastLineIndex = document.lineCount - 1;
+
+    // 次の行が存在する場合は、その行の先頭を返す
+    if (currentLine < lastLineIndex) {
+        return document.lineAt(currentLine + 1).range.start;
+    }
+
+    // 最終行の場合は、その行の末尾を返す
+    return document.lineAt(currentLine).range.end;
 }
 
 export function findLineStart(_document: TextDocument, position: Position): Position {
