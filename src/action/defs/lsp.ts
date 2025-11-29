@@ -17,6 +17,15 @@ export function buildLspActions(): Action[] {
             },
         }),
 
+        // go - 定義へ移動
+        newAction({
+            keys: ['g', 'o'],
+            modes: ['normal'],
+            execute: async (_context) => {
+                await vscode.commands.executeCommand('editor.action.revealDefinition');
+            },
+        }),
+
         // gd - 定義へ移動
         newAction({
             keys: ['g', 'd'],
@@ -103,7 +112,7 @@ export function buildLspActions(): Action[] {
             keys: ['[', 'd'],
             modes: ['normal'],
             execute: async (_context) => {
-                await vscode.commands.executeCommand('editor.action.marker.prevInFiles');
+                await vscode.commands.executeCommand('editor.action.marker.prev');
             },
         }),
 
@@ -112,7 +121,7 @@ export function buildLspActions(): Action[] {
             keys: [']', 'd'],
             modes: ['normal'],
             execute: async (_context) => {
-                await vscode.commands.executeCommand('editor.action.marker.nextInFiles');
+                await vscode.commands.executeCommand('editor.action.marker.next');
             },
         }),
     ];
