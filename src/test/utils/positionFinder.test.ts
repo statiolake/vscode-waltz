@@ -372,6 +372,19 @@ suite('findWordBoundary', () => {
         assert.ok(result !== undefined);
     });
 
+    test('should find previous word boundary from line end (b motion)', async () => {
+        const doc = await vscode.workspace.openTextDocument({ content: 'hello world' });
+        // Position (0, 11): at line end (after 'd')
+        const position = new Position(0, 11);
+        const isBoundary = (char1: string, char2: string) => /\s/.test(char1) !== /\s/.test(char2);
+
+        const result = findWordBoundary(doc, 'further', 'before', position, isBoundary);
+
+        // Should find start of 'world' at position (0, 6)
+        assert.ok(result !== undefined, 'Should find word boundary from line end');
+        assert.deepStrictEqual(result, new Position(0, 6), 'Should find start of "world"');
+    });
+
     test('should work with custom boundary predicate', async () => {
         const doc = await vscode.workspace.openTextDocument({ content: 'camelCaseWord' });
         // Position (0, 0): before 'c'
