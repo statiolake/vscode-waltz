@@ -1,4 +1,3 @@
-import { Mutex } from 'await-semaphore';
 import * as vscode from 'vscode';
 import {
     type ConfigurationChangeEvent,
@@ -10,10 +9,11 @@ import {
 } from 'vscode';
 import { buildActions, delegateAction } from './action/actions';
 import type { Context } from './context';
+import { createCommentConfigProvider, createVimState } from './contextInitializers';
 import { escapeHandler } from './escapeHandler';
 import { enterMode } from './modes';
 import { typeHandler } from './typeHandler';
-import { CommentConfigProvider } from './utils/comment';
+import type { CommentConfigProvider } from './utils/comment';
 import { getCursorStyleForMode } from './utils/cursorStyle';
 import { getModeDisplayText } from './utils/modeDisplay';
 import { expandSelectionsToFullLines } from './utils/visualLine';
@@ -96,28 +96,15 @@ let globalVimState: VimState | undefined;
 
 export async function activate(context: ExtensionContext): Promise<{ getVimState: () => VimState }> {
     // Create comment config provider
-    globalCommentConfigProvider = new CommentConfigProvider();
+    globalCommentConfigProvider = createCommentConfigProvider();
 
     // Create status bar item
     const statusBarItem = vscode.window.createStatusBarItem(StatusBarAlignment.Left, 100);
     statusBarItem.show();
     context.subscriptions.push(statusBarItem);
 
-    const vimState: VimState = {
-        typeSubscriptions: [],
-        statusBarItem,
-        actionMutex: new Mutex(),
-        mode: 'insert',
-        keysQueued: [],
-        keysPressed: [],
-        actions: buildActions(),
-        register: {
-            contents: [],
-            lastClipboardText: '',
-        },
-        keptColumn: null,
-        lastFt: undefined,
-    };
+    // Create VimState with the status bar item
+    const vimState = createVimState(statusBarItem);
 
     // Store globally for testing
     globalVimState = vimState;

@@ -1,8 +1,8 @@
 import * as assert from 'node:assert';
 import * as vscode from 'vscode';
 import { Position } from 'vscode';
-import type { Context } from '../../context';
 import { newWholeLineTextObject } from '../../textObject/textObjectBuilder';
+import { createTestContext } from '../extension.test';
 
 suite('newWholeLineTextObject', () => {
     test('should select middle line with includeLineBreak', async () => {
@@ -10,12 +10,7 @@ suite('newWholeLineTextObject', () => {
         const editor = await vscode.window.showTextDocument(doc);
 
         const textObject = newWholeLineTextObject({ keys: ['d'], includeLineBreak: true });
-        const context: Context = {
-            editor,
-            document: doc,
-            vimState: {} as any,
-            commentConfigProvider: {} as any,
-        };
+        const context = createTestContext(editor, doc);
 
         // Position on line2
         const position = new Position(1, 2);
@@ -35,12 +30,7 @@ suite('newWholeLineTextObject', () => {
         const editor = await vscode.window.showTextDocument(doc);
 
         const textObject = newWholeLineTextObject({ keys: ['d'], includeLineBreak: true });
-        const context: Context = {
-            editor,
-            document: doc,
-            vimState: {} as any,
-            commentConfigProvider: {} as any,
-        };
+        const context = createTestContext(editor, doc);
 
         // Position on line1
         const position = new Position(0, 2);
@@ -60,12 +50,7 @@ suite('newWholeLineTextObject', () => {
         const editor = await vscode.window.showTextDocument(doc);
 
         const textObject = newWholeLineTextObject({ keys: ['d'], includeLineBreak: true });
-        const context: Context = {
-            editor,
-            document: doc,
-            vimState: {} as any,
-            commentConfigProvider: {} as any,
-        };
+        const context = createTestContext(editor, doc);
 
         // Position on line3 (last line)
         const position = new Position(2, 2);
@@ -94,12 +79,7 @@ suite('newWholeLineTextObject', () => {
         const editor = await vscode.window.showTextDocument(doc);
 
         const textObject = newWholeLineTextObject({ keys: ['d'], includeLineBreak: true });
-        const context: Context = {
-            editor,
-            document: doc,
-            vimState: {} as any,
-            commentConfigProvider: {} as any,
-        };
+        const context = createTestContext(editor, doc);
 
         // Position on line3 (last line with trailing newline)
         const position = new Position(2, 2);
@@ -119,12 +99,7 @@ suite('newWholeLineTextObject', () => {
         const editor = await vscode.window.showTextDocument(doc);
 
         const textObject = newWholeLineTextObject({ keys: ['d'], includeLineBreak: true });
-        const context: Context = {
-            editor,
-            document: doc,
-            vimState: {} as any,
-            commentConfigProvider: {} as any,
-        };
+        const context = createTestContext(editor, doc);
 
         // Position on the only line
         const position = new Position(0, 4);
@@ -144,12 +119,7 @@ suite('newWholeLineTextObject', () => {
         const editor = await vscode.window.showTextDocument(doc);
 
         const textObject = newWholeLineTextObject({ keys: ['c'], includeLineBreak: false });
-        const context: Context = {
-            editor,
-            document: doc,
-            vimState: {} as any,
-            commentConfigProvider: {} as any,
-        };
+        const context = createTestContext(editor, doc);
 
         // Position on line2
         const position = new Position(1, 2);
