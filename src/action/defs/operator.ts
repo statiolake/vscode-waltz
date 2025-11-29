@@ -182,13 +182,10 @@ export function buildOperatorActions(
                 const contents = ranges.map((range) => {
                     let text = context.document.getText(range);
 
-                    // For linewise operations, strip leading/trailing newlines from register content
+                    // For linewise operations, strip ONLY the final trailing newline from register content
+                    // This preserves blank lines in the middle of the selection
                     if (isLinewise) {
-                        // Strip leading newline (for last line without trailing newline case)
-                        if (text.startsWith('\n')) {
-                            text = text.slice(1);
-                        }
-                        // Strip trailing newline (for normal line case)
+                        // Only strip the final trailing newline
                         if (text.endsWith('\n')) {
                             text = text.slice(0, -1);
                         }
@@ -217,13 +214,10 @@ export function buildOperatorActions(
                 const contents = ranges.map((range) => {
                     let text = context.document.getText(range);
 
-                    // For linewise operations, strip leading/trailing newlines from register content
+                    // For linewise operations, strip ONLY the final trailing newline from register content
+                    // This preserves blank lines in the middle of the selection
                     if (isLinewise) {
-                        // Strip leading newline (for last line without trailing newline case)
-                        if (text.startsWith('\n')) {
-                            text = text.slice(1);
-                        }
-                        // Strip trailing newline (for normal line case)
+                        // Only strip the final trailing newline
                         if (text.endsWith('\n')) {
                             text = text.slice(0, -1);
                         }
@@ -248,13 +242,10 @@ export function buildOperatorActions(
                 const contents = ranges.map((range) => {
                     let text = context.document.getText(range);
 
-                    // For linewise operations, strip leading/trailing newlines from register content
+                    // For linewise operations, strip ONLY the final trailing newline from register content
+                    // This preserves blank lines in the middle of the selection
                     if (isLinewise) {
-                        // Strip leading newline (for last line without trailing newline case)
-                        if (text.startsWith('\n')) {
-                            text = text.slice(1);
-                        }
-                        // Strip trailing newline (for normal line case)
+                        // Only strip the final trailing newline
                         if (text.endsWith('\n')) {
                             text = text.slice(0, -1);
                         }

@@ -19,8 +19,6 @@ async function getVimState(): Promise<VimState> {
 // Helper to execute Waltz commands
 async function executeWaltz(keys: string[]) {
     await vscode.commands.executeCommand('waltz.execute', { keys });
-    // Wait for async operations
-    await new Promise((resolve) => setTimeout(resolve, 100));
 }
 
 suite('dd (delete line) behavior - integration tests', () => {

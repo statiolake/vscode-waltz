@@ -64,8 +64,9 @@ export function buildEditActions(): Action[] {
                             // linewise: 次の行に挿入
                             const line = context.document.lineAt(selection.active.line);
                             const insertPos = line.range.end;
-                            // 通常 register 側に改行が含まれているが、今回改行を追加するのにかえってじゃまになるので削っておく
-                            const insertText = `\n${content.text.endsWith('\n') ? content.text.slice(0, -1) : content.text}`;
+                            // For linewise paste, we prepend a newline and keep the register content as-is
+                            // This preserves blank lines in the pasted content
+                            const insertText = `\n${content.text}`;
                             replaces.push({
                                 range: OffsetRange.fromRange(context.document, new Range(insertPos, insertPos)),
                                 newText: insertText,
@@ -132,8 +133,9 @@ export function buildEditActions(): Action[] {
                             // linewise: 前の行に挿入
                             const line = context.document.lineAt(selection.active.line);
                             const insertPos = line.range.start;
-                            // 通常 register 側に改行が含まれているが、今回改行を追加するのにかえってじゃまになるので削っておく
-                            const insertText = `${content.text.endsWith('\n') ? content.text.slice(0, -1) : content.text}\n`;
+                            // For linewise paste, we append a newline and keep the register content as-is
+                            // This preserves blank lines in the pasted content
+                            const insertText = `${content.text}\n`;
                             replaces.push({
                                 range: OffsetRange.fromRange(context.document, new Range(insertPos, insertPos)),
                                 newText: insertText,
