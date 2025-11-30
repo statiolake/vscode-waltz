@@ -10,6 +10,30 @@ import { newAction, newOperatorAction } from '../actionBuilder';
 import type { Action, ActionResult } from '../actionTypes';
 
 /**
+ * Strip leading newline from text, handling both LF and CRLF line endings
+ */
+function trimFirstNewline(text: string): string {
+    if (text.startsWith('\r\n')) {
+        return text.slice(2);
+    } else if (text.startsWith('\n')) {
+        return text.slice(1);
+    }
+    return text;
+}
+
+/**
+ * Strip trailing newline from text, handling both LF and CRLF line endings
+ */
+function trimLastNewline(text: string): string {
+    if (text.endsWith('\r\n')) {
+        return text.slice(0, -2);
+    } else if (text.endsWith('\n')) {
+        return text.slice(0, -1);
+    }
+    return text;
+}
+
+/**
  * オペレータアクション (d, y, c)
  */
 export function buildOperatorActions(
@@ -34,14 +58,8 @@ export function buildOperatorActions(
 
                     // For linewise operations, strip leading/trailing newlines from register content
                     if (isLinewise) {
-                        // Strip leading newline (for last line without trailing newline case)
-                        if (text.startsWith('\n')) {
-                            text = text.slice(1);
-                        }
-                        // Strip trailing newline (for normal line case)
-                        if (text.endsWith('\n')) {
-                            text = text.slice(0, -1);
-                        }
+                        text = trimFirstNewline(text);
+                        text = trimLastNewline(text);
                     }
 
                     return { text, isLinewise };
@@ -78,14 +96,8 @@ export function buildOperatorActions(
 
                     // For linewise operations, strip leading/trailing newlines from register content
                     if (isLinewise) {
-                        // Strip leading newline (for last line without trailing newline case)
-                        if (text.startsWith('\n')) {
-                            text = text.slice(1);
-                        }
-                        // Strip trailing newline (for normal line case)
-                        if (text.endsWith('\n')) {
-                            text = text.slice(0, -1);
-                        }
+                        text = trimFirstNewline(text);
+                        text = trimLastNewline(text);
                     }
 
                     return { text, isLinewise };
@@ -116,14 +128,8 @@ export function buildOperatorActions(
 
                     // For linewise operations, strip leading/trailing newlines from register content
                     if (isLinewise) {
-                        // Strip leading newline (for last line without trailing newline case)
-                        if (text.startsWith('\n')) {
-                            text = text.slice(1);
-                        }
-                        // Strip trailing newline (for normal line case)
-                        if (text.endsWith('\n')) {
-                            text = text.slice(0, -1);
-                        }
+                        text = trimFirstNewline(text);
+                        text = trimLastNewline(text);
                     }
 
                     return { text, isLinewise };
@@ -185,10 +191,7 @@ export function buildOperatorActions(
                     // For linewise operations, strip ONLY the final trailing newline from register content
                     // This preserves blank lines in the middle of the selection
                     if (isLinewise) {
-                        // Only strip the final trailing newline
-                        if (text.endsWith('\n')) {
-                            text = text.slice(0, -1);
-                        }
+                        text = trimLastNewline(text);
                     }
 
                     return { text, isLinewise };
@@ -217,10 +220,7 @@ export function buildOperatorActions(
                     // For linewise operations, strip ONLY the final trailing newline from register content
                     // This preserves blank lines in the middle of the selection
                     if (isLinewise) {
-                        // Only strip the final trailing newline
-                        if (text.endsWith('\n')) {
-                            text = text.slice(0, -1);
-                        }
+                        text = trimLastNewline(text);
                     }
 
                     return { text, isLinewise };
@@ -245,10 +245,7 @@ export function buildOperatorActions(
                     // For linewise operations, strip ONLY the final trailing newline from register content
                     // This preserves blank lines in the middle of the selection
                     if (isLinewise) {
-                        // Only strip the final trailing newline
-                        if (text.endsWith('\n')) {
-                            text = text.slice(0, -1);
-                        }
+                        text = trimLastNewline(text);
                     }
 
                     return { text, isLinewise };

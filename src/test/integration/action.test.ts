@@ -206,6 +206,77 @@ suite('Action Integration Tests', () => {
         });
     });
 
+    suite('CRLF line ending paste', () => {
+        test('yyp should not insert extra blank line with CRLF line endings', async () => {
+            await clearRegister();
+            // Create document with CRLF line endings
+            const doc = await vscode.workspace.openTextDocument({ content: 'foo\r\nbar' });
+            const editor = await vscode.window.showTextDocument(doc);
+
+            // Position cursor on line 0 (foo)
+            await setCursorPosition(editor, new Position(0, 0));
+
+            // Execute yy (yank line)
+            await executeWaltz(['y', 'y']);
+
+            // Verify register content
+            const vimState = await getVimState();
+            const registerContents = await getRegisterContents(vimState);
+            assert.strictEqual(registerContents.length, 1, 'Should have one register entry');
+            assert.strictEqual(registerContents[0].text, 'foo', 'Register should contain foo without newline');
+            assert.strictEqual(registerContents[0].isLinewise, true, 'Should be marked as linewise');
+
+            // Execute p (paste)
+            await executeWaltz(['p']);
+
+            // Expected result: foo\r\nfoo\r\nbar (no extra blank line)
+            assert.strictEqual(doc.getText(), 'foo\r\nfoo\r\nbar', 'Should not insert extra blank line');
+        });
+
+        test('yyp on middle line should not insert extra blank line with CRLF', async () => {
+            await clearRegister();
+            const doc = await vscode.workspace.openTextDocument({ content: 'foo\r\nbar\r\nbaz' });
+            const editor = await vscode.window.showTextDocument(doc);
+
+            // Position cursor on line 0 (foo)
+            await setCursorPosition(editor, new Position(0, 0));
+
+            // Execute yyp
+            await executeWaltz(['y', 'y']);
+            await executeWaltz(['p']);
+
+            // Expected result: foo\r\nfoo\r\nbar\r\nbaz
+            assert.strictEqual(doc.getText(), 'foo\r\nfoo\r\nbar\r\nbaz', 'Should not insert extra blank line');
+        });
+
+        test('visual line yank and paste should not insert extra blank line with CRLF', async () => {
+            await clearRegister();
+            const doc = await vscode.workspace.openTextDocument({ content: 'foo\r\nbar' });
+            const editor = await vscode.window.showTextDocument(doc);
+
+            // Position cursor on line 0 (foo)
+            await setCursorPosition(editor, new Position(0, 0));
+
+            // Execute V (visual line mode) then y (yank)
+            await executeWaltz(['V']);
+            await executeWaltz(['y']);
+
+            // Verify register content
+            const vimState = await getVimState();
+            const registerContents = await getRegisterContents(vimState);
+            assert.strictEqual(registerContents.length, 1, 'Should have one register entry');
+            assert.strictEqual(registerContents[0].text, 'foo', 'Register should contain foo without newline');
+            assert.strictEqual(registerContents[0].isLinewise, true, 'Should be marked as linewise');
+
+            // Move to line 1 and paste
+            await setCursorPosition(editor, new Position(1, 0));
+            await executeWaltz(['p']);
+
+            // Expected result: foo\r\nbar\r\nfoo
+            assert.strictEqual(doc.getText(), 'foo\r\nbar\r\nfoo', 'Should not insert extra blank line');
+        });
+    });
+
     suite('Visual Line yank/paste with blank lines', () => {
         test('should preserve blank line when yanking "foo\\n" (line + blank line) with pasting with p', async () => {
             await clearRegister();
