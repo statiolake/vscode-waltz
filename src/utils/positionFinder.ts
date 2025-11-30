@@ -234,15 +234,35 @@ export function findParagraphBoundary(
     direction: 'before' | 'after',
     position: Position,
 ): Position {
-    let line = position.line;
-    const delta = direction === 'before' ? -1 : 1;
-    while (0 <= line + delta && line + delta < document.lineCount) {
-        line += delta;
-        const lineText = document.lineAt(line).text;
-        if (lineText.trim() === '') break;
+    const currentLine = document.lineAt(position.line);
+    const isCurrentLineBlank = currentLine.text.trim() === '';
+
+    // If we're on a blank line, return the position itself
+    if (isCurrentLineBlank) {
+        return direction === 'before' ? position : position;
     }
 
-    return new Position(line, 0);
+    let line = position.line;
+    const delta = direction === 'before' ? -1 : 1;
+
+    // Search for the blank line boundary
+    while (0 <= line + delta && line + delta < document.lineCount) {
+        const nextLineText = document.lineAt(line + delta).text;
+        if (nextLineText.trim() === '') {
+            // Found a blank line, return the current line boundary
+            break;
+        }
+        line += delta;
+    }
+
+    // Return the appropriate position
+    if (direction === 'before') {
+        return new Position(line, 0);
+    } else {
+        // For 'after', return the end of the line
+        const endLine = document.lineAt(line);
+        return endLine.range.end;
+    }
 }
 
 export function findInsideBalancedPairs(

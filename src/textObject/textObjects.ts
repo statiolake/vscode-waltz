@@ -1,4 +1,4 @@
-import { Range } from 'vscode';
+import { Position, Range } from 'vscode';
 import type { Motion } from '../motion/motionTypes';
 import {
     findAdjacentPosition,
@@ -8,6 +8,7 @@ import {
     findInnerWordAtBoundary,
     findInsideBalancedPairs,
     findMatchingTag,
+    findParagraphBoundary,
     findWordBoundary,
 } from '../utils/positionFinder';
 import { isWhitespaceBoundary } from '../utils/unicode';
@@ -243,6 +244,53 @@ export function buildTextObjects(motions: Motion[]): TextObject[] {
                 const range = findCurrentArgument(context.document, position, { includeComma: true });
                 if (!range) return new Range(position, position);
                 return range;
+            },
+        }),
+    );
+
+    // 段落テキストオブジェクト
+    textObjects.push(
+        // 内部段落
+        newTextObject({
+            keys: ['i', 'p'],
+            compute: (context, position) => {
+                const { document } = context;
+                const start = findParagraphBoundary(document, 'before', position);
+                const end = findParagraphBoundary(document, 'after', position);
+
+                // Include the newline at the end of the paragraph (if not last line)
+                let paragraphEnd = end;
+                if (end.line < document.lineCount - 1) {
+                    paragraphEnd = new Position(end.line + 1, 0);
+                }
+
+                return new Range(start, paragraphEnd);
+            },
+        }),
+
+        // 周辺段落（空行を含む）
+        newTextObject({
+            keys: ['a', 'p'],
+            compute: (context, position) => {
+                const { document } = context;
+                const start = findParagraphBoundary(document, 'before', position);
+                const end = findParagraphBoundary(document, 'after', position);
+
+                // Include the newline at the end of the paragraph and the blank line after
+                let extendedEnd = end;
+                if (end.line < document.lineCount - 1) {
+                    // Move to start of line after the blank line (skip paragraph newline + blank line)
+                    extendedEnd = new Position(end.line + 2, 0);
+                    // But don't go past document end
+                    if (extendedEnd.line > document.lineCount - 1) {
+                        extendedEnd = new Position(end.line + 1, 0);
+                    }
+                } else {
+                    // Last line - just include its newline if it exists
+                    extendedEnd = new Position(end.line + 1, 0);
+                }
+
+                return new Range(start, extendedEnd);
             },
         }),
     );
