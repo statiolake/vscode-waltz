@@ -543,9 +543,142 @@ function extractTagName(content: string): string {
 }
 
 /**
+ * 引数の範囲情報
+ */
+type ArgumentRanges = {
+    inner: OffsetRange; // 引数本体の範囲（空白を除く）
+    outer: OffsetRange; // コンマを含む範囲
+};
+
+/**
+ * 括弧/ブレース内のすべての引数の範囲を計算する
+ * 文字列リテラル、ネストした括弧を考慮してカンマ位置を正確に検出
+ *
+ * @param document ドキュメント
+ * @param containerRange コンテナ（括弧/ブレース）の内側範囲
+ * @returns 各引数の範囲情報の配列
+ */
+function findAllArgumentRanges(document: TextDocument, containerRange: Range): ArgumentRanges[] {
+    const startOffset = document.offsetAt(containerRange.start);
+    const endOffset = document.offsetAt(containerRange.end);
+
+    // カンマの位置を探す（文字列やネストした括弧を考慮）
+    const commaOffsets: number[] = [];
+    let offset = startOffset;
+
+    while (offset < endOffset) {
+        const char = getTextOfOffsetRange(document, offset, offset + 1);
+
+        // 文字列リテラルをスキップ
+        if (char === '"' || char === "'") {
+            const quoteChar = char;
+            offset++;
+            while (offset < endOffset) {
+                const c = getTextOfOffsetRange(document, offset, offset + 1);
+                if (c === '\\') {
+                    offset += 2; // エスケープシーケンスをスキップ
+                    continue;
+                }
+                if (c === quoteChar) {
+                    offset++;
+                    break;
+                }
+                offset++;
+            }
+            continue;
+        }
+
+        // ネストした括弧をスキップ
+        if (char === '(' || char === '[' || char === '{') {
+            const closeChar = char === '(' ? ')' : char === '[' ? ']' : '}';
+            let depth = 1;
+            offset++;
+            while (offset < endOffset && depth > 0) {
+                const c = getTextOfOffsetRange(document, offset, offset + 1);
+                if (c === char) depth++;
+                else if (c === closeChar) depth--;
+                offset++;
+            }
+            continue;
+        }
+
+        // カンマを記録
+        if (char === ',') {
+            commaOffsets.push(offset);
+        }
+
+        offset++;
+    }
+
+    // 各引数の範囲を計算
+    const argumentRanges: ArgumentRanges[] = [];
+    const boundaries = [startOffset - 1, ...commaOffsets, endOffset];
+
+    for (let i = 0; i < boundaries.length - 1; i++) {
+        const leftBoundary = boundaries[i];
+        const rightBoundary = boundaries[i + 1];
+
+        // inner range: 引数本体（空白を除く）
+        let innerStart = leftBoundary + 1;
+        let innerEnd = rightBoundary;
+
+        // 先頭の空白をスキップ
+        while (innerStart < innerEnd && isWhitespace(getTextOfOffsetRange(document, innerStart, innerStart + 1))) {
+            innerStart++;
+        }
+
+        // 末尾の空白をスキップ
+        while (innerEnd > innerStart && isWhitespace(getTextOfOffsetRange(document, innerEnd - 1, innerEnd))) {
+            innerEnd--;
+        }
+
+        // outer range: コンマを含む範囲
+        const isFirstArg = i === 0;
+        const isLastArg = i === boundaries.length - 2;
+
+        let outerStart = leftBoundary + 1; // 常に境界の次から開始（空白を含む）
+        let outerEnd = innerEnd;
+
+        if (isFirstArg && !isLastArg) {
+            // 第一引数: 後ろのコンマを含める
+            outerEnd = rightBoundary + 1;
+        } else if (!isFirstArg) {
+            // 第二引数以降: 前のコンマから開始（コンマを含む）
+            outerStart = leftBoundary;
+        }
+
+        argumentRanges.push({
+            inner: new OffsetRange(innerStart, innerEnd),
+            outer: new OffsetRange(outerStart, outerEnd),
+        });
+    }
+
+    return argumentRanges;
+}
+
+/**
+ * カーソル位置がどの引数に含まれるかを判定
+ *
+ * @param cursorOffset カーソルのオフセット位置
+ * @param argumentRanges 引数範囲の配列
+ * @returns 引数のインデックス、見つからない場合は undefined
+ */
+function findArgumentIndexAtCursor(cursorOffset: number, argumentRanges: ArgumentRanges[]): number | undefined {
+    for (let i = 0; i < argumentRanges.length; i++) {
+        const arg = argumentRanges[i];
+        // カーソルが引数の内部範囲に含まれるかチェック
+        if (arg.inner.startOffset <= cursorOffset && cursorOffset <= arg.inner.endOffset) {
+            return i;
+        }
+    }
+    return undefined;
+}
+
+/**
  * 現在位置の引数の範囲を探す
  * C言語系の関数呼び出し内での引数を想定
  * 例: func(a, b, c) の中で b にカーソルがあれば、b の範囲を返す
+ * 例: type s struct{x int, y int} の中で x int にカーソルがあれば、x int の範囲を返す
  *
  * @param document ドキュメント
  * @param position カーソル位置
@@ -560,145 +693,38 @@ export function findCurrentArgument(
     position: Position,
     opts?: { includeComma?: boolean },
 ): Range | undefined {
-    // まず、現在位置を囲む括弧内の範囲を取得
-    const parenRange = findInsideBalancedPairs(document, position, '(', ')');
-    if (!parenRange) return undefined;
+    // まず、現在位置を囲む括弧またはブレース内の範囲を取得
+    let containerRange = findInsideBalancedPairs(document, position, '(', ')');
+    const braceRange = findInsideBalancedPairs(document, position, '{', '}');
 
-    // 括弧内のテキストを取得
-    const insideText = document.getText(parenRange);
-    const startOffset = document.offsetAt(parenRange.start);
-    const currentOffset = document.offsetAt(position);
-
-    // 現在位置の相対位置を計算
-    const currentRelativeOffset = currentOffset - startOffset;
-
-    // 括弧内でカンマを探す（文字列とキャラクターリテラルを考慮）
-    const commaPositions: number[] = [];
-    let i = 0;
-    while (i < insideText.length) {
-        const char = insideText[i];
-
-        // ダブルクォートの文字列をスキップ
-        if (char === '"') {
-            i++;
-            while (i < insideText.length && insideText[i] !== '"') {
-                if (insideText[i] === '\\') i++; // エスケープ文字をスキップ
-                i++;
-            }
-            i++;
-            continue;
-        }
-
-        // シングルクォートの文字列またはキャラクターリテラルをスキップ
-        if (char === "'") {
-            i++;
-            while (i < insideText.length && insideText[i] !== "'") {
-                if (insideText[i] === '\\') i++; // エスケープ文字をスキップ
-                i++;
-            }
-            i++;
-            continue;
-        }
-
-        // 開き括弧/角括弧/中括弧があればその中身もスキップ
-        if (char === '(' || char === '[' || char === '{') {
-            const closeChar = char === '(' ? ')' : char === '[' ? ']' : '}';
-            // ネストした括弧を手動でカウントしてスキップ
-            let depth = 1;
-            i++; // 開き括弧の次から開始
-            while (i < insideText.length && depth > 0) {
-                const nextChar = insideText[i];
-                if (nextChar === char) {
-                    depth++;
-                } else if (nextChar === closeChar) {
-                    depth--;
-                }
-                i++;
-            }
-            continue;
-        }
-
-        // カンマを記録
-        if (char === ',') {
-            commaPositions.push(i);
-        }
-
-        i++;
+    // 両方見つかった場合、より小さい（内側の）範囲を選択
+    if (containerRange && braceRange) {
+        const parenSize = document.offsetAt(containerRange.end) - document.offsetAt(containerRange.start);
+        const braceSize = document.offsetAt(braceRange.end) - document.offsetAt(braceRange.start);
+        containerRange = parenSize <= braceSize ? containerRange : braceRange;
+    } else if (braceRange) {
+        containerRange = braceRange;
     }
 
-    // 現在位置から見て、前後のカンマを探す
-    let leftCommaPos = -1;
-    let rightCommaPos = insideText.length;
+    if (!containerRange) return undefined;
 
-    for (const pos of commaPositions) {
-        if (pos < currentRelativeOffset) {
-            leftCommaPos = pos;
-        }
-        if (pos >= currentRelativeOffset && rightCommaPos === insideText.length) {
-            rightCommaPos = pos;
-        }
-    }
+    // すべての引数の範囲を計算
+    const argumentRanges = findAllArgumentRanges(document, containerRange);
 
-    // 引数の開始と終了位置を確定（括弧内のテキスト内でのインデックス）
-    let argStartInside = leftCommaPos + 1;
-    let argEndInside = rightCommaPos;
+    // カーソル位置がどの引数に含まれるかを判定
+    const cursorOffset = document.offsetAt(position);
+    const argIndex = findArgumentIndexAtCursor(cursorOffset, argumentRanges);
 
-    // 前後の空白をトリム
-    while (argStartInside < argEndInside && isWhitespace(insideText[argStartInside])) {
-        argStartInside++;
-    }
-    while (argEndInside > argStartInside && isWhitespace(insideText[argEndInside - 1])) {
-        argEndInside--;
-    }
+    if (argIndex === undefined) return undefined;
 
-    // includeComma オプションが true の場合、コンマを含める
-    let finalStart = argStartInside;
-    let finalEnd = argEndInside;
-
-    if (opts?.includeComma) {
-        const startOffsetInDoc = startOffset + argStartInside;
-        const endOffsetInDoc = startOffset + argEndInside;
-
-        // 前にコンマがあるかチェック
-        let hasCommaBefore = false;
-        for (let i = startOffsetInDoc - 1; i >= 0; i--) {
-            const char = getTextOfOffsetRange(document, i, i + 1);
-            if (char === ',') {
-                hasCommaBefore = true;
-                finalStart = i - startOffset;
-                break;
-            }
-            if (char === '(' || char === '[' || char === '{') {
-                // 開き括弧に到達した、つまり第一引数
-                break;
-            }
-        }
-
-        // 前にコンマがなければ（第一引数）、後ろのコンマを含める
-        if (!hasCommaBefore) {
-            for (
-                let i = endOffsetInDoc;
-                i < document.offsetAt(document.lineAt(document.lineCount - 1).range.end);
-                i++
-            ) {
-                const char = getTextOfOffsetRange(document, i, i + 1);
-                if (char === ',') {
-                    finalEnd = i + 1 - startOffset;
-                    break;
-                }
-                if (char === ')' || char === ']' || char === '}') {
-                    // 閉じ括弧に到達した
-                    break;
-                }
-            }
-        }
-    }
+    const arg = argumentRanges[argIndex];
 
     // 結果を Range に変換
-    const resultStart = document.positionAt(startOffset + finalStart);
-    const resultEnd = document.positionAt(startOffset + finalEnd);
-
-    return new Range(resultStart, resultEnd);
+    if (opts?.includeComma) {
+        return arg.outer.toRange(document);
+    } else {
+        return arg.inner.toRange(document);
+    }
 }
 
 export class OffsetRange {

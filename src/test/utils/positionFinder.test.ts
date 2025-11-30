@@ -940,7 +940,7 @@ suite('findCurrentArgument', () => {
         const result = findCurrentArgument(doc, position, { includeComma: true });
 
         assert.ok(result !== undefined);
-        // Should select 'a,' (including the comma but not the space)
+        // Should select 'a,' (including the comma and the space after)
         assert.deepStrictEqual(result.start, new Position(0, 5));
         assert.deepStrictEqual(result.end, new Position(0, 7));
     });
@@ -982,6 +982,276 @@ suite('findCurrentArgument', () => {
         // Should select just 'a' (no comma to include)
         assert.deepStrictEqual(result.start, new Position(0, 5));
         assert.deepStrictEqual(result.end, new Position(0, 6));
+    });
+
+    // Brace argument tests
+    test('should find first argument inside braces', async () => {
+        const doc = await vscode.workspace.openTextDocument({ content: 'type s struct{x int, y int}' });
+        // Position (0, 16): between 'x' and ' '
+        const position = new Position(0, 16);
+
+        const result = findCurrentArgument(doc, position);
+
+        assert.ok(result !== undefined);
+        // Should select 'x int'
+        assert.deepStrictEqual(result.start, new Position(0, 14));
+        assert.deepStrictEqual(result.end, new Position(0, 19));
+    });
+
+    test('should find second argument inside braces', async () => {
+        const doc = await vscode.workspace.openTextDocument({ content: 'type s struct{x int, y int}' });
+        // Position (0, 23): between 'y' and ' '
+        const position = new Position(0, 23);
+
+        const result = findCurrentArgument(doc, position);
+
+        assert.ok(result !== undefined);
+        // Should select 'y int'
+        assert.deepStrictEqual(result.start, new Position(0, 21));
+        assert.deepStrictEqual(result.end, new Position(0, 26));
+    });
+
+    test('should handle braces with spaces', async () => {
+        const doc = await vscode.workspace.openTextDocument({ content: '{  a  ,  b  }' });
+        // Position (0, 4): at 'a'
+        const position = new Position(0, 4);
+
+        const result = findCurrentArgument(doc, position);
+
+        assert.ok(result !== undefined);
+        // Should select 'a' (spaces excluded)
+        assert.deepStrictEqual(result.start, new Position(0, 3));
+        assert.deepStrictEqual(result.end, new Position(0, 4));
+    });
+
+    test('should include comma after first brace argument', async () => {
+        const doc = await vscode.workspace.openTextDocument({ content: '{a, b, c}' });
+        // Position (0, 2): between 'a' and ','
+        const position = new Position(0, 2);
+
+        const result = findCurrentArgument(doc, position, { includeComma: true });
+
+        assert.ok(result !== undefined);
+        // Should select 'a,' (including the comma and the space after)
+        assert.deepStrictEqual(result.start, new Position(0, 1));
+        assert.deepStrictEqual(result.end, new Position(0, 3));
+    });
+
+    test('should include comma before middle brace argument', async () => {
+        const doc = await vscode.workspace.openTextDocument({ content: '{a, b, c}' });
+        // Position (0, 5): between 'b' and ','
+        const position = new Position(0, 5);
+
+        const result = findCurrentArgument(doc, position, { includeComma: true });
+
+        assert.ok(result !== undefined);
+        // Should select ', b' (including comma before)
+        assert.deepStrictEqual(result.start, new Position(0, 2));
+        assert.deepStrictEqual(result.end, new Position(0, 5));
+    });
+
+    test('should handle nested braces and parentheses - prefer inner parentheses', async () => {
+        const doc = await vscode.workspace.openTextDocument({ content: '{a, func(x, y), c}' });
+        // Position (0, 10): at 'x'
+        const position = new Position(0, 10);
+
+        const result = findCurrentArgument(doc, position);
+
+        assert.ok(result !== undefined);
+        // Should select 'x' (inside the inner parentheses, not the outer braces)
+        assert.deepStrictEqual(result.start, new Position(0, 9));
+        assert.deepStrictEqual(result.end, new Position(0, 10));
+    });
+
+    test('should handle nested braces and parentheses - prefer inner braces', async () => {
+        const doc = await vscode.workspace.openTextDocument({ content: 'func(a, {x, y}, c)' });
+        // Position (0, 10): at 'x'
+        const position = new Position(0, 10);
+
+        const result = findCurrentArgument(doc, position);
+
+        assert.ok(result !== undefined);
+        // Should select 'x' (inside the inner braces, not the outer parentheses)
+        assert.deepStrictEqual(result.start, new Position(0, 9));
+        assert.deepStrictEqual(result.end, new Position(0, 10));
+    });
+
+    test('should handle Go struct literal syntax', async () => {
+        const doc = await vscode.workspace.openTextDocument({
+            content: 'type s struct{\n    x int,\n    y int,\n}',
+        });
+        // Position (1, 6): at 'x' on line 2
+        const position = new Position(1, 6);
+
+        const result = findCurrentArgument(doc, position);
+
+        assert.ok(result !== undefined);
+        // Should select 'x int'
+        assert.deepStrictEqual(result.start, new Position(1, 4));
+        assert.deepStrictEqual(result.end, new Position(1, 9));
+    });
+
+    test('should handle single argument inside braces with includeComma', async () => {
+        const doc = await vscode.workspace.openTextDocument({ content: '{a}' });
+        // Position (0, 2): between 'a' and '}'
+        const position = new Position(0, 2);
+
+        const result = findCurrentArgument(doc, position, { includeComma: true });
+
+        assert.ok(result !== undefined);
+        // Should select just 'a' (no comma to include)
+        assert.deepStrictEqual(result.start, new Position(0, 1));
+        assert.deepStrictEqual(result.end, new Position(0, 2));
+    });
+
+    test('should handle strings inside braces', async () => {
+        const doc = await vscode.workspace.openTextDocument({ content: '{"hello, world", b}' });
+        // Position (0, 10): inside the string
+        const position = new Position(0, 10);
+
+        const result = findCurrentArgument(doc, position);
+
+        assert.ok(result !== undefined);
+        // Should select the entire string (commas inside strings should be ignored)
+        assert.deepStrictEqual(result.start, new Position(0, 1));
+        assert.deepStrictEqual(result.end, new Position(0, 15));
+    });
+
+    // Multiline argument tests
+    test('should handle multiline first argument with ia', async () => {
+        const doc = await vscode.workspace.openTextDocument({
+            content: 'foo {\n    bar,\n    baz,\n}',
+        });
+        // Position (1, 6): at 'bar'
+        const position = new Position(1, 6);
+
+        const result = findCurrentArgument(doc, position);
+
+        assert.ok(result !== undefined);
+        // Should select 'bar' only (not including indentation)
+        assert.deepStrictEqual(result.start, new Position(1, 4));
+        assert.deepStrictEqual(result.end, new Position(1, 7));
+    });
+
+    test('should handle multiline first argument with aa', async () => {
+        const doc = await vscode.workspace.openTextDocument({
+            content: 'foo {\n    bar,\n    baz,\n}',
+        });
+        // Position (1, 6): at 'bar'
+        const position = new Position(1, 6);
+
+        const result = findCurrentArgument(doc, position, { includeComma: true });
+
+        assert.ok(result !== undefined);
+        // Should select '\n    bar,' including the comma and the newline after
+        assert.deepStrictEqual(result.start, new Position(0, 5));
+        assert.deepStrictEqual(result.end, new Position(1, 8));
+    });
+
+    test('should handle multiline second argument with ia', async () => {
+        const doc = await vscode.workspace.openTextDocument({
+            content: 'foo {\n    bar,\n    baz,\n}',
+        });
+        // Position (2, 6): at 'baz'
+        const position = new Position(2, 6);
+
+        const result = findCurrentArgument(doc, position);
+
+        assert.ok(result !== undefined);
+        // Should select 'baz' only (not including indentation)
+        assert.deepStrictEqual(result.start, new Position(2, 4));
+        assert.deepStrictEqual(result.end, new Position(2, 7));
+    });
+
+    test('should handle multiline second argument with aa', async () => {
+        const doc = await vscode.workspace.openTextDocument({
+            content: 'foo {\n    bar,\n    baz,\n}',
+        });
+        // Position (2, 6): at 'baz'
+        const position = new Position(2, 6);
+
+        const result = findCurrentArgument(doc, position, { includeComma: true });
+
+        assert.ok(result !== undefined);
+        // Should include comma from previous line and all whitespace (newline + indentation)
+        assert.deepStrictEqual(result.start, new Position(1, 7));
+        assert.deepStrictEqual(result.end, new Position(2, 7));
+    });
+
+    test('should handle multiline arguments in parentheses with aa', async () => {
+        const doc = await vscode.workspace.openTextDocument({
+            content: 'func(\n    arg1,\n    arg2,\n    arg3\n)',
+        });
+        // Position (2, 6): at 'arg2'
+        const position = new Position(2, 6);
+
+        const result = findCurrentArgument(doc, position, { includeComma: true });
+
+        assert.ok(result !== undefined);
+        // Should include comma from previous line and all whitespace (newline + indentation)
+        assert.deepStrictEqual(result.start, new Position(1, 8));
+        assert.deepStrictEqual(result.end, new Position(2, 8));
+    });
+
+    test('should handle multiline last argument with aa - no trailing comma', async () => {
+        const doc = await vscode.workspace.openTextDocument({
+            content: 'func(\n    arg1,\n    arg2\n)',
+        });
+        // Position (2, 6): at 'arg2'
+        const position = new Position(2, 6);
+
+        const result = findCurrentArgument(doc, position, { includeComma: true });
+
+        assert.ok(result !== undefined);
+        // Should include comma from previous line and all whitespace
+        assert.deepStrictEqual(result.start, new Position(1, 8));
+        assert.deepStrictEqual(result.end, new Position(2, 8));
+    });
+
+    test('should handle Go struct with multiple fields using aa', async () => {
+        const doc = await vscode.workspace.openTextDocument({
+            content: 'type Person struct {\n    Name string,\n    Age int,\n    City string,\n}',
+        });
+        // Position (2, 6): at 'Age'
+        const position = new Position(2, 6);
+
+        const result = findCurrentArgument(doc, position, { includeComma: true });
+
+        assert.ok(result !== undefined);
+        // Should include comma and newline+indentation from previous field
+        // 'Name string' is at positions 4-15, comma is at 15, so start should be 15
+        assert.deepStrictEqual(result.start, new Position(1, 15));
+        assert.deepStrictEqual(result.end, new Position(2, 11));
+    });
+
+    test('should handle compact multiline - first arg with aa', async () => {
+        const doc = await vscode.workspace.openTextDocument({
+            content: '{a,\nb}',
+        });
+        // Position (0, 2): at 'a'
+        const position = new Position(0, 2);
+
+        const result = findCurrentArgument(doc, position, { includeComma: true });
+
+        assert.ok(result !== undefined);
+        // Should include comma after 'a'
+        assert.deepStrictEqual(result.start, new Position(0, 1));
+        assert.deepStrictEqual(result.end, new Position(0, 3));
+    });
+
+    test('should handle compact multiline - second arg with aa', async () => {
+        const doc = await vscode.workspace.openTextDocument({
+            content: '{a,\nb}',
+        });
+        // Position (1, 1): at 'b'
+        const position = new Position(1, 1);
+
+        const result = findCurrentArgument(doc, position, { includeComma: true });
+
+        assert.ok(result !== undefined);
+        // Should include comma and newline before 'b'
+        assert.deepStrictEqual(result.start, new Position(0, 2));
+        assert.deepStrictEqual(result.end, new Position(1, 1));
     });
 });
 
