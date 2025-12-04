@@ -8,12 +8,6 @@ export async function typeHandler(vimState: VimState, char: string): Promise<voi
     const editor = vscode.window.activeTextEditor;
     if (!editor) return;
 
-    // In insert mode, directly delegate to VS Code's native type command
-    if (vimState.mode === 'insert') {
-        await vscode.commands.executeCommand('type', { text: char });
-        return;
-    }
-
     // type が発生した場合に即行う処理はキューイング。後は Mutex が空くのを待ってから処理してくれればいいので、バックグ
     // ラウンドに投げるだけ投げてさっさと handler は終わってしまう。
     // ここで、少なくともタイプしたキーの数だけ Mutex を待っているタスクがある状態になるので、一回の Mutex 内で一文字以
