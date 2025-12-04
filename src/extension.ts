@@ -198,6 +198,14 @@ export async function activate(context: ExtensionContext): Promise<{ getVimState
 export function setupTypeHandler(vimState: VimState): Disposable[] {
     return [
         vscode.commands.registerCommand('type', async (e) => {
+            if (vscode.window.activeTextEditor === undefined) {
+                // 巨大ファイルなどの場合、VS Code は ext host にテキストを転送しないらしいので、この拡張では何もハンドリングできない。
+                // そのため、巨大ファイルに対しては type コマンドはすべてデフォルト動作に委譲する。
+                // see: <https://github.com/microsoft/vscode/issues/31078>
+                await vscode.commands.executeCommand('default:type', e);
+                return;
+            }
+
             if (vimState.mode === 'insert') {
                 await vscode.commands.executeCommand('default:type', e);
                 return;
@@ -206,6 +214,14 @@ export function setupTypeHandler(vimState: VimState): Disposable[] {
             await typeHandler(vimState, e.text);
         }),
         vscode.commands.registerCommand('compositionStart', async (e) => {
+            if (vscode.window.activeTextEditor === undefined) {
+                // 巨大ファイルなどの場合、VS Code は ext host にテキストを転送しないらしいので、この拡張では何もハンドリングできない。
+                // そのため、巨大ファイルに対しては type コマンドはすべてデフォルト動作に委譲する。
+                // see: <https://github.com/microsoft/vscode/issues/31078>
+                await vscode.commands.executeCommand('default:compositionStart', e);
+                return;
+            }
+
             if (vimState.mode === 'insert') {
                 await vscode.commands.executeCommand('default:compositionStart', e);
             }
@@ -213,12 +229,28 @@ export function setupTypeHandler(vimState: VimState): Disposable[] {
             // Insert モード以外では composition 関連のイベントはすべて無視する
         }),
         vscode.commands.registerCommand('compositionEnd', async (e) => {
+            if (vscode.window.activeTextEditor === undefined) {
+                // 巨大ファイルなどの場合、VS Code は ext host にテキストを転送しないらしいので、この拡張では何もハンドリングできない。
+                // そのため、巨大ファイルに対しては type コマンドはすべてデフォルト動作に委譲する。
+                // see: <https://github.com/microsoft/vscode/issues/31078>
+                await vscode.commands.executeCommand('default:compositionEnd', e);
+                return;
+            }
+
             // Insert モード以外では composition 関連のイベントはすべて無視する
             if (vimState.mode === 'insert') {
                 await vscode.commands.executeCommand('default:compositionEnd', e);
             }
         }),
         vscode.commands.registerCommand('replacePreviousChar', async (e) => {
+            if (vscode.window.activeTextEditor === undefined) {
+                // 巨大ファイルなどの場合、VS Code は ext host にテキストを転送しないらしいので、この拡張では何もハンドリングできない。
+                // そのため、巨大ファイルに対しては type コマンドはすべてデフォルト動作に委譲する。
+                // see: <https://github.com/microsoft/vscode/issues/31078>
+                await vscode.commands.executeCommand('default:replacePreviousChar', e);
+                return;
+            }
+
             // Insert モード以外では composition 関連のイベントはすべて無視する
             if (vimState.mode === 'insert') {
                 await vscode.commands.executeCommand('default:replacePreviousChar', e);
