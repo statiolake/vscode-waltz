@@ -8,6 +8,12 @@ export async function typeHandler(vimState: VimState, char: string): Promise<voi
     const editor = vscode.window.activeTextEditor;
     if (!editor) return;
 
+    // In insert mode, directly delegate to VS Code's native type command
+    if (vimState.mode === 'insert') {
+        await vscode.commands.executeCommand('type', { text: char });
+        return;
+    }
+
     // type が発生した場合に即行う処理はキューイング。後は Mutex が空くのを待ってから処理してくれればいいので、バックグ
     // ラウンドに投げるだけ投げてさっさと handler は終わってしまう。
     // ここで、少なくともタイプしたキーの数だけ Mutex を待っているタスクがある状態になるので、一回の Mutex 内で一文字以
@@ -15,27 +21,6 @@ export async function typeHandler(vimState: VimState, char: string): Promise<voi
     vimState.keysQueued.push(char);
     console.log('queued char:', char);
     void vimState.actionMutex.use(async () => {
-        if (vimState.mode === 'insert') {
-            // 原則的には一文字ずつ処理するが、直前の動作で insert mode に入った場合、Pending しているすべてのキー入力を
-            // 一文字ずつ入力してしまうと後続の type と順番が入れ替わってしまったりするので、そのリスクを最小化するため
-            // にまとめて一気に単なる入力として渡してしまう。残念ながら完璧ではないが...
-            const text = [...vimState.keysPressed, ...vimState.keysQueued]
-                .filter((key) => {
-                    // <Waltz> や <C- <A- <D- などで始まるキーは特殊キーなので、文字として入力しない。
-                    return (
-                        !key.startsWith('<Waltz>') &&
-                        !key.startsWith('<C-') &&
-                        !key.startsWith('<A-') &&
-                        !key.startsWith('<D-')
-                    );
-                })
-                .join('');
-            await vscode.commands.executeCommand('type', { text });
-            vimState.keysPressed = [];
-            vimState.keysQueued = [];
-            return;
-        }
-
         // そうでなければ先頭から一文字取り出して処理する。
         const char = vimState.keysQueued.shift();
         if (!char) {

@@ -1,7 +1,6 @@
 import * as vscode from 'vscode';
 import { Selection, type TextEditor } from 'vscode';
 import type { Mode } from './modesTypes';
-import { typeHandler } from './typeHandler';
 import { getCursorStyleForMode } from './utils/cursorStyle';
 import { getModeDisplayText } from './utils/modeDisplay';
 import { expandSelectionsToFullLines } from './utils/visualLine';
@@ -18,8 +17,6 @@ export async function enterMode(vimState: VimState, editor: TextEditor | undefin
 
     // ここから先の処理は重たく副作用も大きいので、モードが変わらなかった場合はスキップする
     if (oldMode === mode) return;
-
-    updateTypeHandler(vimState, mode);
 
     if (mode === 'normal' && editor && editor.selections.some((selection) => !selection.isEmpty)) {
         // ノーマルモードに入ったら、選択範囲を解除する
@@ -59,27 +56,4 @@ function updateStatusBar(vimState: VimState, mode: Mode): void {
 
     statusBarItem.text = getModeDisplayText(mode);
     statusBarItem.show();
-}
-
-function updateTypeHandler(vimState: VimState, mode: Mode): void {
-    if (mode === 'insert' && vimState.typeSubscriptions.length > 0) {
-        for (const sub of vimState.typeSubscriptions) sub.dispose();
-        vimState.typeSubscriptions = [];
-    } else if (vimState.typeSubscriptions.length === 0) {
-        vimState.typeSubscriptions = [];
-        vimState.typeSubscriptions.push(
-            vscode.commands.registerCommand('type', (e) => {
-                void typeHandler(vimState, e.text);
-            }),
-            vscode.commands.registerCommand('compositionStart', (_) => {
-                // composition 関連のイベントはすべて無視する
-            }),
-            vscode.commands.registerCommand('compositionEnd', (_) => {
-                // composition 関連のイベントはすべて無視する
-            }),
-            vscode.commands.registerCommand('replacePreviousChar', (_) => {
-                // composition 関連のイベントはすべて無視する
-            }),
-        );
-    }
 }

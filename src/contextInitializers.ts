@@ -12,7 +12,6 @@ import type { VimState } from './vimState';
  */
 export function createVimState(statusBarItem?: StatusBarItem): VimState {
     return {
-        typeSubscriptions: [],
         statusBarItem: statusBarItem ?? createDummyStatusBarItem(),
         actionMutex: new Mutex(),
         mode: 'insert',

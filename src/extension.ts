@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import {
     type ConfigurationChangeEvent,
+    type Disposable,
     type ExtensionContext,
     Range,
     StatusBarAlignment,
@@ -110,6 +111,7 @@ export async function activate(context: ExtensionContext): Promise<{ getVimState
     globalVimState = vimState;
 
     context.subscriptions.push(
+        ...setupTypeHandler(vimState),
         vscode.window.onDidChangeActiveTextEditor((editor) => onDidChangeActiveTextEditor(vimState, editor)),
         vscode.window.onDidChangeTextEditorSelection((e) => onDidChangeTextEditorSelection(vimState, e)),
         vscode.workspace.onDidChangeConfiguration((e) => onDidChangeConfiguration(vimState, e)),
@@ -191,4 +193,36 @@ export async function activate(context: ExtensionContext): Promise<{ getVimState
             return globalVimState;
         },
     };
+}
+
+export function setupTypeHandler(vimState: VimState): Disposable[] {
+    return [
+        vscode.commands.registerCommand('type', async (e) => {
+            if (vimState.mode === 'insert') {
+                await vscode.commands.executeCommand('default:type', e);
+                return;
+            }
+
+            await typeHandler(vimState, e.text);
+        }),
+        vscode.commands.registerCommand('compositionStart', async (e) => {
+            if (vimState.mode === 'insert') {
+                await vscode.commands.executeCommand('default:compositionStart', e);
+            }
+
+            // Insert モード以外では composition 関連のイベントはすべて無視する
+        }),
+        vscode.commands.registerCommand('compositionEnd', async (e) => {
+            // Insert モード以外では composition 関連のイベントはすべて無視する
+            if (vimState.mode === 'insert') {
+                await vscode.commands.executeCommand('default:compositionEnd', e);
+            }
+        }),
+        vscode.commands.registerCommand('replacePreviousChar', async (e) => {
+            // Insert モード以外では composition 関連のイベントはすべて無視する
+            if (vimState.mode === 'insert') {
+                await vscode.commands.executeCommand('default:replacePreviousChar', e);
+            }
+        }),
+    ];
 }
