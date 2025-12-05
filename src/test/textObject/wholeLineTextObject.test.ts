@@ -10,7 +10,7 @@ suite('newWholeLineTextObject', () => {
         const editor = await vscode.window.showTextDocument(doc);
 
         const textObject = newWholeLineTextObject({ keys: ['d'], includeLineBreak: true });
-        const context = createTestContext(editor, doc);
+        const context = createTestContext(editor);
 
         // Position on line2
         const position = new Position(1, 2);
@@ -30,7 +30,7 @@ suite('newWholeLineTextObject', () => {
         const editor = await vscode.window.showTextDocument(doc);
 
         const textObject = newWholeLineTextObject({ keys: ['d'], includeLineBreak: true });
-        const context = createTestContext(editor, doc);
+        const context = createTestContext(editor);
 
         // Position on line1
         const position = new Position(0, 2);
@@ -50,7 +50,7 @@ suite('newWholeLineTextObject', () => {
         const editor = await vscode.window.showTextDocument(doc);
 
         const textObject = newWholeLineTextObject({ keys: ['d'], includeLineBreak: true });
-        const context = createTestContext(editor, doc);
+        const context = createTestContext(editor);
 
         // Position on line3 (last line)
         const position = new Position(2, 2);
@@ -79,7 +79,7 @@ suite('newWholeLineTextObject', () => {
         const editor = await vscode.window.showTextDocument(doc);
 
         const textObject = newWholeLineTextObject({ keys: ['d'], includeLineBreak: true });
-        const context = createTestContext(editor, doc);
+        const context = createTestContext(editor);
 
         // Position on line3 (last line with trailing newline)
         const position = new Position(2, 2);
@@ -99,7 +99,7 @@ suite('newWholeLineTextObject', () => {
         const editor = await vscode.window.showTextDocument(doc);
 
         const textObject = newWholeLineTextObject({ keys: ['d'], includeLineBreak: true });
-        const context = createTestContext(editor, doc);
+        const context = createTestContext(editor);
 
         // Position on the only line
         const position = new Position(0, 4);
@@ -119,7 +119,7 @@ suite('newWholeLineTextObject', () => {
         const editor = await vscode.window.showTextDocument(doc);
 
         const textObject = newWholeLineTextObject({ keys: ['c'], includeLineBreak: false });
-        const context = createTestContext(editor, doc);
+        const context = createTestContext(editor);
 
         // Position on line2
         const position = new Position(1, 2);

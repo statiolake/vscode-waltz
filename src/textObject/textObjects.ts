@@ -66,7 +66,8 @@ export function buildTextObjects(motions: Motion[]): TextObject[] {
         newTextObject({
             keys: ['i', 'w'],
             compute: (context, position) => {
-                const { document } = context;
+                if (!context.editor) return 'noMatch';
+                const document = context.editor.document;
                 return findInnerWordAtBoundary(document, position);
             },
         }),
@@ -74,7 +75,8 @@ export function buildTextObjects(motions: Motion[]): TextObject[] {
         newTextObject({
             keys: ['a', 'w'],
             compute: (context, position) => {
-                const { document } = context;
+                if (!context.editor) return 'noMatch';
+                const document = context.editor.document;
                 return findInnerWordAtBoundary(document, position);
             },
         }),
@@ -82,7 +84,8 @@ export function buildTextObjects(motions: Motion[]): TextObject[] {
         newTextObject({
             keys: ['i', 'W'],
             compute: (context, position) => {
-                const { document } = context;
+                if (!context.editor) return 'noMatch';
+                const document = context.editor.document;
                 const start = findWordBoundary(document, 'further', 'before', position, isWhitespaceBoundary);
                 const end = findWordBoundary(document, 'further', 'after', position, isWhitespaceBoundary);
 
@@ -97,7 +100,8 @@ export function buildTextObjects(motions: Motion[]): TextObject[] {
         newTextObject({
             keys: ['a', 'W'],
             compute: (context, position) => {
-                const { document } = context;
+                if (!context.editor) return 'noMatch';
+                const document = context.editor.document;
                 const start = findWordBoundary(document, 'further', 'before', position, isWhitespaceBoundary);
                 const end = findWordBoundary(document, 'further', 'after', position, isWhitespaceBoundary);
 
@@ -115,7 +119,9 @@ export function buildTextObjects(motions: Motion[]): TextObject[] {
         const baseTextObject = newTextObject({
             keys,
             compute: (context, position) => {
-                const range = findInsideBalancedPairs(context.document, position, open, close);
+                if (!context.editor) return 'noMatch';
+                const document = context.editor.document;
+                const range = findInsideBalancedPairs(document, position, open, close);
                 if (!range) return new Range(position, position);
 
                 if (inner) {
@@ -123,8 +129,8 @@ export function buildTextObjects(motions: Motion[]): TextObject[] {
                     return range;
                 } else {
                     // 周辺: 括弧/クォート自体を含む
-                    const startPos = findAdjacentPosition(context.document, 'before', range.start);
-                    const endPos = findAdjacentPosition(context.document, 'after', range.end);
+                    const startPos = findAdjacentPosition(document, 'before', range.start);
+                    const endPos = findAdjacentPosition(document, 'after', range.end);
                     return new Range(startPos, endPos);
                 }
             },
@@ -181,7 +187,8 @@ export function buildTextObjects(motions: Motion[]): TextObject[] {
         newTextObject({
             keys: ['i', 't'],
             compute: (context, position) => {
-                const tagInfo = findMatchingTag(context.document, position);
+                if (!context.editor) return 'noMatch';
+                const tagInfo = findMatchingTag(context.editor.document, position);
                 if (!tagInfo) return new Range(position, position);
 
                 // 内部: タグ自体は含まない
@@ -193,7 +200,8 @@ export function buildTextObjects(motions: Motion[]): TextObject[] {
         newTextObject({
             keys: ['a', 't'],
             compute: (context, position) => {
-                const tagInfo = findMatchingTag(context.document, position);
+                if (!context.editor) return 'noMatch';
+                const tagInfo = findMatchingTag(context.editor.document, position);
                 if (!tagInfo) return new Range(position, position);
 
                 // 周辺: タグ自体を含む
@@ -208,8 +216,10 @@ export function buildTextObjects(motions: Motion[]): TextObject[] {
         newTextObject({
             keys: ['a', 'e'],
             compute: (context) => {
-                const start = findDocumentStart(context.document);
-                const end = findDocumentEnd(context.document);
+                if (!context.editor) return 'noMatch';
+                const document = context.editor.document;
+                const start = findDocumentStart(document);
+                const end = findDocumentEnd(document);
                 return new Range(start, end);
             },
         }),
@@ -218,8 +228,10 @@ export function buildTextObjects(motions: Motion[]): TextObject[] {
         newTextObject({
             keys: ['i', 'e'],
             compute: (context) => {
-                const start = findDocumentStart(context.document);
-                const end = findDocumentEnd(context.document);
+                if (!context.editor) return 'noMatch';
+                const document = context.editor.document;
+                const start = findDocumentStart(document);
+                const end = findDocumentEnd(document);
                 return new Range(start, end);
             },
         }),
@@ -231,7 +243,8 @@ export function buildTextObjects(motions: Motion[]): TextObject[] {
         newTextObject({
             keys: ['i', 'a'],
             compute: (context, position) => {
-                const range = findCurrentArgument(context.document, position);
+                if (!context.editor) return 'noMatch';
+                const range = findCurrentArgument(context.editor.document, position);
                 if (!range) return new Range(position, position);
                 return range;
             },
@@ -241,7 +254,8 @@ export function buildTextObjects(motions: Motion[]): TextObject[] {
         newTextObject({
             keys: ['a', 'a'],
             compute: (context, position) => {
-                const range = findCurrentArgument(context.document, position, { includeComma: true });
+                if (!context.editor) return 'noMatch';
+                const range = findCurrentArgument(context.editor.document, position, { includeComma: true });
                 if (!range) return new Range(position, position);
                 return range;
             },
@@ -254,7 +268,8 @@ export function buildTextObjects(motions: Motion[]): TextObject[] {
         newTextObject({
             keys: ['i', 'p'],
             compute: (context, position) => {
-                const { document } = context;
+                if (!context.editor) return 'noMatch';
+                const document = context.editor.document;
                 const start = findParagraphBoundary(document, 'before', position);
                 const end = findParagraphBoundary(document, 'after', position);
 
@@ -272,7 +287,8 @@ export function buildTextObjects(motions: Motion[]): TextObject[] {
         newTextObject({
             keys: ['a', 'p'],
             compute: (context, position) => {
-                const { document } = context;
+                if (!context.editor) return 'noMatch';
+                const document = context.editor.document;
                 const start = findParagraphBoundary(document, 'before', position);
                 const end = findParagraphBoundary(document, 'after', position);
 

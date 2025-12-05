@@ -36,6 +36,8 @@ const surroundPairs: Record<string, { open: string; close: string }> = {
  */
 export function createYsSurroundAction(textObjects: TextObject[]): Action {
     return async (context: Context, keys: string[]): Promise<ActionResult> => {
+        if (!context.editor) return 'noMatch';
+
         // Normal モードのチェック
         if (context.vimState.mode !== 'normal') {
             return 'noMatch';
@@ -53,13 +55,14 @@ export function createYsSurroundAction(textObjects: TextObject[]): Action {
             return 'needsMoreKey';
         }
 
+        const editor = context.editor;
         // 各 TextObject を試す
         for (const textObject of textObjects) {
             // 各カーソル位置で TextObject を実行
             // そのテキストオブジェクトが一カ所でもマッチしないのであれば次へ進む
             let matched = true;
             const results: Array<TextObjectResult & { result: 'match' }> = [];
-            for (const selection of context.editor.selections) {
+            for (const selection of editor.selections) {
                 const result = textObject(context, remainingKeys, selection.active);
                 if (result.result === 'needsMoreKey') return 'needsMoreKey';
                 if (result.result === 'noMatch') {
@@ -91,7 +94,7 @@ export function createYsSurroundAction(textObjects: TextObject[]): Action {
             const { open, close } = pair;
 
             // 囲み文字を挿入
-            await context.editor.edit((editBuilder) => {
+            await editor.edit((editBuilder) => {
                 for (const result of results) {
                     const range = result.data.range;
                     // 終了位置の後に close を挿入
@@ -118,6 +121,8 @@ export const dsSurroundAction = newRegexAction({
     partial: /^ds(.{0,1})$/,
     modes: ['normal'],
     execute: async (context, variables) => {
+        if (!context.editor) return;
+
         const char = variables.char;
         if (!char) return;
 
@@ -126,7 +131,7 @@ export const dsSurroundAction = newRegexAction({
 
         const { open, close } = pair;
         const editor = context.editor;
-        const document = context.document;
+        const document = editor.document;
 
         await editor.edit((editBuilder) => {
             for (const selection of editor.selections) {
@@ -158,6 +163,8 @@ export const csSurroundAction = newRegexAction({
     partial: /^cs(.{0,2})$/,
     modes: ['normal'],
     execute: async (context, variables) => {
+        if (!context.editor) return;
+
         const oldChar = variables.old;
         const newChar = variables.new;
         if (!oldChar || !newChar) return;
@@ -167,7 +174,7 @@ export const csSurroundAction = newRegexAction({
         if (!oldPair || !newPair) return;
 
         const editor = context.editor;
-        const document = context.document;
+        const document = editor.document;
 
         await editor.edit((editBuilder) => {
             for (const selection of editor.selections) {
@@ -199,6 +206,8 @@ export const visualSurroundAction = newRegexAction({
     partial: /^S(.{0,1})$/,
     modes: ['visual', 'visualLine'],
     execute: async (context, variables) => {
+        if (!context.editor) return;
+
         const char = variables.char;
         if (!char) return;
 
@@ -222,6 +231,6 @@ export const visualSurroundAction = newRegexAction({
         });
 
         // Normal モードに戻る
-        enterMode(context.vimState, context.editor, 'normal');
+        enterMode(context.vimState, editor, 'normal');
     },
 });

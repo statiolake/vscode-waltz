@@ -58,7 +58,8 @@ export function buildMotions(): Motion[] {
         newMotion({
             keys: ['l'],
             compute: (context, position) => {
-                return positionRightNormal(context.document, position);
+                if (!context.editor) return position;
+                return positionRightNormal(context.editor.document, position);
             },
         }),
     );
@@ -67,7 +68,8 @@ export function buildMotions(): Motion[] {
         newMotion({
             keys: ['j'],
             compute: (context, position) => {
-                if (position.line + 1 < context.document.lineCount) {
+                if (!context.editor) return position;
+                if (position.line + 1 < context.editor.document.lineCount) {
                     return new Position(position.line + 1, context.vimState.keptColumn ?? position.character);
                 }
                 return position;
@@ -92,8 +94,10 @@ export function buildMotions(): Motion[] {
         newMotion({
             keys: ['w'],
             compute: (context, position) => {
-                const nextPos = findAdjacentPosition(context.document, 'after', position);
-                const result = findWordBoundary(context.document, 'nearer', 'after', nextPos, isCharacterTypeBoundary);
+                if (!context.editor) return position;
+                const document = context.editor.document;
+                const nextPos = findAdjacentPosition(document, 'after', position);
+                const result = findWordBoundary(document, 'nearer', 'after', nextPos, isCharacterTypeBoundary);
                 return result ?? position;
             },
         }),
@@ -103,8 +107,10 @@ export function buildMotions(): Motion[] {
         newMotion({
             keys: ['W'],
             compute: (context, position) => {
-                const nextPos = findAdjacentPosition(context.document, 'after', position);
-                const result = findWordBoundary(context.document, 'nearer', 'after', nextPos, isWhitespaceBoundary);
+                if (!context.editor) return position;
+                const document = context.editor.document;
+                const nextPos = findAdjacentPosition(document, 'after', position);
+                const result = findWordBoundary(document, 'nearer', 'after', nextPos, isWhitespaceBoundary);
                 return result ?? position;
             },
         }),
@@ -114,14 +120,10 @@ export function buildMotions(): Motion[] {
         newMotion({
             keys: ['b'],
             compute: (context, position) => {
-                const nextPos = findAdjacentPosition(context.document, 'before', position);
-                const result = findWordBoundary(
-                    context.document,
-                    'further',
-                    'before',
-                    nextPos,
-                    isCharacterTypeBoundary,
-                );
+                if (!context.editor) return position;
+                const document = context.editor.document;
+                const nextPos = findAdjacentPosition(document, 'before', position);
+                const result = findWordBoundary(document, 'further', 'before', nextPos, isCharacterTypeBoundary);
                 return result ?? position;
             },
         }),
@@ -131,8 +133,10 @@ export function buildMotions(): Motion[] {
         newMotion({
             keys: ['B'],
             compute: (context, position) => {
-                const nextPos = findAdjacentPosition(context.document, 'before', position);
-                const result = findWordBoundary(context.document, 'further', 'before', nextPos, isWhitespaceBoundary);
+                if (!context.editor) return position;
+                const document = context.editor.document;
+                const nextPos = findAdjacentPosition(document, 'before', position);
+                const result = findWordBoundary(document, 'further', 'before', nextPos, isWhitespaceBoundary);
                 return result ?? position;
             },
         }),
@@ -142,8 +146,10 @@ export function buildMotions(): Motion[] {
         newMotion({
             keys: ['e'],
             compute: (context, position) => {
-                const nextPos = findAdjacentPosition(context.document, 'after', position);
-                const result = findWordBoundary(context.document, 'further', 'after', nextPos, isCharacterTypeBoundary);
+                if (!context.editor) return position;
+                const document = context.editor.document;
+                const nextPos = findAdjacentPosition(document, 'after', position);
+                const result = findWordBoundary(document, 'further', 'after', nextPos, isCharacterTypeBoundary);
                 return result ?? position;
             },
         }),
@@ -154,8 +160,10 @@ export function buildMotions(): Motion[] {
         newMotion({
             keys: ['E'],
             compute: (context, position) => {
-                const nextPos = findAdjacentPosition(context.document, 'after', position);
-                const result = findWordBoundary(context.document, 'further', 'after', nextPos, isWhitespaceBoundary);
+                if (!context.editor) return position;
+                const document = context.editor.document;
+                const nextPos = findAdjacentPosition(document, 'after', position);
+                const result = findWordBoundary(document, 'further', 'after', nextPos, isWhitespaceBoundary);
                 return result ?? position;
             },
         }),
@@ -166,8 +174,10 @@ export function buildMotions(): Motion[] {
         newMotion({
             keys: ['g', 'e'],
             compute: (context, position) => {
-                const nextPos = findAdjacentPosition(context.document, 'before', position);
-                const result = findWordBoundary(context.document, 'nearer', 'before', nextPos, isCharacterTypeBoundary);
+                if (!context.editor) return position;
+                const document = context.editor.document;
+                const nextPos = findAdjacentPosition(document, 'before', position);
+                const result = findWordBoundary(document, 'nearer', 'before', nextPos, isCharacterTypeBoundary);
                 return result ?? position;
             },
         }),
@@ -178,8 +188,10 @@ export function buildMotions(): Motion[] {
         newMotion({
             keys: ['g', 'E'],
             compute: (context, position) => {
-                const nextPos = findAdjacentPosition(context.document, 'before', position);
-                const result = findWordBoundary(context.document, 'nearer', 'before', nextPos, isWhitespaceBoundary);
+                if (!context.editor) return position;
+                const document = context.editor.document;
+                const nextPos = findAdjacentPosition(document, 'before', position);
+                const result = findWordBoundary(document, 'nearer', 'before', nextPos, isWhitespaceBoundary);
                 return result ?? position;
             },
         }),
@@ -189,28 +201,40 @@ export function buildMotions(): Motion[] {
     motions.push(
         newMotion({
             keys: ['g', 'g'],
-            compute: (context, _position) => findDocumentStart(context.document),
+            compute: (context, _position) => {
+                if (!context.editor) return _position;
+                return findDocumentStart(context.editor.document);
+            },
         }),
     );
 
     motions.push(
         newMotion({
             keys: ['G'],
-            compute: (context, _position) => findDocumentEnd(context.document),
+            compute: (context, _position) => {
+                if (!context.editor) return _position;
+                return findDocumentEnd(context.editor.document);
+            },
         }),
     );
 
     motions.push(
         newMotion({
             keys: ['{'],
-            compute: (context, position) => findParagraphBoundary(context.document, 'before', position),
+            compute: (context, position) => {
+                if (!context.editor) return position;
+                return findParagraphBoundary(context.editor.document, 'before', position);
+            },
         }),
     );
 
     motions.push(
         newMotion({
             keys: ['}'],
-            compute: (context, position) => findParagraphBoundary(context.document, 'after', position),
+            compute: (context, position) => {
+                if (!context.editor) return position;
+                return findParagraphBoundary(context.editor.document, 'after', position);
+            },
         }),
     );
 
@@ -218,28 +242,40 @@ export function buildMotions(): Motion[] {
     motions.push(
         newMotion({
             keys: ['$'],
-            compute: (context, position) => findLineEnd(context.document, position),
+            compute: (context, position) => {
+                if (!context.editor) return position;
+                return findLineEnd(context.editor.document, position);
+            },
         }),
     );
 
     motions.push(
         newMotion({
             keys: ['0'],
-            compute: (context, position) => findLineStart(context.document, position),
+            compute: (context, position) => {
+                if (!context.editor) return position;
+                return findLineStart(context.editor.document, position);
+            },
         }),
     );
 
     motions.push(
         newMotion({
             keys: ['^'],
-            compute: (context, position) => findLineStartAfterIndent(context.document, position),
+            compute: (context, position) => {
+                if (!context.editor) return position;
+                return findLineStartAfterIndent(context.editor.document, position);
+            },
         }),
     );
 
     motions.push(
         newMotion({
             keys: ['%'],
-            compute: (context, position) => findMatchingBracket(context.document, position) ?? position,
+            compute: (context, position) => {
+                if (!context.editor) return position;
+                return findMatchingBracket(context.editor.document, position) ?? position;
+            },
         }),
     );
 
@@ -250,12 +286,14 @@ export function buildMotions(): Motion[] {
         direction: 'after' | 'before',
         position: Position,
     ) => {
-        const newPosition = findNearerPosition(context.document, (c) => c === character, direction, position, {
+        if (!context.editor) return position;
+        const document = context.editor.document;
+        const newPosition = findNearerPosition(document, (c) => c === character, direction, position, {
             withinLine: true,
         });
         if (!newPosition) return position;
 
-        return distance === 'further' ? findAdjacentPosition(context.document, direction, newPosition) : newPosition;
+        return distance === 'further' ? findAdjacentPosition(document, direction, newPosition) : newPosition;
     };
 
     motions.push(
@@ -350,8 +388,8 @@ export function buildMotions(): Motion[] {
         newMotion({
             keys: ['<Waltz>half-page-down'],
             compute: (context, position) => {
-                const editor = context.editor;
-                const visibleRanges = editor.visibleRanges;
+                if (!context.editor) return position;
+                const visibleRanges = context.editor.visibleRanges;
                 if (visibleRanges.length === 0) {
                     return position;
                 }
@@ -361,7 +399,7 @@ export function buildMotions(): Motion[] {
                 const halfPage = Math.floor(visibleLines / 2);
 
                 // 新しい行位置を計算
-                const newLine = Math.min(position.line + halfPage, context.document.lineCount - 1);
+                const newLine = Math.min(position.line + halfPage, context.editor.document.lineCount - 1);
                 return new Position(newLine, position.character);
             },
         }),
@@ -372,8 +410,8 @@ export function buildMotions(): Motion[] {
         newMotion({
             keys: ['<Waltz>half-page-up'],
             compute: (context, position) => {
-                const editor = context.editor;
-                const visibleRanges = editor.visibleRanges;
+                if (!context.editor) return position;
+                const visibleRanges = context.editor.visibleRanges;
                 if (visibleRanges.length === 0) {
                     return position;
                 }

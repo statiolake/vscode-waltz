@@ -16,6 +16,8 @@ export function buildModeActions(): Action[] {
             keys: ['i'],
             modes: ['normal'],
             execute: async (context) => {
+                if (!context.editor) return;
+
                 enterMode(context.vimState, context.editor, 'insert');
             },
         }),
@@ -24,6 +26,8 @@ export function buildModeActions(): Action[] {
             keys: ['a'],
             modes: ['normal'],
             execute: async (context) => {
+                if (!context.editor) return;
+
                 enterMode(context.vimState, context.editor, 'insert');
             },
         }),
@@ -33,11 +37,14 @@ export function buildModeActions(): Action[] {
             keys: ['I'],
             modes: ['normal'],
             execute: async (context) => {
-                context.editor.selections = context.editor.selections.map((selection) => {
-                    const newPosition = findLineStartAfterIndent(context.document, selection.active);
+                if (!context.editor) return;
+
+                const editor = context.editor;
+                editor.selections = editor.selections.map((selection) => {
+                    const newPosition = findLineStartAfterIndent(editor.document, selection.active);
                     return new Selection(newPosition, newPosition);
                 });
-                enterMode(context.vimState, context.editor, 'insert');
+                enterMode(context.vimState, editor, 'insert');
             },
         }),
 
@@ -46,11 +53,14 @@ export function buildModeActions(): Action[] {
             keys: ['A'],
             modes: ['normal'],
             execute: async (context) => {
-                context.editor.selections = context.editor.selections.map((selection) => {
-                    const newPosition = findLineEnd(context.document, selection.active);
+                if (!context.editor) return;
+
+                const editor = context.editor;
+                editor.selections = editor.selections.map((selection) => {
+                    const newPosition = findLineEnd(editor.document, selection.active);
                     return new Selection(newPosition, newPosition);
                 });
-                enterMode(context.vimState, context.editor, 'insert');
+                enterMode(context.vimState, editor, 'insert');
             },
         }),
 
@@ -59,6 +69,8 @@ export function buildModeActions(): Action[] {
             keys: ['o'],
             modes: ['normal'],
             execute: async (context) => {
+                if (!context.editor) return;
+
                 await vscode.commands.executeCommand('editor.action.insertLineAfter');
                 enterMode(context.vimState, context.editor, 'insert');
             },
@@ -69,6 +81,8 @@ export function buildModeActions(): Action[] {
             keys: ['O'],
             modes: ['normal'],
             execute: async (context) => {
+                if (!context.editor) return;
+
                 await vscode.commands.executeCommand('editor.action.insertLineBefore');
                 enterMode(context.vimState, context.editor, 'insert');
             },
@@ -79,6 +93,8 @@ export function buildModeActions(): Action[] {
             keys: ['v'],
             modes: ['normal', 'visualLine'],
             execute: async (context) => {
+                if (!context.editor) return;
+
                 enterMode(context.vimState, context.editor, 'visual');
             },
         }),
@@ -88,6 +104,8 @@ export function buildModeActions(): Action[] {
             keys: ['V'],
             modes: ['normal', 'visual'],
             execute: async (context) => {
+                if (!context.editor) return;
+
                 enterMode(context.vimState, context.editor, 'visualLine');
             },
         }),

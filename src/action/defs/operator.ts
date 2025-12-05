@@ -1,7 +1,8 @@
 import * as vscode from 'vscode';
-import { Range, type TextDocument } from 'vscode';
+import { Range, type TextDocument, type TextEditor } from 'vscode';
 import type { Context } from '../../context';
 import { enterMode } from '../../modes';
+import type { Mode } from '../../modesTypes';
 import { setRegisterContents } from '../../register';
 import { newWholeLineTextObject } from '../../textObject/textObjectBuilder';
 import type { TextObject } from '../../textObject/textObjectTypes';
@@ -51,9 +52,11 @@ export function buildOperatorActions(
             textObjects: [newWholeLineTextObject({ keys: ['d'], includeLineBreak: true }), ...textObjects],
             execute: async (context, matches) => {
                 if (matches.length === 0) return;
+                const editor = context.editor;
+                if (!editor) return;
 
                 const contents = matches.map((match) => {
-                    let text = context.document.getText(match.range);
+                    let text = editor.document.getText(match.range);
                     const isLinewise = match.isLinewise ?? false;
 
                     // For linewise operations, strip leading/trailing newlines from register content
@@ -67,7 +70,7 @@ export function buildOperatorActions(
 
                 await setRegisterContents(context.vimState, contents);
 
-                await context.editor.edit((editBuilder) => {
+                await editor.edit((editBuilder) => {
                     for (const match of matches) {
                         editBuilder.delete(match.range);
                     }
@@ -78,6 +81,8 @@ export function buildOperatorActions(
             keys: ['D'],
             modes: ['normal'],
             execute: async (context) => {
+                if (!context.editor) return;
+
                 await delegateAction(actions, context, ['d', '$']);
             },
         }),
@@ -89,9 +94,11 @@ export function buildOperatorActions(
             textObjects: [newWholeLineTextObject({ keys: ['y'], includeLineBreak: true }), ...textObjects],
             execute: async (context, matches) => {
                 if (matches.length === 0) return;
+                const editor = context.editor;
+                if (!editor) return;
 
                 const contents = matches.map((match) => {
-                    let text = context.document.getText(match.range);
+                    let text = editor.document.getText(match.range);
                     const isLinewise = match.isLinewise ?? false;
 
                     // For linewise operations, strip leading/trailing newlines from register content
@@ -110,6 +117,8 @@ export function buildOperatorActions(
             keys: ['Y'],
             modes: ['normal'],
             execute: async (context) => {
+                if (!context.editor) return;
+
                 await delegateAction(actions, context, ['y', 'y']);
             },
         }),
@@ -121,9 +130,11 @@ export function buildOperatorActions(
             textObjects: [newWholeLineTextObject({ keys: ['c'], includeLineBreak: false }), ...textObjects],
             execute: async (context, matches) => {
                 if (matches.length === 0) return;
+                const editor = context.editor;
+                if (!editor) return;
 
                 const contents = matches.map((match) => {
-                    let text = context.document.getText(match.range);
+                    let text = editor.document.getText(match.range);
                     const isLinewise = match.isLinewise ?? false;
 
                     // For linewise operations, strip leading/trailing newlines from register content
@@ -155,6 +166,8 @@ export function buildOperatorActions(
             keys: ['C'],
             modes: ['normal'],
             execute: async (context) => {
+                if (!context.editor) return;
+
                 await delegateAction(actions, context, ['c', '$']);
             },
         }),
@@ -164,6 +177,8 @@ export function buildOperatorActions(
             keys: ['s'],
             modes: ['normal'],
             execute: async (context) => {
+                if (!context.editor) return;
+
                 await delegateAction(actions, context, ['c', 'l']);
             },
         }),
@@ -171,6 +186,8 @@ export function buildOperatorActions(
             keys: ['S'],
             modes: ['normal'],
             execute: async (context) => {
+                if (!context.editor) return;
+
                 await delegateAction(actions, context, ['c', 'c']);
             },
         }),
@@ -183,10 +200,13 @@ export function buildOperatorActions(
             keys: ['d'],
             modes: ['visual', 'visualLine'],
             execute: async (context) => {
-                const ranges = getAdjustedSelectionRangesIfVisualLine(context);
+                const editor = context.editor;
+                if (!editor) return;
+
+                const ranges = getAdjustedSelectionRangesIfVisualLine(editor, context.vimState.mode);
                 const isLinewise = context.vimState.mode === 'visualLine';
                 const contents = ranges.map((range) => {
-                    let text = context.document.getText(range);
+                    let text = editor.document.getText(range);
 
                     // For linewise operations, strip ONLY the final trailing newline from register content
                     // This preserves blank lines in the middle of the selection
@@ -212,10 +232,13 @@ export function buildOperatorActions(
             keys: ['y'],
             modes: ['visual', 'visualLine'],
             execute: async (context) => {
-                const ranges = getAdjustedSelectionRangesIfVisualLine(context);
+                const editor = context.editor;
+                if (!editor) return;
+
+                const ranges = getAdjustedSelectionRangesIfVisualLine(editor, context.vimState.mode);
                 const isLinewise = context.vimState.mode === 'visualLine';
                 const contents = ranges.map((range) => {
-                    let text = context.document.getText(range);
+                    let text = editor.document.getText(range);
 
                     // For linewise operations, strip ONLY the final trailing newline from register content
                     // This preserves blank lines in the middle of the selection
@@ -237,10 +260,13 @@ export function buildOperatorActions(
             keys: ['c'],
             modes: ['visual', 'visualLine'],
             execute: async (context) => {
-                const ranges = getAdjustedSelectionRangesIfVisualLine(context);
+                const editor = context.editor;
+                if (!editor) return;
+
+                const ranges = getAdjustedSelectionRangesIfVisualLine(editor, context.vimState.mode);
                 const isLinewise = context.vimState.mode === 'visualLine';
                 const contents = ranges.map((range) => {
-                    let text = context.document.getText(range);
+                    let text = editor.document.getText(range);
 
                     // For linewise operations, strip ONLY the final trailing newline from register content
                     // This preserves blank lines in the middle of the selection
@@ -265,6 +291,8 @@ export function buildOperatorActions(
             keys: ['s'],
             modes: ['visual', 'visualLine'],
             execute: async (context) => {
+                if (!context.editor) return;
+
                 await delegateAction(actions, context, ['c']);
             },
         }),
@@ -278,10 +306,10 @@ export const adjustRangeForVisualLine = (document: TextDocument, range: Range): 
     return new Range(range.start, findNextLineStart(document, range.end));
 };
 
-const getAdjustedSelectionRangesIfVisualLine = (context: Context) => {
-    return context.editor.selections.map((selection) => {
-        if (context.vimState.mode === 'visualLine') {
-            return adjustRangeForVisualLine(context.document, selection);
+const getAdjustedSelectionRangesIfVisualLine = (editor: TextEditor, mode: Mode) => {
+    return editor.selections.map((selection) => {
+        if (mode === 'visualLine') {
+            return adjustRangeForVisualLine(editor.document, selection);
         } else {
             return selection;
         }

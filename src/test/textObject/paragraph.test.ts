@@ -13,13 +13,13 @@ suite('Paragraph Text Objects (ip/ap)', () => {
 
             const textObjects = buildTextObjects([]);
             const ipTextObject = textObjects.find((to) => {
-                const result = to(createTestContext(editor, doc), ['i', 'p'], new Position(0, 0));
+                const result = to(createTestContext(editor), ['i', 'p'], new Position(0, 0));
                 return result.result === 'match' || result.result === 'needsMoreKey';
             });
 
             assert.ok(ipTextObject, 'Should find ip text object');
 
-            const context = createTestContext(editor, doc);
+            const context = createTestContext(editor);
 
             // Test cursor on second paragraph (line 3)
             const position = new Position(3, 5);
@@ -39,13 +39,13 @@ suite('Paragraph Text Objects (ip/ap)', () => {
 
             const textObjects = buildTextObjects([]);
             const ipTextObject = textObjects.find((to) => {
-                const result = to(createTestContext(editor, doc), ['i', 'p'], new Position(0, 0));
+                const result = to(createTestContext(editor), ['i', 'p'], new Position(0, 0));
                 return result.result === 'match' || result.result === 'needsMoreKey';
             });
 
             assert.ok(ipTextObject, 'Should find ip text object');
 
-            const context = createTestContext(editor, doc);
+            const context = createTestContext(editor);
             const position = new Position(0, 0);
             const result = ipTextObject(context, ['i', 'p'], position);
 
@@ -63,11 +63,11 @@ suite('Paragraph Text Objects (ip/ap)', () => {
 
             const textObjects = buildTextObjects([]);
             const ipTextObject = textObjects.find((to) => {
-                const result = to(createTestContext(editor, doc), ['i', 'p'], new Position(0, 0));
+                const result = to(createTestContext(editor), ['i', 'p'], new Position(0, 0));
                 return result.result === 'match' || result.result === 'needsMoreKey';
             });
 
-            const context = createTestContext(editor, doc);
+            const context = createTestContext(editor);
             const position = new Position(2, 5);
             assert.ok(ipTextObject, 'Should find ip text object');
 
@@ -87,11 +87,11 @@ suite('Paragraph Text Objects (ip/ap)', () => {
 
             const textObjects = buildTextObjects([]);
             const ipTextObject = textObjects.find((to) => {
-                const result = to(createTestContext(editor, doc), ['i', 'p'], new Position(0, 0));
+                const result = to(createTestContext(editor), ['i', 'p'], new Position(0, 0));
                 return result.result === 'match' || result.result === 'needsMoreKey';
             });
 
-            const context = createTestContext(editor, doc);
+            const context = createTestContext(editor);
             const position = new Position(2, 3);
             assert.ok(ipTextObject, 'Should find ip text object');
 
@@ -111,11 +111,11 @@ suite('Paragraph Text Objects (ip/ap)', () => {
 
             const textObjects = buildTextObjects([]);
             const ipTextObject = textObjects.find((to) => {
-                const result = to(createTestContext(editor, doc), ['i', 'p'], new Position(0, 0));
+                const result = to(createTestContext(editor), ['i', 'p'], new Position(0, 0));
                 return result.result === 'match' || result.result === 'needsMoreKey';
             });
 
-            const context = createTestContext(editor, doc);
+            const context = createTestContext(editor);
             const position = new Position(1, 3);
             assert.ok(ipTextObject, 'Should find ip text object');
 
@@ -135,11 +135,11 @@ suite('Paragraph Text Objects (ip/ap)', () => {
 
             const textObjects = buildTextObjects([]);
             const ipTextObject = textObjects.find((to) => {
-                const result = to(createTestContext(editor, doc), ['i', 'p'], new Position(0, 0));
+                const result = to(createTestContext(editor), ['i', 'p'], new Position(0, 0));
                 return result.result === 'match' || result.result === 'needsMoreKey';
             });
 
-            const context = createTestContext(editor, doc);
+            const context = createTestContext(editor);
             // Cursor on blank line (line 1)
             const position = new Position(1, 0);
             assert.ok(ipTextObject, 'Should find ip text object');
@@ -163,13 +163,13 @@ suite('Paragraph Text Objects (ip/ap)', () => {
 
             const textObjects = buildTextObjects([]);
             const apTextObject = textObjects.find((to) => {
-                const result = to(createTestContext(editor, doc), ['a', 'p'], new Position(0, 0));
+                const result = to(createTestContext(editor), ['a', 'p'], new Position(0, 0));
                 return result.result === 'match' || result.result === 'needsMoreKey';
             });
 
             assert.ok(apTextObject, 'Should find ap text object');
 
-            const context = createTestContext(editor, doc);
+            const context = createTestContext(editor);
 
             // Test cursor on second paragraph (line 3)
             const position = new Position(3, 5);
@@ -194,11 +194,11 @@ suite('Paragraph Text Objects (ip/ap)', () => {
 
             const textObjects = buildTextObjects([]);
             const apTextObject = textObjects.find((to) => {
-                const result = to(createTestContext(editor, doc), ['a', 'p'], new Position(0, 0));
+                const result = to(createTestContext(editor), ['a', 'p'], new Position(0, 0));
                 return result.result === 'match' || result.result === 'needsMoreKey';
             });
 
-            const context = createTestContext(editor, doc);
+            const context = createTestContext(editor);
             const position = new Position(0, 0);
             assert.ok(apTextObject, 'Should find ap text object');
 
@@ -222,11 +222,11 @@ suite('Paragraph Text Objects (ip/ap)', () => {
 
             const textObjects = buildTextObjects([]);
             const apTextObject = textObjects.find((to) => {
-                const result = to(createTestContext(editor, doc), ['a', 'p'], new Position(0, 0));
+                const result = to(createTestContext(editor), ['a', 'p'], new Position(0, 0));
                 return result.result === 'match' || result.result === 'needsMoreKey';
             });
 
-            const context = createTestContext(editor, doc);
+            const context = createTestContext(editor);
             const position = new Position(2, 5);
             assert.ok(apTextObject, 'Should find ap text object');
 
@@ -247,11 +247,11 @@ suite('Paragraph Text Objects (ip/ap)', () => {
 
             const textObjects = buildTextObjects([]);
             const apTextObject = textObjects.find((to) => {
-                const result = to(createTestContext(editor, doc), ['a', 'p'], new Position(0, 0));
+                const result = to(createTestContext(editor), ['a', 'p'], new Position(0, 0));
                 return result.result === 'match' || result.result === 'needsMoreKey';
             });
 
-            const context = createTestContext(editor, doc);
+            const context = createTestContext(editor);
             const position = new Position(0, 0);
             assert.ok(apTextObject, 'Should find ap text object');
 
@@ -371,11 +371,11 @@ suite('Paragraph Text Objects (ip/ap)', () => {
 
             const textObjects = buildTextObjects([]);
             const ipTextObject = textObjects.find((to) => {
-                const result = to(createTestContext(editor, doc), ['i', 'p'], new Position(0, 0));
+                const result = to(createTestContext(editor), ['i', 'p'], new Position(0, 0));
                 return result.result === 'match' || result.result === 'needsMoreKey';
             });
 
-            const context = createTestContext(editor, doc);
+            const context = createTestContext(editor);
             const position = new Position(0, 0);
             assert.ok(ipTextObject, 'Should find ip text object');
 
@@ -395,11 +395,11 @@ suite('Paragraph Text Objects (ip/ap)', () => {
 
             const textObjects = buildTextObjects([]);
             const ipTextObject = textObjects.find((to) => {
-                const result = to(createTestContext(editor, doc), ['i', 'p'], new Position(0, 0));
+                const result = to(createTestContext(editor), ['i', 'p'], new Position(0, 0));
                 return result.result === 'match' || result.result === 'needsMoreKey';
             });
 
-            const context = createTestContext(editor, doc);
+            const context = createTestContext(editor);
             const position = new Position(1, 0);
             assert.ok(ipTextObject, 'Should find ip text object');
 
@@ -419,11 +419,11 @@ suite('Paragraph Text Objects (ip/ap)', () => {
 
             const textObjects = buildTextObjects([]);
             const ipTextObject = textObjects.find((to) => {
-                const result = to(createTestContext(editor, doc), ['i', 'p'], new Position(0, 0));
+                const result = to(createTestContext(editor), ['i', 'p'], new Position(0, 0));
                 return result.result === 'match' || result.result === 'needsMoreKey';
             });
 
-            const context = createTestContext(editor, doc);
+            const context = createTestContext(editor);
             const position = new Position(0, 5);
             assert.ok(ipTextObject, 'Should find ip text object');
 

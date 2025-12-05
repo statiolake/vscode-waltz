@@ -80,6 +80,8 @@ export function buildMulticursorActions(): Action[] {
             keys: ['I'],
             modes: ['visual'],
             execute: async (context) => {
+                if (!context.editor) return;
+
                 // 各選択範囲の先頭にカーソルを配置
                 context.editor.selections = context.editor.selections.map(
                     (selection) => new Selection(selection.start, selection.start),
@@ -94,6 +96,8 @@ export function buildMulticursorActions(): Action[] {
             keys: ['A'],
             modes: ['visual'],
             execute: async (context) => {
+                if (!context.editor) return;
+
                 // 各選択範囲の末尾にカーソルを配置
                 context.editor.selections = context.editor.selections.map(
                     (selection) => new Selection(selection.end, selection.end),
@@ -108,19 +112,22 @@ export function buildMulticursorActions(): Action[] {
             keys: ['I'],
             modes: ['visualLine'],
             execute: async (context) => {
+                if (!context.editor) return;
+
+                const editor = context.editor;
                 // Visual Line の各行の先頭にカーソルを配置
-                context.editor.selections = context.editor.selections.flatMap((selection) => {
+                editor.selections = editor.selections.flatMap((selection) => {
                     const startLine = Math.min(selection.anchor.line, selection.active.line);
                     const endLine = Math.max(selection.anchor.line, selection.active.line);
                     const cursors: Selection[] = [];
                     for (let line = startLine; line <= endLine; line++) {
-                        const lineStart = findLineStartAfterIndent(context.document, new vscode.Position(line, 0));
+                        const lineStart = findLineStartAfterIndent(editor.document, new vscode.Position(line, 0));
                         cursors.push(new Selection(lineStart, lineStart));
                     }
                     return cursors;
                 });
                 // Insert モードに入る
-                await enterMode(context.vimState, context.editor, 'insert');
+                await enterMode(context.vimState, editor, 'insert');
             },
         }),
 
@@ -129,6 +136,8 @@ export function buildMulticursorActions(): Action[] {
             keys: ['A'],
             modes: ['visualLine'],
             execute: async (context) => {
+                if (!context.editor) return;
+
                 const doc = context.editor.document;
                 // Visual Line の各行の末尾にカーソルを配置
                 context.editor.selections = context.editor.selections.flatMap((selection) => {
@@ -151,6 +160,8 @@ export function buildMulticursorActions(): Action[] {
             keys: ['s'],
             modes: ['visual', 'visualLine'],
             execute: async (context) => {
+                if (!context.editor) return;
+
                 const pattern = await vscode.window.showInputBox({
                     prompt: 'Enter regex pattern to split selections',
                     placeHolder: 'e.g., ", " or "\\s+" or "[,;]"',
@@ -197,6 +208,8 @@ export function buildMulticursorActions(): Action[] {
             keys: ['m'],
             modes: ['visual', 'visualLine'],
             execute: async (context) => {
+                if (!context.editor) return;
+
                 const pattern = await vscode.window.showInputBox({
                     prompt: 'Enter regex pattern to match',
                     placeHolder: 'e.g., "\\w+" or "[a-z]+" or "\\d+"',

@@ -73,6 +73,8 @@ export function motionToAction(motion: Motion): Action {
     const modes = ['normal'];
 
     return async (context: Context, keys: string[]): Promise<ActionResult> => {
+        if (!context.editor) return 'noMatch';
+
         // モードチェック
         if (!modes.includes(context.vimState.mode)) return 'noMatch';
 
@@ -90,8 +92,9 @@ export function motionToAction(motion: Motion): Action {
         if (firstResult.result !== 'match') return firstResult.result;
 
         // すべてのカーソルを新しい位置に移動
-        context.editor.selections = results.map((result, index) => {
-            const currentSelection = context.editor.selections[index];
+        const editor = context.editor;
+        editor.selections = results.map((result, index) => {
+            const currentSelection = editor.selections[index];
 
             if (result.result !== 'match') return currentSelection;
 
@@ -106,6 +109,8 @@ export function motionToAction(motion: Motion): Action {
 export function textObjectToVisualAction(textObject: TextObject): Action {
     const modes = ['visual', 'visualLine'];
     return async (context: Context, keys: string[]): Promise<ActionResult> => {
+        if (!context.editor) return 'noMatch';
+
         // モードチェック
         if (!modes.includes(context.vimState.mode)) return 'noMatch';
 
@@ -120,8 +125,9 @@ export function textObjectToVisualAction(textObject: TextObject): Action {
 
         // 基本的には、anchor は動かさず active をセットする。ただし、anchorが遡るような range が帰ってきた場合
         // は、anchor も調整する。
-        context.editor.selections = results.map((result, index) => {
-            const currentSelection = context.editor.selections[index];
+        const editor = context.editor;
+        editor.selections = results.map((result, index) => {
+            const currentSelection = editor.selections[index];
 
             // どちらが anchor になるのかは少し考える必要がある。 w, b などの通常のモーションであれば、片方は今のカーソ
             // ル位置と一致しているはず。そちらを anchor とする。iw など両方が変化してしまう場合は、anchor == start,
@@ -169,6 +175,8 @@ export function newOperatorAction(config: {
     const operatorParser = keysParserPrefix(config.operatorKeys);
 
     return async (context: Context, keys: string[]): Promise<ActionResult> => {
+        if (!context.editor) return 'noMatch';
+
         // モードチェック
         if (!config.modes.includes(context.vimState.mode)) {
             return 'noMatch';
@@ -204,9 +212,10 @@ export function newOperatorAction(config: {
         }
 
         // 各TextObjectを試す
+        const editor = context.editor;
         for (const textObject of config.textObjects) {
             // 各カーソル位置でTextObjectを実行
-            const results = context.editor.selections.map((selection) => {
+            const results = editor.selections.map((selection) => {
                 return textObject(context, remainingKeys, selection.active);
             });
 
@@ -228,7 +237,7 @@ export function newOperatorAction(config: {
                     console.log(`TextObject result for cursor ${index}:`, result.data.range);
                     return result.data;
                 }
-                return { range: context.editor.selections[index] };
+                return { range: editor.selections[index] };
             });
 
             // await で実行

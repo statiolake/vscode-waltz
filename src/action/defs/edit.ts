@@ -24,10 +24,13 @@ export function buildEditActions(): Action[] {
             keys: ['x'],
             modes: ['normal'],
             execute: async (context) => {
-                const contents = context.editor.selections.map((selection) => {
-                    const newPosition = findAdjacentPosition(context.document, 'after', selection.active);
+                if (!context.editor) return;
+
+                const editor = context.editor;
+                const contents = editor.selections.map((selection) => {
+                    const newPosition = findAdjacentPosition(editor.document, 'after', selection.active);
                     return {
-                        text: context.document.getText(new Range(selection.active, newPosition)),
+                        text: editor.document.getText(new Range(selection.active, newPosition)),
                         isLinewise: false,
                     };
                 });
@@ -41,6 +44,8 @@ export function buildEditActions(): Action[] {
             keys: ['p'],
             modes: ['normal', 'visual', 'visualLine'],
             execute: async (context) => {
+                if (!context.editor) return;
+
                 const editor = context.editor;
 
                 // レジスタの内容を取得する（クリップボード変更検出を含む）
@@ -62,13 +67,13 @@ export function buildEditActions(): Action[] {
 
                         if (selection.isEmpty && content.isLinewise) {
                             // linewise: 次の行に挿入
-                            const line = context.document.lineAt(selection.active.line);
+                            const line = editor.document.lineAt(selection.active.line);
                             const insertPos = line.range.end;
                             // For linewise paste, we prepend a newline and keep the register content as-is
                             // This preserves blank lines in the pasted content
                             const insertText = `\n${content.text}`;
                             replaces.push({
-                                range: OffsetRange.fromRange(context.document, new Range(insertPos, insertPos)),
+                                range: OffsetRange.fromRange(editor.document, new Range(insertPos, insertPos)),
                                 newText: insertText,
                             });
                             editBuilder.insert(insertPos, insertText);
@@ -76,11 +81,11 @@ export function buildEditActions(): Action[] {
                             // 通常: 選択範囲位置に挿入
                             const range =
                                 context.vimState.mode === 'visualLine'
-                                    ? adjustRangeForVisualLine(context.document, selection)
+                                    ? adjustRangeForVisualLine(editor.document, selection)
                                     : selection;
                             editBuilder.replace(range, content.text);
                             replaces.push({
-                                range: OffsetRange.fromRange(context.document, selection),
+                                range: OffsetRange.fromRange(editor.document, selection),
                                 newText: content.text,
                             });
                         }
@@ -110,6 +115,8 @@ export function buildEditActions(): Action[] {
             keys: ['P'],
             modes: ['normal', 'visual', 'visualLine'],
             execute: async (context) => {
+                if (!context.editor) return;
+
                 const editor = context.editor;
 
                 // レジスタの内容を取得する（クリップボード変更検出を含む）
@@ -131,13 +138,13 @@ export function buildEditActions(): Action[] {
 
                         if (selection.isEmpty && content.isLinewise) {
                             // linewise: 前の行に挿入
-                            const line = context.document.lineAt(selection.active.line);
+                            const line = editor.document.lineAt(selection.active.line);
                             const insertPos = line.range.start;
                             // For linewise paste, we append a newline and keep the register content as-is
                             // This preserves blank lines in the pasted content
                             const insertText = `${content.text}\n`;
                             replaces.push({
-                                range: OffsetRange.fromRange(context.document, new Range(insertPos, insertPos)),
+                                range: OffsetRange.fromRange(editor.document, new Range(insertPos, insertPos)),
                                 newText: insertText,
                             });
                             editBuilder.insert(insertPos, insertText);
@@ -145,11 +152,11 @@ export function buildEditActions(): Action[] {
                             // 通常: 選択範囲位置に挿入
                             const range =
                                 context.vimState.mode === 'visualLine'
-                                    ? adjustRangeForVisualLine(context.document, selection)
+                                    ? adjustRangeForVisualLine(editor.document, selection)
                                     : selection;
                             editBuilder.replace(range, content.text);
                             replaces.push({
-                                range: OffsetRange.fromRange(context.document, selection),
+                                range: OffsetRange.fromRange(editor.document, selection),
                                 newText: content.text,
                             });
                         }
@@ -183,8 +190,10 @@ export function buildEditActions(): Action[] {
             keys: ['J'],
             modes: ['normal', 'visual', 'visualLine'],
             execute: async (context) => {
+                if (!context.editor) return;
+
                 const editor = context.editor;
-                const document = context.document;
+                const document = editor.document;
 
                 // コメント文字を取得
                 const lineComment = context.commentConfigProvider.getConfig(document.languageId)?.lineComment || null;
@@ -252,6 +261,8 @@ export function buildEditActions(): Action[] {
             partial: /^r(.{0,1})$/,
             modes: ['normal', 'visual', 'visualLine'],
             execute: async (context, variables) => {
+                if (!context.editor) return;
+
                 const replaceChar = variables.replaceTo;
                 if (!replaceChar || replaceChar.length !== 1) return;
                 const editor = context.editor;
@@ -277,15 +288,17 @@ export function buildEditActions(): Action[] {
             keys: ['<Waltz>delete-word-left'],
             modes: ['insert'],
             execute: async (context) => {
+                if (!context.editor) return;
+
                 const editor = context.editor;
                 await editor.edit((editBuilder) => {
                     for (const selection of editor.selections) {
                         if (selection.isEmpty) {
                             const position = selection.active;
                             // b motion と同じ要領で前の単語の開始位置を探す
-                            const nextPos = findAdjacentPosition(context.document, 'before', position);
+                            const nextPos = findAdjacentPosition(editor.document, 'before', position);
                             const wordStart = findWordBoundary(
-                                context.document,
+                                editor.document,
                                 'further',
                                 'before',
                                 nextPos,

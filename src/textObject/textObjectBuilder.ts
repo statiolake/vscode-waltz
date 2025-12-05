@@ -9,7 +9,7 @@ import type { TextObject, TextObjectResult } from './textObjectTypes';
  */
 export function newTextObject(config: {
     keys: string[];
-    compute: (context: Context, position: Position) => Range;
+    compute: (context: Context, position: Position) => Range | 'noMatch';
 }): TextObject {
     const keysParser = keysParserPrefix(config.keys);
 
@@ -25,6 +25,9 @@ export function newTextObject(config: {
         }
 
         const range = config.compute(context, position);
+        if (range === 'noMatch') {
+            return { result: 'noMatch' };
+        }
         return { result: 'match', data: { range }, remainingKeys: parseResult.remainingKeys };
     };
 }
@@ -35,7 +38,7 @@ export function newTextObject(config: {
 export function newRegexTextObject(config: {
     pattern: RegExp;
     partial: RegExp;
-    compute: (context: Context, position: Position, variables: Record<string, string>) => Range;
+    compute: (context: Context, position: Position, variables: Record<string, string>) => Range | 'noMatch';
 }): TextObject {
     const keysParser = keysParserRegex(config.pattern, config.partial);
 
@@ -51,6 +54,9 @@ export function newRegexTextObject(config: {
         }
 
         const range = config.compute(context, position, parseResult.variables);
+        if (range === 'noMatch') {
+            return { result: 'noMatch' };
+        }
         return { result: 'match', data: { range }, remainingKeys: parseResult.remainingKeys };
     };
 }
@@ -59,6 +65,7 @@ export function newWholeLineTextObject(config: { keys: string[]; includeLineBrea
     const baseTextObject = newTextObject({
         keys: config.keys,
         compute: (context: Context, position: Position) => {
+            if (!context.editor) return 'noMatch';
             const document = context.editor.document;
             const line = document.lineAt(position.line);
 
