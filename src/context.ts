@@ -7,7 +7,7 @@ import type { VimState } from './vimState';
  * Motion, TextObject, Actionすべてで使用される
  */
 export type Context = {
-    readonly editor: TextEditor | undefined;
+    readonly editor: TextEditor;
     readonly vimState: VimState;
     readonly commentConfigProvider: CommentConfigProvider;
 };

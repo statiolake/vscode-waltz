@@ -53,8 +53,6 @@ export function buildOperatorActions(
             execute: async (context, matches) => {
                 if (matches.length === 0) return;
                 const editor = context.editor;
-                if (!editor) return;
-
                 const contents = matches.map((match) => {
                     let text = editor.document.getText(match.range);
                     const isLinewise = match.isLinewise ?? false;
@@ -81,8 +79,6 @@ export function buildOperatorActions(
             keys: ['D'],
             modes: ['normal'],
             execute: async (context) => {
-                if (!context.editor) return;
-
                 await delegateAction(actions, context, ['d', '$']);
             },
         }),
@@ -95,8 +91,6 @@ export function buildOperatorActions(
             execute: async (context, matches) => {
                 if (matches.length === 0) return;
                 const editor = context.editor;
-                if (!editor) return;
-
                 const contents = matches.map((match) => {
                     let text = editor.document.getText(match.range);
                     const isLinewise = match.isLinewise ?? false;
@@ -117,8 +111,6 @@ export function buildOperatorActions(
             keys: ['Y'],
             modes: ['normal'],
             execute: async (context) => {
-                if (!context.editor) return;
-
                 await delegateAction(actions, context, ['y', 'y']);
             },
         }),
@@ -131,8 +123,6 @@ export function buildOperatorActions(
             execute: async (context, matches) => {
                 if (matches.length === 0) return;
                 const editor = context.editor;
-                if (!editor) return;
-
                 const contents = matches.map((match) => {
                     let text = editor.document.getText(match.range);
                     const isLinewise = match.isLinewise ?? false;
@@ -166,8 +156,6 @@ export function buildOperatorActions(
             keys: ['C'],
             modes: ['normal'],
             execute: async (context) => {
-                if (!context.editor) return;
-
                 await delegateAction(actions, context, ['c', '$']);
             },
         }),
@@ -177,8 +165,6 @@ export function buildOperatorActions(
             keys: ['s'],
             modes: ['normal'],
             execute: async (context) => {
-                if (!context.editor) return;
-
                 await delegateAction(actions, context, ['c', 'l']);
             },
         }),
@@ -186,8 +172,6 @@ export function buildOperatorActions(
             keys: ['S'],
             modes: ['normal'],
             execute: async (context) => {
-                if (!context.editor) return;
-
                 await delegateAction(actions, context, ['c', 'c']);
             },
         }),
@@ -201,8 +185,6 @@ export function buildOperatorActions(
             modes: ['visual', 'visualLine'],
             execute: async (context) => {
                 const editor = context.editor;
-                if (!editor) return;
-
                 const ranges = getAdjustedSelectionRangesIfVisualLine(editor, context.vimState.mode);
                 const isLinewise = context.vimState.mode === 'visualLine';
                 const contents = ranges.map((range) => {
@@ -233,8 +215,6 @@ export function buildOperatorActions(
             modes: ['visual', 'visualLine'],
             execute: async (context) => {
                 const editor = context.editor;
-                if (!editor) return;
-
                 const ranges = getAdjustedSelectionRangesIfVisualLine(editor, context.vimState.mode);
                 const isLinewise = context.vimState.mode === 'visualLine';
                 const contents = ranges.map((range) => {
@@ -261,8 +241,6 @@ export function buildOperatorActions(
             modes: ['visual', 'visualLine'],
             execute: async (context) => {
                 const editor = context.editor;
-                if (!editor) return;
-
                 const ranges = getAdjustedSelectionRangesIfVisualLine(editor, context.vimState.mode);
                 const isLinewise = context.vimState.mode === 'visualLine';
                 const contents = ranges.map((range) => {
@@ -291,8 +269,6 @@ export function buildOperatorActions(
             keys: ['s'],
             modes: ['visual', 'visualLine'],
             execute: async (context) => {
-                if (!context.editor) return;
-
                 await delegateAction(actions, context, ['c']);
             },
         }),

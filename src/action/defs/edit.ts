@@ -24,8 +24,6 @@ export function buildEditActions(): Action[] {
             keys: ['x'],
             modes: ['normal'],
             execute: async (context) => {
-                if (!context.editor) return;
-
                 const editor = context.editor;
                 const contents = editor.selections.map((selection) => {
                     const newPosition = findAdjacentPosition(editor.document, 'after', selection.active);
@@ -44,8 +42,6 @@ export function buildEditActions(): Action[] {
             keys: ['p'],
             modes: ['normal', 'visual', 'visualLine'],
             execute: async (context) => {
-                if (!context.editor) return;
-
                 const editor = context.editor;
 
                 // レジスタの内容を取得する（クリップボード変更検出を含む）
@@ -115,8 +111,6 @@ export function buildEditActions(): Action[] {
             keys: ['P'],
             modes: ['normal', 'visual', 'visualLine'],
             execute: async (context) => {
-                if (!context.editor) return;
-
                 const editor = context.editor;
 
                 // レジスタの内容を取得する（クリップボード変更検出を含む）
@@ -190,8 +184,6 @@ export function buildEditActions(): Action[] {
             keys: ['J'],
             modes: ['normal', 'visual', 'visualLine'],
             execute: async (context) => {
-                if (!context.editor) return;
-
                 const editor = context.editor;
                 const document = editor.document;
 
@@ -261,8 +253,6 @@ export function buildEditActions(): Action[] {
             partial: /^r(.{0,1})$/,
             modes: ['normal', 'visual', 'visualLine'],
             execute: async (context, variables) => {
-                if (!context.editor) return;
-
                 const replaceChar = variables.replaceTo;
                 if (!replaceChar || replaceChar.length !== 1) return;
                 const editor = context.editor;
@@ -288,8 +278,6 @@ export function buildEditActions(): Action[] {
             keys: ['<Waltz>delete-word-left'],
             modes: ['insert'],
             execute: async (context) => {
-                if (!context.editor) return;
-
                 const editor = context.editor;
                 await editor.edit((editBuilder) => {
                     for (const selection of editor.selections) {

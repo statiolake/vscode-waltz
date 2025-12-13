@@ -36,8 +36,6 @@ const surroundPairs: Record<string, { open: string; close: string }> = {
  */
 export function createYsSurroundAction(textObjects: TextObject[]): Action {
     return async (context: Context, keys: string[]): Promise<ActionResult> => {
-        if (!context.editor) return 'noMatch';
-
         // Normal モードのチェック
         if (context.vimState.mode !== 'normal') {
             return 'noMatch';
@@ -120,8 +118,6 @@ export const dsSurroundAction = newRegexAction({
     partial: /^ds(.{0,1})$/,
     modes: ['normal'],
     execute: async (context, variables) => {
-        if (!context.editor) return;
-
         const char = variables.char;
         if (!char) return;
 
@@ -162,8 +158,6 @@ export const csSurroundAction = newRegexAction({
     partial: /^cs(.{0,2})$/,
     modes: ['normal'],
     execute: async (context, variables) => {
-        if (!context.editor) return;
-
         const oldChar = variables.old;
         const newChar = variables.new;
         if (!oldChar || !newChar) return;
@@ -205,8 +199,6 @@ export const visualSurroundAction = newRegexAction({
     partial: /^S(.{0,1})$/,
     modes: ['visual', 'visualLine'],
     execute: async (context, variables) => {
-        if (!context.editor) return;
-
         const char = variables.char;
         if (!char) return;
 

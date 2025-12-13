@@ -23,10 +23,6 @@ export function newMotion(config: {
             return { result: 'needsMoreKey' };
         }
 
-        if (!context.editor) {
-            return { result: 'noMatch' };
-        }
-
         const requestedPosition = config.compute(context, position);
         const newPosition = context.editor.document.validatePosition(requestedPosition);
         if (newPosition.character !== requestedPosition.character) {
@@ -57,10 +53,6 @@ export function newRegexMotion(config: {
 
         if (parseResult.result === 'needsMoreKey') {
             return { result: 'needsMoreKey' };
-        }
-
-        if (!context.editor) {
-            return { result: 'noMatch' };
         }
 
         const newPosition = config.compute(context, position, parseResult.variables);

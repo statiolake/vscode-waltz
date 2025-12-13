@@ -62,9 +62,7 @@ async function onDidChangeTextEditorSelection(vimState: VimState, e: TextEditorS
     }
 }
 
-async function onDidChangeActiveTextEditor(vimState: VimState, editor: TextEditor | undefined): Promise<void> {
-    if (!editor) return;
-
+async function onDidChangeActiveTextEditor(vimState: VimState, editor: TextEditor): Promise<void> {
     if (editor.selections.every((selection) => selection.isEmpty)) {
         await enterMode(vimState, editor, 'normal');
     } else {
@@ -112,12 +110,21 @@ export async function activate(context: ExtensionContext): Promise<{ getVimState
 
     context.subscriptions.push(
         ...setupTypeHandler(vimState),
-        vscode.window.onDidChangeActiveTextEditor((editor) => onDidChangeActiveTextEditor(vimState, editor)),
+        vscode.window.onDidChangeActiveTextEditor((editor) => {
+            if (editor) {
+                onDidChangeActiveTextEditor(vimState, editor);
+            }
+        }),
         vscode.window.onDidChangeTextEditorSelection((e) => onDidChangeTextEditorSelection(vimState, e)),
         vscode.workspace.onDidChangeConfiguration((e) => onDidChangeConfiguration(vimState, e)),
         // 保存する前にはノーマルモードに戻る - 本当は別に保存に限る必要はないが、「保存」という操作がある一定の処理の完
         // 了を意味するため。
-        vscode.workspace.onWillSaveTextDocument(() => enterMode(vimState, vscode.window.activeTextEditor, 'normal')),
+        vscode.workspace.onWillSaveTextDocument(() => {
+            const editor = vscode.window.activeTextEditor;
+            if (editor) {
+                enterMode(vimState, editor, 'normal');
+            }
+        }),
         vscode.workspace.onDidChangeTextDocument((e) => {
             // ドキュメントが Undo, Redo によって変更された場合、ノーマルモードへ戻る
             if (
@@ -126,7 +133,10 @@ export async function activate(context: ExtensionContext): Promise<{ getVimState
             ) {
                 return;
             }
-            enterMode(vimState, vscode.window.activeTextEditor, 'normal');
+            const editor = vscode.window.activeTextEditor;
+            if (editor) {
+                enterMode(vimState, editor, 'normal');
+            }
         }),
         vscode.commands.registerCommand('waltz.escapeKey', async () => {
             await vscode.commands.executeCommand('hideSuggestWidget');
@@ -177,10 +187,10 @@ export async function activate(context: ExtensionContext): Promise<{ getVimState
         }),
     );
 
-    await enterMode(vimState, vscode.window.activeTextEditor, 'normal');
-
-    if (vscode.window.activeTextEditor) {
-        await onDidChangeActiveTextEditor(vimState, vscode.window.activeTextEditor);
+    const activeEditor = vscode.window.activeTextEditor;
+    if (activeEditor) {
+        await enterMode(vimState, activeEditor, 'normal');
+        await onDidChangeActiveTextEditor(vimState, activeEditor);
     }
 
     // Return API for testing

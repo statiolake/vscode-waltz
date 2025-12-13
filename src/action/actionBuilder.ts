@@ -73,8 +73,6 @@ export function motionToAction(motion: Motion): Action {
     const modes = ['normal'];
 
     return async (context: Context, keys: string[]): Promise<ActionResult> => {
-        if (!context.editor) return 'noMatch';
-
         // モードチェック
         if (!modes.includes(context.vimState.mode)) return 'noMatch';
 
@@ -109,8 +107,6 @@ export function motionToAction(motion: Motion): Action {
 export function textObjectToVisualAction(textObject: TextObject): Action {
     const modes = ['visual', 'visualLine'];
     return async (context: Context, keys: string[]): Promise<ActionResult> => {
-        if (!context.editor) return 'noMatch';
-
         // モードチェック
         if (!modes.includes(context.vimState.mode)) return 'noMatch';
 
@@ -175,8 +171,6 @@ export function newOperatorAction(config: {
     const operatorParser = keysParserPrefix(config.operatorKeys);
 
     return async (context: Context, keys: string[]): Promise<ActionResult> => {
-        if (!context.editor) return 'noMatch';
-
         // モードチェック
         if (!config.modes.includes(context.vimState.mode)) {
             return 'noMatch';

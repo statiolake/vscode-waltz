@@ -58,7 +58,6 @@ export function buildMotions(): Motion[] {
         newMotion({
             keys: ['l'],
             compute: (context, position) => {
-                if (!context.editor) return position;
                 return positionRightNormal(context.editor.document, position);
             },
         }),
@@ -68,7 +67,6 @@ export function buildMotions(): Motion[] {
         newMotion({
             keys: ['j'],
             compute: (context, position) => {
-                if (!context.editor) return position;
                 if (position.line + 1 < context.editor.document.lineCount) {
                     return new Position(position.line + 1, context.vimState.keptColumn ?? position.character);
                 }
@@ -94,7 +92,6 @@ export function buildMotions(): Motion[] {
         newMotion({
             keys: ['w'],
             compute: (context, position) => {
-                if (!context.editor) return position;
                 const document = context.editor.document;
                 const nextPos = findAdjacentPosition(document, 'after', position);
                 const result = findWordBoundary(document, 'nearer', 'after', nextPos, isCharacterTypeBoundary);
@@ -107,7 +104,6 @@ export function buildMotions(): Motion[] {
         newMotion({
             keys: ['W'],
             compute: (context, position) => {
-                if (!context.editor) return position;
                 const document = context.editor.document;
                 const nextPos = findAdjacentPosition(document, 'after', position);
                 const result = findWordBoundary(document, 'nearer', 'after', nextPos, isWhitespaceBoundary);
@@ -120,7 +116,6 @@ export function buildMotions(): Motion[] {
         newMotion({
             keys: ['b'],
             compute: (context, position) => {
-                if (!context.editor) return position;
                 const document = context.editor.document;
                 const nextPos = findAdjacentPosition(document, 'before', position);
                 const result = findWordBoundary(document, 'further', 'before', nextPos, isCharacterTypeBoundary);
@@ -133,7 +128,6 @@ export function buildMotions(): Motion[] {
         newMotion({
             keys: ['B'],
             compute: (context, position) => {
-                if (!context.editor) return position;
                 const document = context.editor.document;
                 const nextPos = findAdjacentPosition(document, 'before', position);
                 const result = findWordBoundary(document, 'further', 'before', nextPos, isWhitespaceBoundary);
@@ -146,7 +140,6 @@ export function buildMotions(): Motion[] {
         newMotion({
             keys: ['e'],
             compute: (context, position) => {
-                if (!context.editor) return position;
                 const document = context.editor.document;
                 const nextPos = findAdjacentPosition(document, 'after', position);
                 const result = findWordBoundary(document, 'further', 'after', nextPos, isCharacterTypeBoundary);
@@ -160,7 +153,6 @@ export function buildMotions(): Motion[] {
         newMotion({
             keys: ['E'],
             compute: (context, position) => {
-                if (!context.editor) return position;
                 const document = context.editor.document;
                 const nextPos = findAdjacentPosition(document, 'after', position);
                 const result = findWordBoundary(document, 'further', 'after', nextPos, isWhitespaceBoundary);
@@ -174,7 +166,6 @@ export function buildMotions(): Motion[] {
         newMotion({
             keys: ['g', 'e'],
             compute: (context, position) => {
-                if (!context.editor) return position;
                 const document = context.editor.document;
                 const nextPos = findAdjacentPosition(document, 'before', position);
                 const result = findWordBoundary(document, 'nearer', 'before', nextPos, isCharacterTypeBoundary);
@@ -188,7 +179,6 @@ export function buildMotions(): Motion[] {
         newMotion({
             keys: ['g', 'E'],
             compute: (context, position) => {
-                if (!context.editor) return position;
                 const document = context.editor.document;
                 const nextPos = findAdjacentPosition(document, 'before', position);
                 const result = findWordBoundary(document, 'nearer', 'before', nextPos, isWhitespaceBoundary);
@@ -202,7 +192,6 @@ export function buildMotions(): Motion[] {
         newMotion({
             keys: ['g', 'g'],
             compute: (context, _position) => {
-                if (!context.editor) return _position;
                 return findDocumentStart(context.editor.document);
             },
         }),
@@ -212,7 +201,6 @@ export function buildMotions(): Motion[] {
         newMotion({
             keys: ['G'],
             compute: (context, _position) => {
-                if (!context.editor) return _position;
                 return findDocumentEnd(context.editor.document);
             },
         }),
@@ -222,7 +210,6 @@ export function buildMotions(): Motion[] {
         newMotion({
             keys: ['{'],
             compute: (context, position) => {
-                if (!context.editor) return position;
                 return findParagraphBoundary(context.editor.document, 'before', position);
             },
         }),
@@ -232,7 +219,6 @@ export function buildMotions(): Motion[] {
         newMotion({
             keys: ['}'],
             compute: (context, position) => {
-                if (!context.editor) return position;
                 return findParagraphBoundary(context.editor.document, 'after', position);
             },
         }),
@@ -243,7 +229,6 @@ export function buildMotions(): Motion[] {
         newMotion({
             keys: ['$'],
             compute: (context, position) => {
-                if (!context.editor) return position;
                 return findLineEnd(context.editor.document, position);
             },
         }),
@@ -253,7 +238,6 @@ export function buildMotions(): Motion[] {
         newMotion({
             keys: ['0'],
             compute: (context, position) => {
-                if (!context.editor) return position;
                 return findLineStart(context.editor.document, position);
             },
         }),
@@ -263,7 +247,6 @@ export function buildMotions(): Motion[] {
         newMotion({
             keys: ['^'],
             compute: (context, position) => {
-                if (!context.editor) return position;
                 return findLineStartAfterIndent(context.editor.document, position);
             },
         }),
@@ -273,7 +256,6 @@ export function buildMotions(): Motion[] {
         newMotion({
             keys: ['%'],
             compute: (context, position) => {
-                if (!context.editor) return position;
                 return findMatchingBracket(context.editor.document, position) ?? position;
             },
         }),
@@ -286,7 +268,6 @@ export function buildMotions(): Motion[] {
         direction: 'after' | 'before',
         position: Position,
     ) => {
-        if (!context.editor) return position;
         const document = context.editor.document;
         const newPosition = findNearerPosition(document, (c) => c === character, direction, position, {
             withinLine: true,
@@ -388,7 +369,6 @@ export function buildMotions(): Motion[] {
         newMotion({
             keys: ['<Waltz>half-page-down'],
             compute: (context, position) => {
-                if (!context.editor) return position;
                 const visibleRanges = context.editor.visibleRanges;
                 if (visibleRanges.length === 0) {
                     return position;
@@ -410,7 +390,6 @@ export function buildMotions(): Motion[] {
         newMotion({
             keys: ['<Waltz>half-page-up'],
             compute: (context, position) => {
-                if (!context.editor) return position;
                 const visibleRanges = context.editor.visibleRanges;
                 if (visibleRanges.length === 0) {
                     return position;

@@ -6,7 +6,6 @@ import type { VimState } from './vimState';
 
 export async function escapeHandler(vimState: VimState): Promise<void> {
     const editor = vscode.window.activeTextEditor;
-
     if (!editor) return;
 
     switch (vimState.mode) {

@@ -65,7 +65,6 @@ export function newWholeLineTextObject(config: { keys: string[]; includeLineBrea
     const baseTextObject = newTextObject({
         keys: config.keys,
         compute: (context: Context, position: Position) => {
-            if (!context.editor) return 'noMatch';
             const document = context.editor.document;
             const line = document.lineAt(position.line);
 

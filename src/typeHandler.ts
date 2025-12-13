@@ -6,6 +6,7 @@ import type { VimState } from './vimState';
 
 export async function typeHandler(vimState: VimState, char: string): Promise<void> {
     const editor = vscode.window.activeTextEditor;
+    if (!editor) return;
 
     // type が発生した場合に即行う処理はキューイング。後は Mutex が空くのを待ってから処理してくれればいいので、バックグ
     // ラウンドに投げるだけ投げてさっさと handler は終わってしまう。

@@ -13,7 +13,6 @@ export function buildViewportActions(): Action[] {
             modes: ['normal', 'visual', 'visualLine'],
             execute: async (context) => {
                 const editor = context.editor;
-                if (!editor) return;
 
                 const selection = editor.selection;
                 await vscode.commands.executeCommand('revealLine', {
@@ -29,7 +28,6 @@ export function buildViewportActions(): Action[] {
             modes: ['normal', 'visual', 'visualLine'],
             execute: async (context) => {
                 const editor = context.editor;
-                if (!editor) return;
 
                 const selection = editor.selection;
                 await vscode.commands.executeCommand('revealLine', {
@@ -45,7 +43,6 @@ export function buildViewportActions(): Action[] {
             modes: ['normal', 'visual', 'visualLine'],
             execute: async (context) => {
                 const editor = context.editor;
-                if (!editor) return;
 
                 const selection = editor.selection;
                 await vscode.commands.executeCommand('revealLine', {

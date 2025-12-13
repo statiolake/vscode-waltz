@@ -46,7 +46,6 @@ function updateModeContext(mode: Mode) {
 
 function updateCursorStyle(editor: TextEditor | undefined, mode: Mode): void {
     if (!editor) return;
-
     editor.options.cursorStyle = getCursorStyleForMode(mode);
 }
 
