@@ -8,17 +8,27 @@ import type { VimState } from './vimState';
 
 export async function enterMode(vimState: VimState, editor: TextEditor | undefined, mode: Mode): Promise<void> {
     const oldMode = vimState.mode;
-
-    // UI 関連は念のため常に再反映する
     vimState.mode = mode;
-    updateModeContext(mode);
-    updateCursorStyle(editor, mode);
-    updateStatusBar(vimState, mode);
 
-    // ここから先の処理は重たく副作用も大きいので、モードが変わらなかった場合はスキップする
-    if (oldMode === mode) return;
+    // 選択範囲の調整はモードが実際に変わった場合のみ行う
+    reinitUiForState(vimState, editor, { adjustSelections: oldMode === mode });
+}
 
-    if (mode === 'normal' && editor && editor.selections.some((selection) => !selection.isEmpty)) {
+/** 現在の状態に応じて UI 要素 (ステータスバー屋カーソルスタイルなど) を再反映する */
+export async function reinitUiForState(
+    vimState: VimState,
+    editor: TextEditor | undefined,
+    opts: { adjustSelections?: boolean } = {},
+) {
+    // UI 関連は念のため常に再反映する
+    updateModeContext(vimState.mode);
+    updateCursorStyle(editor, vimState.mode);
+    updateStatusBar(vimState, vimState.mode);
+
+    // ここから先の処理は重たく副作用も大きいので、明示的に指定されない限りスキップする
+    if (!opts.adjustSelections) return;
+
+    if (vimState.mode === 'normal' && editor && editor.selections.some((selection) => !selection.isEmpty)) {
         // ノーマルモードに入ったら、選択範囲を解除する
         // 副作用を避けるため、不要な場合 (どれも空の場合) は実行しないようにしておく。
         // たとえば undo などは以下のようなフローをたどるため、最終的なカーソル位置が先祖返りすることがある。
@@ -34,7 +44,7 @@ export async function enterMode(vimState: VimState, editor: TextEditor | undefin
         editor.selections = editor.selections.map((selection) => new Selection(selection.active, selection.active));
     }
 
-    if (mode === 'visualLine' && editor) {
+    if (vimState.mode === 'visualLine' && editor) {
         // Visual Line モードに入ったら、選択範囲を行全体に拡張する
         expandSelectionsToFullLines(editor);
     }

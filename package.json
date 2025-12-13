@@ -32,22 +32,22 @@
             {
                 "key": "Escape",
                 "command": "waltz.escapeKey",
-                "when": "editorTextFocus"
+                "when": "waltz.supported && editorTextFocus"
             },
             {
                 "key": "backspace",
                 "command": "waltz.noop",
-                "when": "editorTextFocus && waltz.mode != 'insert'"
+                "when": "waltz.supported && editorTextFocus && waltz.mode != 'insert'"
             },
             {
                 "key": "delete",
                 "command": "waltz.noop",
-                "when": "editorTextFocus && waltz.mode != 'insert'"
+                "when": "waltz.supported && editorTextFocus && waltz.mode != 'insert'"
             },
             {
                 "key": "tab",
                 "command": "waltz.noop",
-                "when": "editorTextFocus && waltz.mode != 'insert'"
+                "when": "waltz.supported && editorTextFocus && waltz.mode != 'insert'"
             },
             {
                 "mac": "cmd+c",
@@ -59,7 +59,7 @@
                         "<Waltz>copy"
                     ]
                 },
-                "when": "editorTextFocus && waltz.mode != 'insert'"
+                "when": "waltz.supported && editorTextFocus && waltz.mode != 'insert'"
             },
             {
                 "mac": "cmd+x",
@@ -71,7 +71,7 @@
                         "<Waltz>cut"
                     ]
                 },
-                "when": "editorTextFocus && waltz.mode != 'insert'"
+                "when": "waltz.supported && editorTextFocus && waltz.mode != 'insert'"
             },
             {
                 "mac": "cmd+v",
@@ -83,137 +83,137 @@
                         "<Waltz>paste"
                     ]
                 },
-                "when": "editorTextFocus && waltz.mode != 'insert'"
+                "when": "waltz.supported && editorTextFocus && waltz.mode != 'insert'"
             },
             {
                 "mac": "ctrl+a",
                 "command": "waltz.noop",
-                "when": "editorTextFocus && waltz.mode != 'insert'"
+                "when": "waltz.supported && editorTextFocus && waltz.mode != 'insert'"
             },
             {
                 "mac": "ctrl+b",
                 "command": "waltz.noop",
-                "when": "editorTextFocus && waltz.mode != 'insert'"
+                "when": "waltz.supported && editorTextFocus && waltz.mode != 'insert'"
             },
             {
                 "mac": "ctrl+c",
                 "command": "waltz.noop",
-                "when": "editorTextFocus && waltz.mode != 'insert'"
+                "when": "waltz.supported && editorTextFocus && waltz.mode != 'insert'"
             },
             {
                 "mac": "ctrl+d",
                 "command": "waltz.noop",
-                "when": "editorTextFocus && waltz.mode != 'insert'"
+                "when": "waltz.supported && editorTextFocus && waltz.mode != 'insert'"
             },
             {
                 "mac": "ctrl+e",
                 "command": "waltz.noop",
-                "when": "editorTextFocus && waltz.mode != 'insert'"
+                "when": "waltz.supported && editorTextFocus && waltz.mode != 'insert'"
             },
             {
                 "mac": "ctrl+f",
                 "command": "waltz.noop",
-                "when": "editorTextFocus && waltz.mode != 'insert'"
+                "when": "waltz.supported && editorTextFocus && waltz.mode != 'insert'"
             },
             {
                 "mac": "ctrl+g",
                 "command": "waltz.noop",
-                "when": "editorTextFocus && waltz.mode != 'insert'"
+                "when": "waltz.supported && editorTextFocus && waltz.mode != 'insert'"
             },
             {
                 "mac": "ctrl+h",
                 "command": "waltz.noop",
-                "when": "editorTextFocus && waltz.mode != 'insert'"
+                "when": "waltz.supported && editorTextFocus && waltz.mode != 'insert'"
             },
             {
                 "mac": "ctrl+i",
                 "command": "waltz.noop",
-                "when": "editorTextFocus && waltz.mode != 'insert'"
+                "when": "waltz.supported && editorTextFocus && waltz.mode != 'insert'"
             },
             {
                 "mac": "ctrl+j",
                 "command": "waltz.noop",
-                "when": "editorTextFocus && waltz.mode != 'insert'"
+                "when": "waltz.supported && editorTextFocus && waltz.mode != 'insert'"
             },
             {
                 "mac": "ctrl+k",
                 "command": "waltz.noop",
-                "when": "editorTextFocus && waltz.mode != 'insert'"
+                "when": "waltz.supported && editorTextFocus && waltz.mode != 'insert'"
             },
             {
                 "mac": "ctrl+l",
                 "command": "waltz.noop",
-                "when": "editorTextFocus && waltz.mode != 'insert'"
+                "when": "waltz.supported && editorTextFocus && waltz.mode != 'insert'"
             },
             {
                 "mac": "ctrl+m",
                 "command": "waltz.noop",
-                "when": "editorTextFocus && waltz.mode != 'insert'"
+                "when": "waltz.supported && editorTextFocus && waltz.mode != 'insert'"
             },
             {
                 "mac": "ctrl+n",
                 "command": "waltz.noop",
-                "when": "editorTextFocus && waltz.mode != 'insert'"
+                "when": "waltz.supported && editorTextFocus && waltz.mode != 'insert'"
             },
             {
                 "mac": "ctrl+o",
                 "command": "waltz.noop",
-                "when": "editorTextFocus && waltz.mode != 'insert'"
+                "when": "waltz.supported && editorTextFocus && waltz.mode != 'insert'"
             },
             {
                 "mac": "ctrl+p",
                 "command": "waltz.noop",
-                "when": "editorTextFocus && waltz.mode != 'insert'"
+                "when": "waltz.supported && editorTextFocus && waltz.mode != 'insert'"
             },
             {
                 "mac": "ctrl+q",
                 "command": "waltz.noop",
-                "when": "editorTextFocus && waltz.mode != 'insert'"
+                "when": "waltz.supported && editorTextFocus && waltz.mode != 'insert'"
             },
             {
                 "mac": "ctrl+r",
                 "command": "waltz.noop",
-                "when": "editorTextFocus && waltz.mode != 'insert'"
+                "when": "waltz.supported && editorTextFocus && waltz.mode != 'insert'"
             },
             {
                 "mac": "ctrl+s",
                 "command": "waltz.noop",
-                "when": "editorTextFocus && waltz.mode != 'insert'"
+                "when": "waltz.supported && editorTextFocus && waltz.mode != 'insert'"
             },
             {
                 "mac": "ctrl+t",
                 "command": "waltz.noop",
-                "when": "editorTextFocus && waltz.mode != 'insert'"
+                "when": "waltz.supported && editorTextFocus && waltz.mode != 'insert'"
             },
             {
                 "mac": "ctrl+u",
                 "command": "waltz.noop",
-                "when": "editorTextFocus && waltz.mode != 'insert'"
+                "when": "waltz.supported && editorTextFocus && waltz.mode != 'insert'"
             },
             {
                 "mac": "ctrl+v",
                 "command": "waltz.noop",
-                "when": "editorTextFocus && waltz.mode != 'insert'"
+                "when": "waltz.supported && editorTextFocus && waltz.mode != 'insert'"
             },
             {
                 "mac": "ctrl+w",
                 "command": "waltz.noop",
-                "when": "editorTextFocus && waltz.mode != 'insert'"
+                "when": "waltz.supported && editorTextFocus && waltz.mode != 'insert'"
             },
             {
                 "mac": "ctrl+x",
                 "command": "waltz.noop",
-                "when": "editorTextFocus && waltz.mode != 'insert'"
+                "when": "waltz.supported && editorTextFocus && waltz.mode != 'insert'"
             },
             {
                 "mac": "ctrl+y",
                 "command": "waltz.noop",
-                "when": "editorTextFocus && waltz.mode != 'insert'"
+                "when": "waltz.supported && editorTextFocus && waltz.mode != 'insert'"
             },
             {
                 "mac": "ctrl+z",
                 "command": "waltz.noop",
-                "when": "editorTextFocus && waltz.mode != 'insert'"
+                "when": "waltz.supported && editorTextFocus && waltz.mode != 'insert'"
             }
         ],
         "configuration": {

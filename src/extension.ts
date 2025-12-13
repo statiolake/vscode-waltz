@@ -12,11 +12,9 @@ import { buildActions, delegateAction } from './action/actions';
 import type { Context } from './context';
 import { createCommentConfigProvider, createVimState } from './contextInitializers';
 import { escapeHandler } from './escapeHandler';
-import { enterMode } from './modes';
+import { enterMode, reinitUiForState as reinitUiElement } from './modes';
 import { typeHandler } from './typeHandler';
 import type { CommentConfigProvider } from './utils/comment';
-import { getCursorStyleForMode } from './utils/cursorStyle';
-import { getModeDisplayText } from './utils/modeDisplay';
 import { expandSelectionsToFullLines } from './utils/visualLine';
 import type { VimState } from './vimState';
 
@@ -62,7 +60,20 @@ async function onDidChangeTextEditorSelection(vimState: VimState, e: TextEditorS
     }
 }
 
-async function onDidChangeActiveTextEditor(vimState: VimState, editor: TextEditor): Promise<void> {
+async function onDidChangeActiveTextEditor(vimState: VimState, editor: TextEditor | undefined): Promise<void> {
+    if (editor === undefined) {
+        // 巨大なファイルの場合は extHost にテキストエディタが連携されないらし
+        // く、アクティブなエディタが undefined 扱いとなる。その場合、Waltz の
+        // モーションなどほとんどの機能が動作しないので、
+        // waltz.supported = false として、Waltz 特有のキーバインドを無効化する。
+        await vscode.commands.executeCommand('setContext', 'waltz.supported', false);
+        void vscode.window.showWarningMessage('Waltz: No active editor detected.');
+        return;
+    }
+
+    // 通常は waltz.supported = true として
+    await vscode.commands.executeCommand('setContext', 'waltz.supported', true);
+
     if (editor.selections.every((selection) => selection.isEmpty)) {
         await enterMode(vimState, editor, 'normal');
     } else {
@@ -75,23 +86,10 @@ async function onDidChangeActiveTextEditor(vimState: VimState, editor: TextEdito
 function onDidChangeConfiguration(vimState: VimState, e: ConfigurationChangeEvent): void {
     if (!e.affectsConfiguration('waltz')) return;
 
-    // Rebuild actions
     vimState.actions = buildActions();
 
-    // Update cursor style if cursor style configuration changed
-    const editor = vscode.window.activeTextEditor;
-    if (editor) {
-        editor.options.cursorStyle = getCursorStyleForMode(vimState.mode);
-    }
-
-    // Update mode display if configuration changed
-    if (vimState.statusBarItem) {
-        vimState.statusBarItem.text = getModeDisplayText(vimState.mode);
-    }
+    reinitUiElement(vimState, vscode.window.activeTextEditor);
 }
-
-// Store vimState globally for testing
-let globalVimState: VimState | undefined;
 
 export async function activate(context: ExtensionContext): Promise<{ getVimState: () => VimState }> {
     // Create comment config provider
@@ -105,15 +103,10 @@ export async function activate(context: ExtensionContext): Promise<{ getVimState
     // Create VimState with the status bar item
     const vimState = createVimState(statusBarItem);
 
-    // Store globally for testing
-    globalVimState = vimState;
-
     context.subscriptions.push(
         ...setupTypeHandler(vimState),
         vscode.window.onDidChangeActiveTextEditor((editor) => {
-            if (editor) {
-                onDidChangeActiveTextEditor(vimState, editor);
-            }
+            onDidChangeActiveTextEditor(vimState, editor);
         }),
         vscode.window.onDidChangeTextEditorSelection((e) => onDidChangeTextEditorSelection(vimState, e)),
         vscode.workspace.onDidChangeConfiguration((e) => onDidChangeConfiguration(vimState, e)),
@@ -195,19 +188,16 @@ export async function activate(context: ExtensionContext): Promise<{ getVimState
 
     // Return API for testing
     return {
-        getVimState: () => {
-            if (!globalVimState) {
-                throw new Error('VimState not initialized');
-            }
-            return globalVimState;
-        },
+        getVimState: () => vimState,
     };
 }
 
 export function setupTypeHandler(vimState: VimState): Disposable[] {
     return [
         vscode.commands.registerCommand('type', async (e) => {
-            if (vimState.mode === 'insert') {
+            const editor = vscode.window.activeTextEditor;
+            // エディタが存在しない場合は巨大なファイルを開いている可能性があるので、デフォルト動作を行う
+            if (!editor || vimState.mode === 'insert') {
                 await vscode.commands.executeCommand('default:type', e);
                 return;
             }
