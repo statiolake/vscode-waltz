@@ -204,21 +204,21 @@ export function setupTypeHandler(vimState: VimState): Disposable[] {
 
             await typeHandler(vimState, e.text);
         }),
-        vscode.commands.registerCommand('compositionStart', async (e) => {
-            if (vimState.mode === 'insert') {
-                await vscode.commands.executeCommand('default:compositionStart', e);
-            }
 
-            // Insert モード以外では composition 関連のイベントはすべて無視する
-        }),
-        vscode.commands.registerCommand('compositionEnd', async (e) => {
-            // Insert モード以外では composition 関連のイベントはすべて無視する
-            if (vimState.mode === 'insert') {
-                await vscode.commands.executeCommand('default:compositionEnd', e);
-            }
-        }),
+        // compositionStart, compositionEnd はファイルを変更しないので vimState.mode に関係なくデフォルト動作を行うでよし
+        // vscode.commands.registerCommand('compositionStart', async (e) => {
+        //     // if (vimState.mode === 'insert') {
+        //     //     await vscode.commands.executeCommand('default:compositionStart', e);
+        //     // }
+        // }),
+        // vscode.commands.registerCommand('compositionEnd', async (e) => {
+        //     // if (vimState.mode === 'insert') {
+        //     //     await vscode.commands.executeCommand('default:compositionEnd', e);
+        //     // }
+        // }),
+
+        // replacePreviousChar はファイルを変更してしまうので Insert モード以外では無視する
         vscode.commands.registerCommand('replacePreviousChar', async (e) => {
-            // Insert モード以外では composition 関連のイベントはすべて無視する
             if (vimState.mode === 'insert') {
                 await vscode.commands.executeCommand('default:replacePreviousChar', e);
             }
