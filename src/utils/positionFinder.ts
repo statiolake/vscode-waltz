@@ -222,7 +222,134 @@ export function findWordBoundary(
 }
 
 /**
- * 段落境界を探す
+ * 段落境界を探す（内部ヘルパー関数）
+ *
+ * @returns 見つかった空行の行番号、または見つからない場合は undefined
+ */
+function findBlankLineBoundary(
+    document: TextDocument,
+    direction: 'before' | 'after',
+    startLine: number,
+): number | undefined {
+    const delta = direction === 'before' ? -1 : 1;
+    let line = startLine;
+
+    while (0 <= line + delta && line + delta < document.lineCount) {
+        const nextLineText = document.lineAt(line + delta).text;
+        if (nextLineText.trim() === '') {
+            return line + delta;
+        }
+        line += delta;
+    }
+
+    return undefined;
+}
+
+/**
+ * 段落の範囲を探す（inner paragraph 用）
+ * 空行を含まない段落本体のみを返す
+ *
+ * @param document ドキュメント
+ * @param position カーソル位置
+ * @returns 段落の範囲
+ */
+export function findInnerParagraph(document: TextDocument, position: Position): Range {
+    // Empty document
+    if (document.lineCount === 0) {
+        return new Range(position, position);
+    }
+
+    // Check if current line is blank
+    const currentLine = document.lineAt(position.line);
+    if (currentLine.text.trim() === '') {
+        // On blank line - return just this blank line
+        if (position.line < document.lineCount - 1) {
+            return new Range(new Position(position.line, 0), new Position(position.line + 1, 0));
+        } else {
+            return new Range(new Position(position.line, 0), new Position(position.line, 0));
+        }
+    }
+
+    // Find paragraph start (first non-blank line after previous blank line or document start)
+    const startBlankLine = findBlankLineBoundary(document, 'before', position.line);
+    const startLine = startBlankLine !== undefined ? startBlankLine + 1 : 0;
+
+    // Find paragraph end (last non-blank line before next blank line or document end)
+    const endBlankLine = findBlankLineBoundary(document, 'after', position.line);
+    let endLine: number;
+    if (endBlankLine !== undefined) {
+        endLine = endBlankLine - 1;
+    } else {
+        // No blank line found - paragraph extends to end of document
+        endLine = document.lineCount - 1;
+    }
+
+    // Build range - include trailing newline if not at document end
+    const start = new Position(startLine, 0);
+    let end: Position;
+    if (endLine < document.lineCount - 1) {
+        end = new Position(endLine + 1, 0);
+    } else {
+        end = new Position(endLine, document.lineAt(endLine).range.end.character);
+    }
+
+    return new Range(start, end);
+}
+
+/**
+ * 段落の範囲を探す（around paragraph 用）
+ * 段落本体と後続の空行を含む
+ *
+ * @param document ドキュメント
+ * @param position カーソル位置
+ * @returns 段落の範囲
+ */
+export function findAroundParagraph(document: TextDocument, position: Position): Range {
+    // Empty document
+    if (document.lineCount === 0) {
+        return new Range(position, position);
+    }
+
+    // Check if current line is blank
+    const currentLine = document.lineAt(position.line);
+    if (currentLine.text.trim() === '') {
+        // On blank line - return just this blank line
+        if (position.line < document.lineCount - 1) {
+            return new Range(new Position(position.line, 0), new Position(position.line + 1, 0));
+        } else {
+            return new Range(new Position(position.line, 0), new Position(position.line, 0));
+        }
+    }
+
+    // Find paragraph start (first non-blank line after previous blank line or document start)
+    const startBlankLine = findBlankLineBoundary(document, 'before', position.line);
+    const startLine = startBlankLine !== undefined ? startBlankLine + 1 : 0;
+
+    // Find paragraph end - for 'ap', include the trailing blank line
+    const endBlankLine = findBlankLineBoundary(document, 'after', position.line);
+
+    const start = new Position(startLine, 0);
+    let end: Position;
+
+    if (endBlankLine !== undefined) {
+        // Include the blank line - move to start of line after the blank line
+        if (endBlankLine < document.lineCount - 1) {
+            end = new Position(endBlankLine + 1, 0);
+        } else {
+            // Blank line is at document end
+            end = new Position(endBlankLine, 0);
+        }
+    } else {
+        // No trailing blank line - just include to end of last paragraph line
+        const lastLine = document.lineCount - 1;
+        end = new Position(lastLine, document.lineAt(lastLine).range.end.character);
+    }
+
+    return new Range(start, end);
+}
+
+/**
+ * 段落境界を探す（Motion 用）
  *
  * @param document ドキュメント
  * @param direction 探索方向（'before' は現在位置より前、'after' は現在位置より後）
@@ -234,34 +361,18 @@ export function findParagraphBoundary(
     direction: 'before' | 'after',
     position: Position,
 ): Position {
-    const currentLine = document.lineAt(position.line);
-    const isCurrentLineBlank = currentLine.text.trim() === '';
+    const blankLine = findBlankLineBoundary(document, direction, position.line);
 
-    // If we're on a blank line, return the position itself
-    if (isCurrentLineBlank) {
-        return direction === 'before' ? position : position;
+    if (blankLine !== undefined) {
+        return new Position(blankLine, 0);
     }
 
-    let line = position.line;
-    const delta = direction === 'before' ? -1 : 1;
-
-    // Search for the blank line boundary
-    while (0 <= line + delta && line + delta < document.lineCount) {
-        const nextLineText = document.lineAt(line + delta).text;
-        if (nextLineText.trim() === '') {
-            // Found a blank line, return the current line boundary
-            break;
-        }
-        line += delta;
-    }
-
-    // Return the appropriate position
+    // No blank line found - return document boundary
     if (direction === 'before') {
-        return new Position(line, 0);
+        return new Position(0, 0);
     } else {
-        // For 'after', return the end of the line
-        const endLine = document.lineAt(line);
-        return endLine.range.end;
+        const lastLine = document.lineCount - 1;
+        return new Position(lastLine, document.lineAt(lastLine).range.end.character);
     }
 }
 

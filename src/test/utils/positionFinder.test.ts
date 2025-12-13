@@ -3,9 +3,11 @@ import * as vscode from 'vscode';
 import { Position } from 'vscode';
 import {
     findAdjacentPosition,
+    findAroundParagraph,
     findCurrentArgument,
     findDocumentEnd,
     findDocumentStart,
+    findInnerParagraph,
     findInnerWordAtBoundary,
     findInsideBalancedPairs,
     findLineEnd,
@@ -1549,5 +1551,220 @@ suite('findInnerWordAtBoundary', () => {
         // Should select 'a' (word has priority over symbol)
         assert.deepStrictEqual(result.start, new Position(0, 1));
         assert.deepStrictEqual(result.end, new Position(0, 2));
+    });
+});
+
+suite('findInnerParagraph', () => {
+    test('should select paragraph in middle of document', async () => {
+        const content = 'first paragraph\nstill first\n\nsecond paragraph\nstill second\n\nthird paragraph';
+        const doc = await vscode.workspace.openTextDocument({ content });
+        const position = new Position(3, 5); // on "second paragraph"
+
+        const result = findInnerParagraph(doc, position);
+
+        const text = doc.getText(result);
+        assert.strictEqual(text, 'second paragraph\nstill second\n');
+    });
+
+    test('should select first paragraph', async () => {
+        const content = 'first paragraph\nstill first\n\nsecond paragraph';
+        const doc = await vscode.workspace.openTextDocument({ content });
+        const position = new Position(0, 0);
+
+        const result = findInnerParagraph(doc, position);
+
+        const text = doc.getText(result);
+        assert.strictEqual(text, 'first paragraph\nstill first\n');
+    });
+
+    test('should select last paragraph without trailing newline', async () => {
+        const content = 'first paragraph\n\nlast paragraph\nstill last';
+        const doc = await vscode.workspace.openTextDocument({ content });
+        const position = new Position(2, 5);
+
+        const result = findInnerParagraph(doc, position);
+
+        const text = doc.getText(result);
+        assert.strictEqual(text, 'last paragraph\nstill last');
+    });
+
+    test('should select single line paragraph', async () => {
+        const content = 'first\n\nsingle line\n\nlast';
+        const doc = await vscode.workspace.openTextDocument({ content });
+        const position = new Position(2, 3);
+
+        const result = findInnerParagraph(doc, position);
+
+        const text = doc.getText(result);
+        assert.strictEqual(text, 'single line\n');
+    });
+
+    test('should select entire document when no blank lines', async () => {
+        const content = 'line 1\nline 2\nline 3';
+        const doc = await vscode.workspace.openTextDocument({ content });
+        const position = new Position(1, 0);
+
+        const result = findInnerParagraph(doc, position);
+
+        const text = doc.getText(result);
+        assert.strictEqual(text, 'line 1\nline 2\nline 3');
+    });
+
+    test('should return blank line when cursor on blank line', async () => {
+        const content = 'first\n\nsecond';
+        const doc = await vscode.workspace.openTextDocument({ content });
+        const position = new Position(1, 0); // on blank line
+
+        const result = findInnerParagraph(doc, position);
+
+        const text = doc.getText(result);
+        assert.strictEqual(text, '\n');
+    });
+
+    test('should handle empty document', async () => {
+        const content = '';
+        const doc = await vscode.workspace.openTextDocument({ content });
+        const position = new Position(0, 0);
+
+        const result = findInnerParagraph(doc, position);
+
+        const text = doc.getText(result);
+        assert.strictEqual(text, '');
+    });
+
+    test('should handle document with only blank lines', async () => {
+        const content = '\n\n\n';
+        const doc = await vscode.workspace.openTextDocument({ content });
+        const position = new Position(1, 0);
+
+        const result = findInnerParagraph(doc, position);
+
+        const text = doc.getText(result);
+        assert.strictEqual(text, '\n');
+    });
+
+    test('should handle single line document', async () => {
+        const content = 'single line';
+        const doc = await vscode.workspace.openTextDocument({ content });
+        const position = new Position(0, 5);
+
+        const result = findInnerParagraph(doc, position);
+
+        const text = doc.getText(result);
+        assert.strictEqual(text, 'single line');
+    });
+});
+
+suite('findAroundParagraph', () => {
+    test('should select paragraph with trailing blank line', async () => {
+        const content = 'first paragraph\nstill first\n\nsecond paragraph\nstill second\n\nthird paragraph';
+        const doc = await vscode.workspace.openTextDocument({ content });
+        const position = new Position(3, 5); // on "second paragraph"
+
+        const result = findAroundParagraph(doc, position);
+
+        const text = doc.getText(result);
+        assert.strictEqual(text, 'second paragraph\nstill second\n\n');
+    });
+
+    test('should select first paragraph with trailing blank line', async () => {
+        const content = 'first paragraph\nstill first\n\nsecond paragraph';
+        const doc = await vscode.workspace.openTextDocument({ content });
+        const position = new Position(0, 0);
+
+        const result = findAroundParagraph(doc, position);
+
+        const text = doc.getText(result);
+        assert.strictEqual(text, 'first paragraph\nstill first\n\n');
+    });
+
+    test('should select last paragraph without extra content', async () => {
+        const content = 'first paragraph\n\nlast paragraph\nstill last';
+        const doc = await vscode.workspace.openTextDocument({ content });
+        const position = new Position(2, 5);
+
+        const result = findAroundParagraph(doc, position);
+
+        const text = doc.getText(result);
+        // Last paragraph has no trailing blank line
+        assert.strictEqual(text, 'last paragraph\nstill last');
+    });
+
+    test('should select single line paragraph with trailing blank', async () => {
+        const content = 'first\n\nsingle line\n\nlast';
+        const doc = await vscode.workspace.openTextDocument({ content });
+        const position = new Position(2, 3);
+
+        const result = findAroundParagraph(doc, position);
+
+        const text = doc.getText(result);
+        assert.strictEqual(text, 'single line\n\n');
+    });
+
+    test('should select entire document when no blank lines', async () => {
+        const content = 'line 1\nline 2\nline 3';
+        const doc = await vscode.workspace.openTextDocument({ content });
+        const position = new Position(1, 0);
+
+        const result = findAroundParagraph(doc, position);
+
+        const text = doc.getText(result);
+        assert.strictEqual(text, 'line 1\nline 2\nline 3');
+    });
+
+    test('should return blank line when cursor on blank line', async () => {
+        const content = 'first\n\nsecond';
+        const doc = await vscode.workspace.openTextDocument({ content });
+        const position = new Position(1, 0); // on blank line
+
+        const result = findAroundParagraph(doc, position);
+
+        const text = doc.getText(result);
+        assert.strictEqual(text, '\n');
+    });
+
+    test('should handle multiple trailing blank lines - include only one', async () => {
+        const content = 'first\n\n\nsecond';
+        const doc = await vscode.workspace.openTextDocument({ content });
+        const position = new Position(0, 0);
+
+        const result = findAroundParagraph(doc, position);
+
+        const text = doc.getText(result);
+        // Should include paragraph + one trailing blank line
+        assert.strictEqual(text, 'first\n\n');
+    });
+
+    test('should handle empty document', async () => {
+        const content = '';
+        const doc = await vscode.workspace.openTextDocument({ content });
+        const position = new Position(0, 0);
+
+        const result = findAroundParagraph(doc, position);
+
+        const text = doc.getText(result);
+        assert.strictEqual(text, '');
+    });
+
+    test('should handle document with only blank lines', async () => {
+        const content = '\n\n\n';
+        const doc = await vscode.workspace.openTextDocument({ content });
+        const position = new Position(1, 0);
+
+        const result = findAroundParagraph(doc, position);
+
+        const text = doc.getText(result);
+        assert.strictEqual(text, '\n');
+    });
+
+    test('should handle single line document', async () => {
+        const content = 'single line';
+        const doc = await vscode.workspace.openTextDocument({ content });
+        const position = new Position(0, 5);
+
+        const result = findAroundParagraph(doc, position);
+
+        const text = doc.getText(result);
+        assert.strictEqual(text, 'single line');
     });
 });
