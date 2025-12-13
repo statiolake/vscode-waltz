@@ -62,18 +62,22 @@ async function onDidChangeTextEditorSelection(vimState: VimState, e: TextEditorS
 
 async function onDidChangeActiveTextEditor(vimState: VimState, editor: TextEditor | undefined): Promise<void> {
     if (editor === undefined) {
-        // 巨大なファイルの場合は extHost にテキストエディタが連携されないらし
-        // く、アクティブなエディタが undefined 扱いとなる。その場合、Waltz の
-        // モーションなどほとんどの機能が動作しないので、
-        // waltz.supported = false として、Waltz 特有のキーバインドを無効化する。
-        await vscode.commands.executeCommand('setContext', 'waltz.supported', false);
-        void vscode.window.showWarningMessage('Waltz: No active editor detected.');
+        // 他のエディタグループにエディタが開かれているのに activeTextEditor が undefined の場合のみ警告を出す
+        // エディタグループが空な場合は通常の動作なので警告を出さない
+        if (vscode.window.tabGroups.activeTabGroup.tabs.length > 0) {
+            // エディタグループに開かれているエディタがあるのに activeTextEditor が undefined
+            // 巨大なファイルなどで extHost がテキストエディタと連携できない可能性がある
+            void vscode.window.showWarningMessage(
+                'Waltz: Features are disabled for this editor because this editor is not available for extensions (possibly a large file).',
+            );
+        }
+
+        // UNSUPPORTED モードに遷移し、Waltz 特有のキーバインドを無効化する
+        await enterMode(vimState, editor, 'unsupported');
         return;
     }
 
-    // 通常は waltz.supported = true として
-    await vscode.commands.executeCommand('setContext', 'waltz.supported', true);
-
+    // エディタが存在する場合はノーマルモードまたはビジュアルモードに遷移
     if (editor.selections.every((selection) => selection.isEmpty)) {
         await enterMode(vimState, editor, 'normal');
     } else {

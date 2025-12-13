@@ -17,6 +17,7 @@ const defaultCursorStyles: Record<Mode, CursorStyleString> = {
     insert: 'line-thin',
     visual: 'line-thin',
     visualLine: 'line-thin',
+    unsupported: 'line', // UNSUPPORTED モードではそもそも editor === undefined になるので変更できない
 };
 
 function getCursorStyleConfigKey(mode: Mode): string {
