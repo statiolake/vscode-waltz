@@ -11,7 +11,7 @@ export async function enterMode(vimState: VimState, editor: TextEditor | undefin
     vimState.mode = mode;
 
     // 選択範囲の調整はモードが実際に変わった場合のみ行う
-    reinitUiForState(vimState, editor, { adjustSelections: oldMode === mode });
+    reinitUiForState(vimState, editor, { adjustSelections: oldMode !== mode });
 }
 
 /** 現在の状態に応じて UI 要素 (ステータスバー屋カーソルスタイルなど) を再反映する */
