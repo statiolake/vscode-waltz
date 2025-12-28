@@ -1,16 +1,6 @@
 import { Position, Range, type TextDocument } from 'vscode';
+import { TextCursor } from './textCursor';
 import { getCharacterType, getWordTypePriority, isCharacterTypeBoundary, isWhitespace } from './unicode';
-
-/**
- * オフセット範囲のテキストを取得
- */
-function getTextOfOffsetRange(document: TextDocument, startOffset: number, endOffset: number): string {
-    startOffset = Math.max(0, startOffset);
-    endOffset = Math.max(0, endOffset);
-    return document.getText(
-        document.validateRange(new Range(document.positionAt(startOffset), document.positionAt(endOffset))),
-    );
-}
 
 /**
  * 次の文字の位置を探す
@@ -35,21 +25,40 @@ export function findNearerPosition(
         maxOffsetWidth?: number;
     },
 ): Position | undefined {
+    const cursor = TextCursor.fromDocument(document, position);
+    return findNearerPositionWithCursor(cursor, predicate, direction, opts);
+}
+
+/**
+ * TextCursor を使用して次の文字の位置を探す
+ */
+export function findNearerPositionWithCursor(
+    cursor: TextCursor,
+    predicate: (character: string) => boolean,
+    direction: 'before' | 'after',
+    opts: {
+        withinLine: boolean;
+        maxOffsetWidth?: number;
+    },
+): Position | undefined {
+    const document = cursor.getDocument();
     // 指定なければ無制限で探索する
     const maxOffsetWidth = opts.maxOffsetWidth ?? Infinity;
 
-    let offset = document.offsetAt(position);
+    const position = cursor.getPosition();
+    let offset = cursor.getOffset();
     const line = document.lineAt(position.line);
     const minOffset = opts.withinLine ? document.offsetAt(line.range.start) : Math.max(0, offset - maxOffsetWidth);
     const maxOffset = opts.withinLine
         ? document.offsetAt(line.range.end)
-        : Math.min(document.offsetAt(document.lineAt(document.lineCount - 1).range.end), offset + maxOffsetWidth);
-    const delta = direction === 'before' ? -1 : 1;
+        : Math.min(cursor.getTextLength(), offset + maxOffsetWidth);
+    const delta: 1 | -1 = direction === 'before' ? -1 : 1;
 
     while (minOffset <= Math.min(offset, offset + delta) && Math.max(offset, offset + delta) <= maxOffset) {
-        const char = getTextOfOffsetRange(document, offset, offset + delta);
+        const char = cursor.peek(delta);
         if (predicate(char)) return document.positionAt(offset);
         offset += delta;
+        cursor.moveTo(offset);
     }
 
     return undefined;
@@ -114,11 +123,11 @@ export function findDocumentEnd(document: TextDocument): Position {
  * @returns 選択範囲、見つからない場合は空の範囲
  */
 export function findInnerWordAtBoundary(document: TextDocument, position: Position): Range {
-    const offset = document.offsetAt(position);
+    const cursor = TextCursor.fromDocument(document, position);
 
     // Stage 1: 現在位置で単語を探す
-    let start = findWordBoundary(document, 'further', 'before', position, isCharacterTypeBoundary);
-    let end = findWordBoundary(document, 'further', 'after', position, isCharacterTypeBoundary);
+    let start = findWordBoundaryWithCursor(cursor.clone(), 'further', 'before', isCharacterTypeBoundary);
+    let end = findWordBoundaryWithCursor(cursor.clone(), 'further', 'after', isCharacterTypeBoundary);
 
     // 単語が見つかった場合（空でない範囲）
     if (start && end && !start.isEqual(end)) {
@@ -126,8 +135,8 @@ export function findInnerWordAtBoundary(document: TextDocument, position: Positi
     }
 
     // Stage 2: 境界にいる場合 - 左右の優先度を比較して選択
-    const charBefore = getTextOfOffsetRange(document, offset - 1, offset);
-    const charAfter = getTextOfOffsetRange(document, offset, offset + 1);
+    const charBefore = cursor.peek(-1);
+    const charAfter = cursor.peek(1);
 
     // 文字が存在しない場合は空の範囲を返す
     if (!charBefore && !charAfter) {
@@ -152,16 +161,18 @@ export function findInnerWordAtBoundary(document: TextDocument, position: Positi
     if (moveRight) {
         // 右を選択: position = START、ENDだけを探す
         // 1文字右に進んでから、その単語の終わりを探す
-        const nextPos = document.positionAt(offset + 1);
-        end = findWordBoundary(document, 'further', 'after', nextPos, isCharacterTypeBoundary);
+        const nextCursor = cursor.clone();
+        nextCursor.move(1);
+        end = findWordBoundaryWithCursor(nextCursor, 'further', 'after', isCharacterTypeBoundary);
         if (end) {
             return new Range(position, end);
         }
     } else {
         // 左を選択: position = END、STARTだけを探す
         // 1文字左に進んでから、その単語の始まりを探す
-        const prevPos = document.positionAt(offset - 1);
-        start = findWordBoundary(document, 'further', 'before', prevPos, isCharacterTypeBoundary);
+        const prevCursor = cursor.clone();
+        prevCursor.move(-1);
+        start = findWordBoundaryWithCursor(prevCursor, 'further', 'before', isCharacterTypeBoundary);
         if (start) {
             return new Range(start, position);
         }
@@ -186,39 +197,51 @@ export function findWordBoundary(
     position: Position,
     isBoundary: (char1: string, char2: string) => boolean,
 ): Position | undefined {
-    let offset = document.offsetAt(position);
-    const delta = direction === 'before' ? -1 : 1;
+    const cursor = TextCursor.fromDocument(document, position);
+    return findWordBoundaryWithCursor(cursor, distance, direction, isBoundary);
+}
+
+/**
+ * TextCursor を使用して単語境界を探す
+ */
+export function findWordBoundaryWithCursor(
+    cursor: TextCursor,
+    distance: 'nearer' | 'further',
+    direction: 'before' | 'after',
+    isBoundary: (char1: string, char2: string) => boolean,
+): Position | undefined {
+    const delta: 1 | -1 = direction === 'before' ? -1 : 1;
+    const reverseDelta: 1 | -1 = direction === 'before' ? 1 : -1;
 
     const skipWhile = (cond: (char: string) => boolean) => {
         while (true) {
-            const char = getTextOfOffsetRange(document, offset, offset + delta);
+            const char = cursor.peek(delta);
             if (!char || !cond(char)) break;
-            offset += delta;
+            cursor.move(delta);
         }
     };
 
     if (distance === 'nearer') {
         // すでに始まっている単語の末尾までスキップする
-        const previousChar = getTextOfOffsetRange(document, offset - delta, offset);
+        const previousChar = cursor.peek(reverseDelta);
         skipWhile((char) => !isBoundary(previousChar, char));
         // その後、空白を無視すると次の単語の先頭にいる
         skipWhile(isWhitespace);
     } else {
-        const previousChar = getTextOfOffsetRange(document, offset - delta, offset);
+        const previousChar = cursor.peek(reverseDelta);
         if (isWhitespace(previousChar)) {
             // 空白のど真ん中にいるときはまず空白をスキップする
             skipWhile(isWhitespace);
             // その後、これから始まる単語の末尾までスキップする
-            const currentChar = getTextOfOffsetRange(document, offset, offset + delta);
+            const currentChar = cursor.peek(delta);
             skipWhile((char) => !isBoundary(currentChar, char));
         } else {
             // すでに単語が始まっている場合は、その単語の末尾までスキップする
-            const previousChar = getTextOfOffsetRange(document, offset - delta, offset);
             skipWhile((char) => !isBoundary(previousChar, char));
         }
     }
 
-    return document.positionAt(offset);
+    return cursor.getPosition();
 }
 
 /**
@@ -532,6 +555,7 @@ function scanForTag(
     direction: 'before' | 'after',
     targetTagName?: string,
 ): { tagName: string; tagStart: number; tagEnd: number } | undefined {
+    const cursor = TextCursor.fromDocument(document, position);
     const tagStack: string[] = [];
     let currentPos = position;
 
@@ -555,7 +579,7 @@ function scanForTag(
         const tagStart = document.offsetAt(tagRange.start);
         const tagEnd = document.offsetAt(tagRange.end);
         // tagRange.start から tagRange.end までのテキストを取得
-        const tagContent = getTextOfOffsetRange(document, tagStart, tagEnd).trim();
+        const tagContent = cursor.getTextByAbsoluteOffset(tagStart, tagEnd).trim();
         const tagInfo = parseTagContent(tagContent);
 
         if (!tagInfo || tagInfo.isSelfClosing) {
@@ -670,31 +694,32 @@ type ArgumentRanges = {
  * @returns 各引数の範囲情報の配列
  */
 function findAllArgumentRanges(document: TextDocument, containerRange: Range): ArgumentRanges[] {
+    const cursor = TextCursor.fromDocument(document, containerRange.start);
     const startOffset = document.offsetAt(containerRange.start);
     const endOffset = document.offsetAt(containerRange.end);
 
     // カンマの位置を探す（文字列やネストした括弧を考慮）
     const commaOffsets: number[] = [];
-    let offset = startOffset;
+    cursor.moveTo(startOffset);
 
-    while (offset < endOffset) {
-        const char = getTextOfOffsetRange(document, offset, offset + 1);
+    while (cursor.getOffset() < endOffset) {
+        const char = cursor.peek(1);
 
         // 文字列リテラルをスキップ
         if (char === '"' || char === "'") {
             const quoteChar = char;
-            offset++;
-            while (offset < endOffset) {
-                const c = getTextOfOffsetRange(document, offset, offset + 1);
+            cursor.move(1);
+            while (cursor.getOffset() < endOffset) {
+                const c = cursor.peek(1);
                 if (c === '\\') {
-                    offset += 2; // エスケープシーケンスをスキップ
+                    cursor.move(2); // エスケープシーケンスをスキップ
                     continue;
                 }
                 if (c === quoteChar) {
-                    offset++;
+                    cursor.move(1);
                     break;
                 }
-                offset++;
+                cursor.move(1);
             }
             continue;
         }
@@ -703,22 +728,22 @@ function findAllArgumentRanges(document: TextDocument, containerRange: Range): A
         if (char === '(' || char === '[' || char === '{') {
             const closeChar = char === '(' ? ')' : char === '[' ? ']' : '}';
             let depth = 1;
-            offset++;
-            while (offset < endOffset && depth > 0) {
-                const c = getTextOfOffsetRange(document, offset, offset + 1);
+            cursor.move(1);
+            while (cursor.getOffset() < endOffset && depth > 0) {
+                const c = cursor.peek(1);
                 if (c === char) depth++;
                 else if (c === closeChar) depth--;
-                offset++;
+                cursor.move(1);
             }
             continue;
         }
 
         // カンマを記録
         if (char === ',') {
-            commaOffsets.push(offset);
+            commaOffsets.push(cursor.getOffset());
         }
 
-        offset++;
+        cursor.move(1);
     }
 
     // 各引数の範囲を計算
@@ -734,13 +759,17 @@ function findAllArgumentRanges(document: TextDocument, containerRange: Range): A
         let innerEnd = rightBoundary;
 
         // 先頭の空白をスキップ
-        while (innerStart < innerEnd && isWhitespace(getTextOfOffsetRange(document, innerStart, innerStart + 1))) {
+        cursor.moveTo(innerStart);
+        while (innerStart < innerEnd && isWhitespace(cursor.peek(1))) {
             innerStart++;
+            cursor.move(1);
         }
 
         // 末尾の空白をスキップ
-        while (innerEnd > innerStart && isWhitespace(getTextOfOffsetRange(document, innerEnd - 1, innerEnd))) {
+        cursor.moveTo(innerEnd);
+        while (innerEnd > innerStart && isWhitespace(cursor.peek(-1))) {
             innerEnd--;
+            cursor.move(-1);
         }
 
         // outer range: コンマを含む範囲
