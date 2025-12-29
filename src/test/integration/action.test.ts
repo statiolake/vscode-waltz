@@ -452,4 +452,56 @@ suite('Action Integration Tests', () => {
             );
         });
     });
+
+    suite('J (join lines) behavior', () => {
+        test('J should join current line with next line', async () => {
+            const doc = await vscode.workspace.openTextDocument({ content: 'line1\nline2\nline3' });
+            const editor = await vscode.window.showTextDocument(doc);
+
+            // Position cursor on line1
+            await setCursorPosition(editor, new Position(0, 0));
+
+            // Execute J
+            await executeWaltz(['J']);
+
+            // Verify: line1 and line2 should be joined
+            assert.strictEqual(doc.getText(), 'line1 line2\nline3', 'Should join line1 and line2 with space');
+        });
+
+        test('J with multicursor should join lines at each cursor position', async () => {
+            const doc = await vscode.workspace.openTextDocument({ content: 'a\nb\nc\nd\ne\nf' });
+            const editor = await vscode.window.showTextDocument(doc);
+
+            // Set up multicursor: one on line 0, one on line 2, one on line 4
+            editor.selections = [
+                new vscode.Selection(new Position(0, 0), new Position(0, 0)),
+                new vscode.Selection(new Position(2, 0), new Position(2, 0)),
+                new vscode.Selection(new Position(4, 0), new Position(4, 0)),
+            ];
+
+            // Execute J
+            await executeWaltz(['J']);
+
+            // Verify: each cursor should join its line with the next
+            // a+b, c+d, e+f
+            assert.strictEqual(doc.getText(), 'a b\nc d\ne f', 'Should join lines at each cursor position');
+        });
+
+        test('J with multicursor on adjacent lines should work correctly', async () => {
+            const doc = await vscode.workspace.openTextDocument({ content: 'line1\nline2\nline3\nline4' });
+            const editor = await vscode.window.showTextDocument(doc);
+
+            // Set up multicursor: on line 0 and line 2
+            editor.selections = [
+                new vscode.Selection(new Position(0, 0), new Position(0, 0)),
+                new vscode.Selection(new Position(2, 0), new Position(2, 0)),
+            ];
+
+            // Execute J
+            await executeWaltz(['J']);
+
+            // Verify: line1+line2, line3+line4
+            assert.strictEqual(doc.getText(), 'line1 line2\nline3 line4', 'Should join lines at each cursor');
+        });
+    });
 });

@@ -232,9 +232,12 @@ export function buildEditActions(): Action[] {
                 if (context.vimState.mode !== 'normal') {
                     ranges = editor.selections.slice();
                 } else {
-                    const activeLine = document.lineAt(editor.selection.active.line);
-                    const nextLine = document.lineAt(editor.selection.active.line + 1);
-                    ranges = [new Range(activeLine.range.start, nextLine.range.end)];
+                    // マルチカーソル対応: 各カーソル位置で現在行と次行を結合
+                    ranges = editor.selections.map((selection) => {
+                        const activeLine = document.lineAt(selection.active.line);
+                        const nextLine = document.lineAt(selection.active.line + 1);
+                        return new Range(activeLine.range.start, nextLine.range.end);
+                    });
                 }
 
                 await editor.edit((editBuilder) => {
