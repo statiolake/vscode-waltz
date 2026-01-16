@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import { Selection, type TextEditor } from 'vscode';
+import { registerTypeCommand, unregisterTypeCommand } from './extension';
 import type { Mode } from './modesTypes';
 import { getCursorStyleForMode } from './utils/cursorStyle';
 import { getModeDisplayText } from './utils/modeDisplay';
@@ -9,6 +10,13 @@ import type { VimState } from './vimState';
 export async function enterMode(vimState: VimState, editor: TextEditor | undefined, mode: Mode): Promise<void> {
     const oldMode = vimState.mode;
     vimState.mode = mode;
+
+    // insert モードに入るときは type コマンドを解除し、出るときは登録する
+    if (mode === 'insert' && oldMode !== 'insert') {
+        unregisterTypeCommand(vimState);
+    } else if (mode !== 'insert' && oldMode === 'insert') {
+        registerTypeCommand(vimState);
+    }
 
     // 選択範囲の調整はモードが実際に変わった場合のみ行う
     reinitUiForState(vimState, editor, { adjustSelections: oldMode !== mode });

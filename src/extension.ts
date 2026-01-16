@@ -1,7 +1,6 @@
 import * as vscode from 'vscode';
 import {
     type ConfigurationChangeEvent,
-    type Disposable,
     type ExtensionContext,
     Range,
     StatusBarAlignment,
@@ -111,8 +110,10 @@ export async function activate(context: ExtensionContext): Promise<{ getVimState
     // Create VimState with the status bar item
     const vimState = createVimState(statusBarItem);
 
+    // vimState は insert モードで開始するので、type コマンドは登録しない。
+    // normal モードに入ったときに registerTypeCommand が呼ばれる。
+
     context.subscriptions.push(
-        ...setupTypeHandler(vimState),
         vscode.window.onDidChangeActiveTextEditor((editor) => {
             onDidChangeActiveTextEditor(vimState, editor);
         }),
@@ -200,79 +201,35 @@ export async function activate(context: ExtensionContext): Promise<{ getVimState
     };
 }
 
-export function setupTypeHandler(vimState: VimState): Disposable[] {
-    // compositionStart の後一度でも replacePreviousChar が発火したかどうかを管理する。
-    // まず、通常のイベントは以下のような流れになる:
-    //
-    // compositionStart called with {}
-    // type called with {text: 'ｎ'}
-    // replacePreviousChar called with {text: 'に', replaceCharCnt: 1}
-    // replacePreviousChar called with {text: 'にｈ', replaceCharCnt: 1}
-    // replacePreviousChar called with {text: 'にほ', replaceCharCnt: 2}
-    // replacePreviousChar called with {text: 'にほｎ', replaceCharCnt: 2}
-    // replacePreviousChar called with {text: 'にほんｇ', replaceCharCnt: 3}
-    // replacePreviousChar called with {text: 'にほんご', replaceCharCnt: 4}
-    // replacePreviousChar called with {text: '日本語', replaceCharCnt: 4}
-    // replacePreviousChar called with {text: '日本語', replaceCharCnt: 3}
-    // compositionEnd called with {}
-    //
-    // しかし、起動直後など、処理にラグが発生した場合？ 以下のように崩れることがある: (Chromium なのか Electron なのかは不明)
-    //
-    // compositionStart called with {}
-    // type called with {text: 'ｎ'}
-    // replacePreviousChar called with {text: 'に', replaceCharCnt: 1}
-    // replacePreviousChar called with {text: 'にｈ', replaceCharCnt: 1}
-    // replacePreviousChar called with {text: 'にほ', replaceCharCnt: 2}
-    // replacePreviousChar called with {text: 'にほｎ', replaceCharCnt: 2}
-    // replacePreviousChar called with {text: 'にほんｇ', replaceCharCnt: 3}
-    // replacePreviousChar called with {text: 'にほんご', replaceCharCnt: 4}
-    // replacePreviousChar called with {text: '日本語', replaceCharCnt: 4}
-    // type called with {text: '日本語'}
-    // compositionEnd called with {}
-    //
-    // このようなケースでは「日本語日本語」と二重に挿入されてしまうため、一度でも replacePreviousChar が発火した場合は
-    // compositionEnd がくるまで type を無視するようにしたい。そのための状態管理フラグ。
-    let replacePreviousCharFired = false;
+/**
+ * type コマンドを登録する。
+ * normal/visual モードで呼び出す。
+ */
+export function registerTypeCommand(vimState: VimState): void {
+    if (vimState.typeCommandDisposable) {
+        // すでに登録済み
+        return;
+    }
 
-    return [
-        vscode.commands.registerCommand('compositionStart', async (e) => {
-            replacePreviousCharFired = false;
-            // compositionStart, compositionEnd はファイルを変更しないので vimState.mode に関係なくデフォルト動作を行うでよし
-            await vscode.commands.executeCommand('default:compositionStart', e);
-        }),
-        vscode.commands.registerCommand('compositionEnd', async (e) => {
-            replacePreviousCharFired = false;
-            // compositionStart, compositionEnd はファイルを変更しないので vimState.mode に関係なくデフォルト動作を行うでよし
-            await vscode.commands.executeCommand('default:compositionEnd', e);
-        }),
-        // replacePreviousChar はファイルを変更してしまうので Insert モード以外では無視する
-        vscode.commands.registerCommand('replacePreviousChar', async (e) => {
-            replacePreviousCharFired = true;
-            if (vimState.mode === 'insert') {
-                await vscode.commands.executeCommand('default:replacePreviousChar', e);
-            }
-        }),
+    vimState.typeCommandDisposable = vscode.commands.registerCommand('type', async (e: { text: string }) => {
+        const editor = vscode.window.activeTextEditor;
+        if (!editor) {
+            // !editor の場合は巨大なファイルを開いている可能性があるので、デフォルト動作を行う
+            await vscode.commands.executeCommand('default:type', e);
+            return;
+        }
 
-        // type は一番最後に登録した方が起動時のバグが少ない
-        vscode.commands.registerCommand('type', async (e) => {
-            const editor = vscode.window.activeTextEditor;
-            if (!editor) {
-                // !editor の場合は巨大なファイルを開いている可能性があるので、デフォルト動作を行う
-                await vscode.commands.executeCommand('default:type', e);
-                return;
-            }
+        await typeHandler(vimState, e.text);
+    });
+}
 
-            if (vimState.mode === 'insert') {
-                if (replacePreviousCharFired) {
-                    // 一度 replacePreviousChar が発火している場合、前述の通り type はラグによる誤った情報なので無視しておく
-                    return;
-                }
-
-                await vscode.commands.executeCommand('default:type', e);
-                return;
-            }
-
-            await typeHandler(vimState, e.text);
-        }),
-    ];
+/**
+ * type コマンドの登録を解除する。
+ * insert モードで呼び出す。VSCode ネイティブの入力処理に任せる。
+ */
+export function unregisterTypeCommand(vimState: VimState): void {
+    if (vimState.typeCommandDisposable) {
+        vimState.typeCommandDisposable.dispose();
+        vimState.typeCommandDisposable = null;
+    }
 }

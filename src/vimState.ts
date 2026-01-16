@@ -1,5 +1,5 @@
 import type { Mutex } from 'await-semaphore';
-import type { StatusBarItem } from 'vscode';
+import type { Disposable, StatusBarItem } from 'vscode';
 import type { Action } from './action/actionTypes';
 import type { Mode } from './modesTypes';
 
@@ -27,6 +27,12 @@ export type VimState = {
               direction: 'before' | 'after';
           }
         | undefined;
+
+    /**
+     * type コマンドの Disposable。
+     * insert モードでは null にして VSCode ネイティブの入力処理に任せる。
+     */
+    typeCommandDisposable: Disposable | null;
 };
 
 export type RegisterContent = {

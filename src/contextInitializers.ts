@@ -24,6 +24,7 @@ export function createVimState(statusBarItem?: StatusBarItem): VimState {
         },
         keptColumn: null,
         lastFt: undefined,
+        typeCommandDisposable: null, // insert モードで開始するので null
     };
 }
 
