@@ -5,6 +5,7 @@ import type { Motion } from '../motion/motionTypes';
 import type { TextObject, TextObjectMatch } from '../textObject/textObjectTypes';
 import { keysParserPrefix, keysParserRegex } from '../utils/keysParser/keysParser';
 import type { KeysParser } from '../utils/keysParser/keysParserTypes';
+import type { VimState } from '../vimState';
 import type { Action, ActionResult } from './actionTypes';
 
 /**
@@ -14,7 +15,7 @@ function createAction(
     keysParser: KeysParser,
     modes: Mode[],
     execute: (context: Context, variables: Record<string, string>) => Promise<void>,
-    options?: { fallback?: () => Promise<void> },
+    options?: { fallback?: (vimState: VimState) => Promise<void> },
 ): Action {
     return async (context: Context, keys: string[]): Promise<ActionResult> => {
         // モードチェック
@@ -36,7 +37,7 @@ function createAction(
         // editor が undefined の場合 (big file など)
         if (!context.editor) {
             if (options?.fallback) {
-                await options.fallback();
+                await options.fallback(context.vimState);
                 return 'executed';
             }
             return 'noMatch';
@@ -55,7 +56,7 @@ export function newAction(config: {
     keys: string[];
     modes: Mode[];
     execute: (context: Context & { editor: NonNullable<Context['editor']> }) => Promise<void>;
-    fallback?: () => Promise<void>;
+    fallback?: (vimState: VimState) => Promise<void>;
 }): Action {
     const keysParser = keysParserPrefix(config.keys);
     return createAction(
@@ -79,7 +80,7 @@ export function newRegexAction(config: {
         context: Context & { editor: NonNullable<Context['editor']> },
         variables: Record<string, string>,
     ) => Promise<void>;
-    fallback?: () => Promise<void>;
+    fallback?: (vimState: VimState) => Promise<void>;
 }): Action {
     const keysParser = keysParserRegex(config.pattern, config.partial);
     return createAction(

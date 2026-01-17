@@ -18,6 +18,9 @@ export function buildModeActions(): Action[] {
             execute: async (context) => {
                 enterMode(context.vimState, context.editor, 'insert');
             },
+            fallback: async (vimState) => {
+                enterMode(vimState, undefined, 'insert');
+            },
         }),
 
         newAction({
@@ -25,6 +28,9 @@ export function buildModeActions(): Action[] {
             modes: ['normal'],
             execute: async (context) => {
                 enterMode(context.vimState, context.editor, 'insert');
+            },
+            fallback: async (vimState) => {
+                enterMode(vimState, undefined, 'insert');
             },
         }),
 
@@ -64,8 +70,9 @@ export function buildModeActions(): Action[] {
                 await vscode.commands.executeCommand('editor.action.insertLineAfter');
                 enterMode(context.vimState, context.editor, 'insert');
             },
-            fallback: async () => {
+            fallback: async (vimState) => {
                 await vscode.commands.executeCommand('editor.action.insertLineAfter');
+                enterMode(vimState, undefined, 'insert');
             },
         }),
 
@@ -77,8 +84,9 @@ export function buildModeActions(): Action[] {
                 await vscode.commands.executeCommand('editor.action.insertLineBefore');
                 enterMode(context.vimState, context.editor, 'insert');
             },
-            fallback: async () => {
+            fallback: async (vimState) => {
                 await vscode.commands.executeCommand('editor.action.insertLineBefore');
+                enterMode(vimState, undefined, 'insert');
             },
         }),
 
