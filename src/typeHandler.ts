@@ -13,7 +13,6 @@ export async function typeHandler(vimState: VimState, char: string): Promise<voi
     // ここで、少なくともタイプしたキーの数だけ Mutex を待っているタスクがある状態になるので、一回の Mutex 内で一文字以
     // 上 keysQueued を処理すれば、処理しきれずに止まってしまうことはない。
     vimState.keysQueued.push(char);
-    console.log('queued char:', char);
     void vimState.actionMutex.use(async () => {
         // そうでなければ先頭から一文字取り出して処理する。
         const char = vimState.keysQueued.shift();
@@ -42,28 +41,18 @@ export async function typeHandler(vimState: VimState, char: string): Promise<voi
 
             if (result === 'executed') {
                 executed = true;
-                console.log('Action executed for keys:', vimState.keysPressed);
                 break;
             } else if (result === 'needsMoreKey') {
                 needsMore = true;
             }
         }
 
-        // Debug logging
-        if (!executed && !needsMore) {
-            console.log('No action matched for keys:', vimState.keysPressed);
-        } else if (!executed && needsMore) {
-            console.log('Action needs more keys:', vimState.keysPressed);
-        }
-
         if (executed) {
             // If an action was executed, clear the keys
             vimState.keysPressed = [];
-            console.log('cleared due to execution');
         } else if (!needsMore) {
             // No action matched and no action needs more input, clear the keys
             vimState.keysPressed = [];
-            console.log('cleared due to no match');
         }
     });
 }
