@@ -31,7 +31,7 @@ export async function reinitUiForState(
     // UI 関連は念のため常に再反映する
     updateModeContext(vimState.mode);
     updateCursorStyle(editor, vimState.mode);
-    updateStatusBar(vimState, vimState.mode);
+    updateStatusBar(vimState, vimState.mode, editor === undefined);
 
     // ここから先の処理は重たく副作用も大きいので、明示的に指定されない限りスキップする
     if (!opts.adjustSelections) return;
@@ -67,10 +67,10 @@ function updateCursorStyle(editor: TextEditor | undefined, mode: Mode): void {
     editor.options.cursorStyle = getCursorStyleForMode(mode);
 }
 
-function updateStatusBar(vimState: VimState, mode: Mode): void {
+function updateStatusBar(vimState: VimState, mode: Mode, isLimited: boolean): void {
     const { statusBarItem } = vimState;
     if (!statusBarItem) return;
 
-    statusBarItem.text = getModeDisplayText(mode);
+    statusBarItem.text = getModeDisplayText(mode, isLimited);
     statusBarItem.show();
 }
