@@ -22,7 +22,7 @@ import type { TextObject } from './textObjectTypes';
  */
 export function motionToTextObject(motion: Motion): TextObject {
     return (context, keys, position) => {
-        const motionResult = motion(context, keys, position);
+        const motionResult = motion.execute(context, keys, position);
 
         if (motionResult.result === 'noMatch') {
             return { result: 'noMatch' };

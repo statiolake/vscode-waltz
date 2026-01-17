@@ -35,6 +35,9 @@ export function buildEditActions(): Action[] {
                 await setRegisterContents(context.vimState, contents);
                 await vscode.commands.executeCommand('deleteRight');
             },
+            fallback: async () => {
+                await vscode.commands.executeCommand('deleteRight');
+            },
         }),
 
         // p - レジスタの内容をカーソル後にペースト

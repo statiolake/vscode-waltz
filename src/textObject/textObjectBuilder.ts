@@ -1,15 +1,17 @@
-import type { Position, Range } from 'vscode';
+import type { Position, Range, TextEditor } from 'vscode';
 import * as vscode from 'vscode';
 import type { Context } from '../context';
 import { keysParserPrefix, keysParserRegex } from '../utils/keysParser/keysParser';
 import type { TextObject, TextObjectResult } from './textObjectTypes';
+
+type ContextWithEditor = Context & { editor: TextEditor };
 
 /**
  * 固定キーシーケンスでTextObjectを作成
  */
 export function newTextObject(config: {
     keys: string[];
-    compute: (context: Context, position: Position) => Range | 'noMatch';
+    compute: (context: ContextWithEditor, position: Position) => Range | 'noMatch';
 }): TextObject {
     const keysParser = keysParserPrefix(config.keys);
 
@@ -24,7 +26,12 @@ export function newTextObject(config: {
             return { result: 'needsMoreKey' };
         }
 
-        const range = config.compute(context, position);
+        // editor が undefined の場合は noMatch
+        if (!context.editor) {
+            return { result: 'noMatch' };
+        }
+
+        const range = config.compute(context as ContextWithEditor, position);
         if (range === 'noMatch') {
             return { result: 'noMatch' };
         }
@@ -38,7 +45,7 @@ export function newTextObject(config: {
 export function newRegexTextObject(config: {
     pattern: RegExp;
     partial: RegExp;
-    compute: (context: Context, position: Position, variables: Record<string, string>) => Range | 'noMatch';
+    compute: (context: ContextWithEditor, position: Position, variables: Record<string, string>) => Range | 'noMatch';
 }): TextObject {
     const keysParser = keysParserRegex(config.pattern, config.partial);
 
@@ -53,7 +60,12 @@ export function newRegexTextObject(config: {
             return { result: 'needsMoreKey' };
         }
 
-        const range = config.compute(context, position, parseResult.variables);
+        // editor が undefined の場合は noMatch
+        if (!context.editor) {
+            return { result: 'noMatch' };
+        }
+
+        const range = config.compute(context as ContextWithEditor, position, parseResult.variables);
         if (range === 'noMatch') {
             return { result: 'noMatch' };
         }
@@ -64,7 +76,7 @@ export function newRegexTextObject(config: {
 export function newWholeLineTextObject(config: { keys: string[]; includeLineBreak: boolean }): TextObject {
     const baseTextObject = newTextObject({
         keys: config.keys,
-        compute: (context: Context, position: Position) => {
+        compute: (context: ContextWithEditor, position: Position) => {
             const document = context.editor.document;
             const line = document.lineAt(position.line);
 

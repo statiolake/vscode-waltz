@@ -1,4 +1,5 @@
-import { Position, type TextDocument } from 'vscode';
+import * as vscode from 'vscode';
+import { Position, type TextDocument, type TextEditor } from 'vscode';
 import type { Context } from '../context';
 import {
     findAdjacentPosition,
@@ -51,6 +52,9 @@ export function buildMotions(): Motion[] {
             compute: (_context, position) => {
                 return positionLeft(position);
             },
+            fallback: async () => {
+                await vscode.commands.executeCommand('cursorLeft');
+            },
         }),
     );
 
@@ -59,6 +63,9 @@ export function buildMotions(): Motion[] {
             keys: ['l'],
             compute: (context, position) => {
                 return positionRightNormal(context.editor.document, position);
+            },
+            fallback: async () => {
+                await vscode.commands.executeCommand('cursorRight');
             },
         }),
     );
@@ -72,6 +79,9 @@ export function buildMotions(): Motion[] {
                 }
                 return position;
             },
+            fallback: async () => {
+                await vscode.commands.executeCommand('cursorDown');
+            },
         }),
     );
 
@@ -83,6 +93,9 @@ export function buildMotions(): Motion[] {
                     return new Position(position.line - 1, context.vimState.keptColumn ?? position.character);
                 }
                 return position;
+            },
+            fallback: async () => {
+                await vscode.commands.executeCommand('cursorUp');
             },
         }),
     );
@@ -97,6 +110,9 @@ export function buildMotions(): Motion[] {
                 const result = findWordBoundary(document, 'nearer', 'after', nextPos, isCharacterTypeBoundary);
                 return result ?? position;
             },
+            fallback: async () => {
+                await vscode.commands.executeCommand('cursorWordStartRight');
+            },
         }),
     );
 
@@ -108,6 +124,9 @@ export function buildMotions(): Motion[] {
                 const nextPos = findAdjacentPosition(document, 'after', position);
                 const result = findWordBoundary(document, 'nearer', 'after', nextPos, isWhitespaceBoundary);
                 return result ?? position;
+            },
+            fallback: async () => {
+                await vscode.commands.executeCommand('cursorWordStartRight');
             },
         }),
     );
@@ -121,6 +140,9 @@ export function buildMotions(): Motion[] {
                 const result = findWordBoundary(document, 'further', 'before', nextPos, isCharacterTypeBoundary);
                 return result ?? position;
             },
+            fallback: async () => {
+                await vscode.commands.executeCommand('cursorWordStartLeft');
+            },
         }),
     );
 
@@ -132,6 +154,9 @@ export function buildMotions(): Motion[] {
                 const nextPos = findAdjacentPosition(document, 'before', position);
                 const result = findWordBoundary(document, 'further', 'before', nextPos, isWhitespaceBoundary);
                 return result ?? position;
+            },
+            fallback: async () => {
+                await vscode.commands.executeCommand('cursorWordStartLeft');
             },
         }),
     );
@@ -145,6 +170,9 @@ export function buildMotions(): Motion[] {
                 const result = findWordBoundary(document, 'further', 'after', nextPos, isCharacterTypeBoundary);
                 return result ?? position;
             },
+            fallback: async () => {
+                await vscode.commands.executeCommand('cursorWordEndRight');
+            },
         }),
     );
 
@@ -157,6 +185,9 @@ export function buildMotions(): Motion[] {
                 const nextPos = findAdjacentPosition(document, 'after', position);
                 const result = findWordBoundary(document, 'further', 'after', nextPos, isWhitespaceBoundary);
                 return result ?? position;
+            },
+            fallback: async () => {
+                await vscode.commands.executeCommand('cursorWordEndRight');
             },
         }),
     );
@@ -194,6 +225,9 @@ export function buildMotions(): Motion[] {
             compute: (context, _position) => {
                 return findDocumentStart(context.editor.document);
             },
+            fallback: async () => {
+                await vscode.commands.executeCommand('cursorTop');
+            },
         }),
     );
 
@@ -202,6 +236,9 @@ export function buildMotions(): Motion[] {
             keys: ['G'],
             compute: (context, _position) => {
                 return findDocumentEnd(context.editor.document);
+            },
+            fallback: async () => {
+                await vscode.commands.executeCommand('cursorBottom');
             },
         }),
     );
@@ -231,6 +268,9 @@ export function buildMotions(): Motion[] {
             compute: (context, position) => {
                 return findLineEnd(context.editor.document, position);
             },
+            fallback: async () => {
+                await vscode.commands.executeCommand('cursorEnd');
+            },
         }),
     );
 
@@ -240,6 +280,9 @@ export function buildMotions(): Motion[] {
             compute: (context, position) => {
                 return findLineStart(context.editor.document, position);
             },
+            fallback: async () => {
+                await vscode.commands.executeCommand('cursorHome');
+            },
         }),
     );
 
@@ -248,6 +291,9 @@ export function buildMotions(): Motion[] {
             keys: ['^'],
             compute: (context, position) => {
                 return findLineStartAfterIndent(context.editor.document, position);
+            },
+            fallback: async () => {
+                await vscode.commands.executeCommand('cursorHome');
             },
         }),
     );
@@ -262,7 +308,7 @@ export function buildMotions(): Motion[] {
     );
 
     const computeFtMotion = (
-        context: Context,
+        context: Context & { editor: TextEditor },
         distance: 'nearer' | 'further',
         character: string,
         direction: 'after' | 'before',

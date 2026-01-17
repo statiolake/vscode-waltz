@@ -1,4 +1,4 @@
-import type { Position } from 'vscode';
+import type { Position, TextEditor } from 'vscode';
 import type { Context } from '../context';
 import { keysParserPrefix, keysParserRegex } from '../utils/keysParser/keysParser';
 import type { Motion, MotionResult } from './motionTypes';
@@ -8,11 +8,12 @@ import type { Motion, MotionResult } from './motionTypes';
  */
 export function newMotion(config: {
     keys: string[];
-    compute: (context: Context, position: Position) => Position;
+    compute: (context: Context & { editor: TextEditor }, position: Position) => Position;
+    fallback?: () => Promise<void>;
 }): Motion {
     const keysParser = keysParserPrefix(config.keys);
 
-    return (context: Context, keys: string[], position: Position): MotionResult => {
+    const execute = (context: Context, keys: string[], position: Position): MotionResult => {
         const parseResult = keysParser(keys);
 
         if (parseResult.result === 'noMatch') {
@@ -23,7 +24,12 @@ export function newMotion(config: {
             return { result: 'needsMoreKey' };
         }
 
-        const requestedPosition = config.compute(context, position);
+        // editor が undefined の場合は noMatch を返す (fallback は別途処理)
+        if (!context.editor) {
+            return { result: 'noMatch' };
+        }
+
+        const requestedPosition = config.compute(context as Context & { editor: TextEditor }, position);
         const newPosition = context.editor.document.validatePosition(requestedPosition);
         if (newPosition.character !== requestedPosition.character) {
             context.vimState.keptColumn = requestedPosition.character;
@@ -31,6 +37,12 @@ export function newMotion(config: {
             context.vimState.keptColumn = null;
         }
         return { result: 'match', position: requestedPosition, remainingKeys: parseResult.remainingKeys };
+    };
+
+    return {
+        execute,
+        fallback: config.fallback,
+        keysParser,
     };
 }
 
@@ -40,11 +52,16 @@ export function newMotion(config: {
 export function newRegexMotion(config: {
     pattern: RegExp;
     partial: RegExp;
-    compute: (context: Context, position: Position, variables: Record<string, string>) => Position;
+    compute: (
+        context: Context & { editor: TextEditor },
+        position: Position,
+        variables: Record<string, string>,
+    ) => Position;
+    fallback?: () => Promise<void>;
 }): Motion {
     const keysParser = keysParserRegex(config.pattern, config.partial);
 
-    return (context: Context, keys: string[], position: Position): MotionResult => {
+    const execute = (context: Context, keys: string[], position: Position): MotionResult => {
         const parseResult = keysParser(keys);
 
         if (parseResult.result === 'noMatch') {
@@ -55,7 +72,22 @@ export function newRegexMotion(config: {
             return { result: 'needsMoreKey' };
         }
 
-        const newPosition = config.compute(context, position, parseResult.variables);
+        // editor が undefined の場合は noMatch を返す (fallback は別途処理)
+        if (!context.editor) {
+            return { result: 'noMatch' };
+        }
+
+        const newPosition = config.compute(
+            context as Context & { editor: TextEditor },
+            position,
+            parseResult.variables,
+        );
         return { result: 'match', position: newPosition, remainingKeys: parseResult.remainingKeys };
+    };
+
+    return {
+        execute,
+        fallback: config.fallback,
+        keysParser,
     };
 }

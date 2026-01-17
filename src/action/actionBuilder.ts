@@ -14,6 +14,7 @@ function createAction(
     keysParser: KeysParser,
     modes: Mode[],
     execute: (context: Context, variables: Record<string, string>) => Promise<void>,
+    options?: { fallback?: () => Promise<void> },
 ): Action {
     return async (context: Context, keys: string[]): Promise<ActionResult> => {
         // モードチェック
@@ -32,6 +33,15 @@ function createAction(
             return 'needsMoreKey';
         }
 
+        // editor が undefined の場合 (big file など)
+        if (!context.editor) {
+            if (options?.fallback) {
+                await options.fallback();
+                return 'executed';
+            }
+            return 'noMatch';
+        }
+
         // 実行
         await execute(context, parseResult.variables);
         return 'executed';
@@ -44,12 +54,18 @@ function createAction(
 export function newAction(config: {
     keys: string[];
     modes: Mode[];
-    execute: (context: Context) => Promise<void>;
+    execute: (context: Context & { editor: NonNullable<Context['editor']> }) => Promise<void>;
+    fallback?: () => Promise<void>;
 }): Action {
     const keysParser = keysParserPrefix(config.keys);
-    return createAction(keysParser, config.modes, (context, _variables) => {
-        return config.execute(context);
-    });
+    return createAction(
+        keysParser,
+        config.modes,
+        (context, _variables) => {
+            return config.execute(context as Context & { editor: NonNullable<Context['editor']> });
+        },
+        { fallback: config.fallback },
+    );
 }
 
 /**
@@ -59,10 +75,21 @@ export function newRegexAction(config: {
     pattern: RegExp;
     partial: RegExp;
     modes: Mode[];
-    execute: (context: Context, variables: Record<string, string>) => Promise<void>;
+    execute: (
+        context: Context & { editor: NonNullable<Context['editor']> },
+        variables: Record<string, string>,
+    ) => Promise<void>;
+    fallback?: () => Promise<void>;
 }): Action {
     const keysParser = keysParserRegex(config.pattern, config.partial);
-    return createAction(keysParser, config.modes, config.execute);
+    return createAction(
+        keysParser,
+        config.modes,
+        (context, variables) => {
+            return config.execute(context as Context & { editor: NonNullable<Context['editor']> }, variables);
+        },
+        { fallback: config.fallback },
+    );
 }
 
 /**
@@ -76,11 +103,25 @@ export function motionToAction(motion: Motion): Action {
         // モードチェック
         if (!modes.includes(context.vimState.mode)) return 'noMatch';
 
+        // editor が undefined の場合 (big file など)
+        if (!context.editor) {
+            // fallback があればキーマッチング後に実行
+            if (motion.fallback) {
+                const parseResult = motion.keysParser(keys);
+                if (parseResult.result === 'match') {
+                    await motion.fallback();
+                    return 'executed';
+                }
+                return parseResult.result;
+            }
+            return 'noMatch';
+        }
+
         // Motion を各カーソル位置で実行
         // 一つでも match 以外があれば、すぐ返す (パフォーマンスのため)
         const results = [];
         for (const selection of context.editor.selections) {
-            const result = motion(context, keys, selection.active);
+            const result = motion.execute(context, keys, selection.active);
             if (result.result !== 'match') return result.result;
             results.push(result);
         }
@@ -109,6 +150,9 @@ export function textObjectToVisualAction(textObject: TextObject): Action {
     return async (context: Context, keys: string[]): Promise<ActionResult> => {
         // モードチェック
         if (!modes.includes(context.vimState.mode)) return 'noMatch';
+
+        // editor が undefined の場合は noMatch
+        if (!context.editor) return 'noMatch';
 
         // 各カーソル位置で TextObject を実行
         // 一つでも match 以外があれば、すぐ返す (パフォーマンスのため)
@@ -156,6 +200,8 @@ export function textObjectToVisualAction(textObject: TextObject): Action {
     };
 }
 
+type ContextWithEditor = Context & { editor: NonNullable<Context['editor']> };
+
 /**
  * Operator + TextObject のActionを作成
  *
@@ -166,7 +212,7 @@ export function newOperatorAction(config: {
     operatorKeys: string[];
     modes: Mode[];
     textObjects: TextObject[];
-    execute: (context: Context, matches: TextObjectMatch[]) => Promise<void>;
+    execute: (context: ContextWithEditor, matches: TextObjectMatch[]) => Promise<void>;
 }): Action {
     const operatorParser = keysParserPrefix(config.operatorKeys);
 
@@ -205,6 +251,9 @@ export function newOperatorAction(config: {
             return 'needsMoreKey';
         }
 
+        // editor が undefined の場合は noMatch
+        if (!context.editor) return 'noMatch';
+
         // 各TextObjectを試す
         const editor = context.editor;
         for (const textObject of config.textObjects) {
@@ -235,7 +284,7 @@ export function newOperatorAction(config: {
             });
 
             // await で実行
-            await config.execute(context, matches);
+            await config.execute(context as ContextWithEditor, matches);
             return 'executed';
         }
 

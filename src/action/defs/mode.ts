@@ -64,6 +64,9 @@ export function buildModeActions(): Action[] {
                 await vscode.commands.executeCommand('editor.action.insertLineAfter');
                 enterMode(context.vimState, context.editor, 'insert');
             },
+            fallback: async () => {
+                await vscode.commands.executeCommand('editor.action.insertLineAfter');
+            },
         }),
 
         // O - 上に新しい行を挿入して Insert モード
@@ -73,6 +76,9 @@ export function buildModeActions(): Action[] {
             execute: async (context) => {
                 await vscode.commands.executeCommand('editor.action.insertLineBefore');
                 enterMode(context.vimState, context.editor, 'insert');
+            },
+            fallback: async () => {
+                await vscode.commands.executeCommand('editor.action.insertLineBefore');
             },
         }),
 

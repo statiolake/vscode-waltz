@@ -53,6 +53,9 @@ export function createYsSurroundAction(textObjects: TextObject[]): Action {
             return 'needsMoreKey';
         }
 
+        // editor が undefined の場合は noMatch
+        if (!context.editor) return 'noMatch';
+
         const editor = context.editor;
         // 各 TextObject を試す
         for (const textObject of textObjects) {
