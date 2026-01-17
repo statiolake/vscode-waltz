@@ -114,8 +114,9 @@ export function buildMotions(): Motion[] {
                 const result = findWordBoundary(document, 'nearer', 'after', nextPos, isCharacterTypeBoundary);
                 return result ?? position;
             },
-            fallback: async () => {
-                await vscode.commands.executeCommand('cursorWordStartRight');
+            fallback: async (vimState) => {
+                const cmd = vimState.mode === 'normal' ? 'cursorWordStartRight' : 'cursorWordStartRightSelect';
+                await vscode.commands.executeCommand(cmd);
             },
         }),
     );
@@ -129,8 +130,9 @@ export function buildMotions(): Motion[] {
                 const result = findWordBoundary(document, 'nearer', 'after', nextPos, isWhitespaceBoundary);
                 return result ?? position;
             },
-            fallback: async () => {
-                await vscode.commands.executeCommand('cursorWordStartRight');
+            fallback: async (vimState) => {
+                const cmd = vimState.mode === 'normal' ? 'cursorWordStartRight' : 'cursorWordStartRightSelect';
+                await vscode.commands.executeCommand(cmd);
             },
         }),
     );
@@ -144,8 +146,9 @@ export function buildMotions(): Motion[] {
                 const result = findWordBoundary(document, 'further', 'before', nextPos, isCharacterTypeBoundary);
                 return result ?? position;
             },
-            fallback: async () => {
-                await vscode.commands.executeCommand('cursorWordStartLeft');
+            fallback: async (vimState) => {
+                const cmd = vimState.mode === 'normal' ? 'cursorWordStartLeft' : 'cursorWordStartLeftSelect';
+                await vscode.commands.executeCommand(cmd);
             },
         }),
     );
@@ -159,8 +162,9 @@ export function buildMotions(): Motion[] {
                 const result = findWordBoundary(document, 'further', 'before', nextPos, isWhitespaceBoundary);
                 return result ?? position;
             },
-            fallback: async () => {
-                await vscode.commands.executeCommand('cursorWordStartLeft');
+            fallback: async (vimState) => {
+                const cmd = vimState.mode === 'normal' ? 'cursorWordStartLeft' : 'cursorWordStartLeftSelect';
+                await vscode.commands.executeCommand(cmd);
             },
         }),
     );
@@ -174,8 +178,9 @@ export function buildMotions(): Motion[] {
                 const result = findWordBoundary(document, 'further', 'after', nextPos, isCharacterTypeBoundary);
                 return result ?? position;
             },
-            fallback: async () => {
-                await vscode.commands.executeCommand('cursorWordEndRight');
+            fallback: async (vimState) => {
+                const cmd = vimState.mode === 'normal' ? 'cursorWordEndRight' : 'cursorWordEndRightSelect';
+                await vscode.commands.executeCommand(cmd);
             },
         }),
     );
@@ -190,8 +195,9 @@ export function buildMotions(): Motion[] {
                 const result = findWordBoundary(document, 'further', 'after', nextPos, isWhitespaceBoundary);
                 return result ?? position;
             },
-            fallback: async () => {
-                await vscode.commands.executeCommand('cursorWordEndRight');
+            fallback: async (vimState) => {
+                const cmd = vimState.mode === 'normal' ? 'cursorWordEndRight' : 'cursorWordEndRightSelect';
+                await vscode.commands.executeCommand(cmd);
             },
         }),
     );
@@ -229,8 +235,9 @@ export function buildMotions(): Motion[] {
             compute: (context, _position) => {
                 return findDocumentStart(context.editor.document);
             },
-            fallback: async () => {
-                await vscode.commands.executeCommand('cursorTop');
+            fallback: async (vimState) => {
+                const cmd = vimState.mode === 'normal' ? 'cursorTop' : 'cursorTopSelect';
+                await vscode.commands.executeCommand(cmd);
             },
         }),
     );
@@ -241,8 +248,9 @@ export function buildMotions(): Motion[] {
             compute: (context, _position) => {
                 return findDocumentEnd(context.editor.document);
             },
-            fallback: async () => {
-                await vscode.commands.executeCommand('cursorBottom');
+            fallback: async (vimState) => {
+                const cmd = vimState.mode === 'normal' ? 'cursorBottom' : 'cursorBottomSelect';
+                await vscode.commands.executeCommand(cmd);
             },
         }),
     );
@@ -272,8 +280,9 @@ export function buildMotions(): Motion[] {
             compute: (context, position) => {
                 return findLineEnd(context.editor.document, position);
             },
-            fallback: async () => {
-                await vscode.commands.executeCommand('cursorEnd');
+            fallback: async (vimState) => {
+                const cmd = vimState.mode === 'normal' ? 'cursorEnd' : 'cursorEndSelect';
+                await vscode.commands.executeCommand(cmd);
             },
         }),
     );
@@ -284,8 +293,9 @@ export function buildMotions(): Motion[] {
             compute: (context, position) => {
                 return findLineStart(context.editor.document, position);
             },
-            fallback: async () => {
-                await vscode.commands.executeCommand('cursorHome');
+            fallback: async (vimState) => {
+                const cmd = vimState.mode === 'normal' ? 'cursorHome' : 'cursorHomeSelect';
+                await vscode.commands.executeCommand(cmd);
             },
         }),
     );
@@ -296,8 +306,9 @@ export function buildMotions(): Motion[] {
             compute: (context, position) => {
                 return findLineStartAfterIndent(context.editor.document, position);
             },
-            fallback: async () => {
-                await vscode.commands.executeCommand('cursorHome');
+            fallback: async (vimState) => {
+                const cmd = vimState.mode === 'normal' ? 'cursorHome' : 'cursorHomeSelect';
+                await vscode.commands.executeCommand(cmd);
             },
         }),
     );

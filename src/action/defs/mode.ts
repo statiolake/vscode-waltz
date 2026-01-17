@@ -110,7 +110,8 @@ export function buildModeActions(): Action[] {
                 enterMode(context.vimState, context.editor, 'visualLine');
             },
             fallback: async (vimState) => {
-                enterMode(vimState, undefined, 'visualLine');
+                // Big file モードでは visualLine の decoration が使えないので visual に
+                enterMode(vimState, undefined, 'visual');
             },
         }),
     ];
