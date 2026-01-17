@@ -7,9 +7,9 @@ import type { VimState } from './vimState';
 export async function escapeHandler(vimState: VimState): Promise<void> {
     const editor = vscode.window.activeTextEditor;
 
-    // editor が undefined (big file 等) の場合も insert → normal の遷移は行う
+    // editor が undefined (big file 等) の場合もモード遷移は行う
     if (!editor) {
-        if (vimState.mode === 'insert') {
+        if (vimState.mode !== 'normal') {
             await enterMode(vimState, undefined, 'normal');
         }
         vimState.keysPressed = [];

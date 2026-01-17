@@ -1,6 +1,7 @@
 import type { Position, TextEditor } from 'vscode';
 import type { Context } from '../context';
 import { keysParserPrefix, keysParserRegex } from '../utils/keysParser/keysParser';
+import type { VimState } from '../vimState';
 import type { Motion, MotionResult } from './motionTypes';
 
 /**
@@ -9,7 +10,7 @@ import type { Motion, MotionResult } from './motionTypes';
 export function newMotion(config: {
     keys: string[];
     compute: (context: Context & { editor: TextEditor }, position: Position) => Position;
-    fallback?: () => Promise<void>;
+    fallback?: (vimState: VimState) => Promise<void>;
 }): Motion {
     const keysParser = keysParserPrefix(config.keys);
 
@@ -57,7 +58,7 @@ export function newRegexMotion(config: {
         position: Position,
         variables: Record<string, string>,
     ) => Position;
-    fallback?: () => Promise<void>;
+    fallback?: (vimState: VimState) => Promise<void>;
 }): Motion {
     const keysParser = keysParserRegex(config.pattern, config.partial);
 

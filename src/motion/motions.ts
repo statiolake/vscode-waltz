@@ -52,8 +52,9 @@ export function buildMotions(): Motion[] {
             compute: (_context, position) => {
                 return positionLeft(position);
             },
-            fallback: async () => {
-                await vscode.commands.executeCommand('cursorLeft');
+            fallback: async (vimState) => {
+                const cmd = vimState.mode === 'normal' ? 'cursorLeft' : 'cursorLeftSelect';
+                await vscode.commands.executeCommand(cmd);
             },
         }),
     );
@@ -64,8 +65,9 @@ export function buildMotions(): Motion[] {
             compute: (context, position) => {
                 return positionRightNormal(context.editor.document, position);
             },
-            fallback: async () => {
-                await vscode.commands.executeCommand('cursorRight');
+            fallback: async (vimState) => {
+                const cmd = vimState.mode === 'normal' ? 'cursorRight' : 'cursorRightSelect';
+                await vscode.commands.executeCommand(cmd);
             },
         }),
     );
@@ -79,8 +81,9 @@ export function buildMotions(): Motion[] {
                 }
                 return position;
             },
-            fallback: async () => {
-                await vscode.commands.executeCommand('cursorDown');
+            fallback: async (vimState) => {
+                const cmd = vimState.mode === 'normal' ? 'cursorDown' : 'cursorDownSelect';
+                await vscode.commands.executeCommand(cmd);
             },
         }),
     );
@@ -94,8 +97,9 @@ export function buildMotions(): Motion[] {
                 }
                 return position;
             },
-            fallback: async () => {
-                await vscode.commands.executeCommand('cursorUp');
+            fallback: async (vimState) => {
+                const cmd = vimState.mode === 'normal' ? 'cursorUp' : 'cursorUpSelect';
+                await vscode.commands.executeCommand(cmd);
             },
         }),
     );

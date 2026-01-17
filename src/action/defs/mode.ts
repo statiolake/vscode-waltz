@@ -97,6 +97,9 @@ export function buildModeActions(): Action[] {
             execute: async (context) => {
                 enterMode(context.vimState, context.editor, 'visual');
             },
+            fallback: async (vimState) => {
+                enterMode(vimState, undefined, 'visual');
+            },
         }),
 
         // V - Visual Line モードに入る
@@ -105,6 +108,9 @@ export function buildModeActions(): Action[] {
             modes: ['normal', 'visual'],
             execute: async (context) => {
                 enterMode(context.vimState, context.editor, 'visualLine');
+            },
+            fallback: async (vimState) => {
+                enterMode(vimState, undefined, 'visualLine');
             },
         }),
     ];

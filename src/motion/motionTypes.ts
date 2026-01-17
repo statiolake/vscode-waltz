@@ -1,6 +1,7 @@
 import type { Position } from 'vscode';
 import type { Context } from '../context';
 import type { KeysParser } from '../utils/keysParser/keysParserTypes';
+import type { VimState } from '../vimState';
 
 /**
  * MotionResult: Motion実行の結果
@@ -23,10 +24,11 @@ export type MotionExecutor = (context: Context, keys: string[], position: Positi
  *
  * execute: 通常の実行関数
  * fallback: editor が undefined の場合に実行される関数 (big file など)
+ *           vimState を受け取り、mode に応じて処理を分岐可能
  * keysParser: キーパーサー (fallback 時のキーマッチングに使用)
  */
 export type Motion = {
     readonly execute: MotionExecutor;
-    readonly fallback?: () => Promise<void>;
+    readonly fallback?: (vimState: VimState) => Promise<void>;
     readonly keysParser: KeysParser;
 };

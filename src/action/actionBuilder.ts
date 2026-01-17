@@ -96,27 +96,33 @@ export function newRegexAction(config: {
 /**
  * MotionをActionに変換
  * Motion自体がキーパースを行うため、単純に委譲する
+ * normal モードのみ対応。visual 系は textObjectToVisualAction 経由
+ * ただし、big file (editor === undefined) の場合は fallback で visual も対応
  */
 export function motionToAction(motion: Motion): Action {
-    const modes = ['normal'];
+    const normalModes = ['normal'];
+    const visualModes = ['visual', 'visualLine'];
 
     return async (context: Context, keys: string[]): Promise<ActionResult> => {
-        // モードチェック
-        if (!modes.includes(context.vimState.mode)) return 'noMatch';
+        const isNormal = normalModes.includes(context.vimState.mode);
+        const isVisual = visualModes.includes(context.vimState.mode);
 
         // editor が undefined の場合 (big file など)
         if (!context.editor) {
-            // fallback があればキーマッチング後に実行
-            if (motion.fallback) {
+            // fallback があればキーマッチング後に実行 (normal/visual 両方)
+            if (motion.fallback && (isNormal || isVisual)) {
                 const parseResult = motion.keysParser(keys);
                 if (parseResult.result === 'match') {
-                    await motion.fallback();
+                    await motion.fallback(context.vimState);
                     return 'executed';
                 }
                 return parseResult.result;
             }
             return 'noMatch';
         }
+
+        // 通常の editor ありの場合は normal モードのみ
+        if (!isNormal) return 'noMatch';
 
         // Motion を各カーソル位置で実行
         // 一つでも match 以外があれば、すぐ返す (パフォーマンスのため)
