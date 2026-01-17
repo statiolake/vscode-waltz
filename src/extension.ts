@@ -61,22 +61,12 @@ async function onDidChangeTextEditorSelection(vimState: VimState, e: TextEditorS
 
 async function onDidChangeActiveTextEditor(vimState: VimState, editor: TextEditor | undefined): Promise<void> {
     console.log(`Active editor changed: ${editor?.document.uri.toString()}`);
+
+    // editor が undefined の場合 (巨大ファイル、エディタグループが空など) でも normal モードに遷移する。
+    // 巨大ファイルの場合は fallback が定義されている motion/action が動作する。
     if (editor === undefined) {
-        // UNSUPPORTED モードに遷移する。
-        //
-        // 通常のタブ切り替え時は text1.txt -> undefined -> text2.txt のように切り替わるため、一瞬の UNSUPPORTED 状態を
-        // 経てすぐ NORMAL モードへ移行する。一方で以下のような場合は UNSUPPORTED 状態がキープされる。
-        //
-        // - エディタを完全に閉じてエディタグループが空になった場合
-        // - 巨大ファイルを開いた場合
-        // - その他
-        //
-        // この中でも特に切り替えた先が巨大ファイルの場合、見た目上 VS Code としては普通にエディタが開いていて編集操作も
-        // できるにもかかわらず、Waltz にはデータが渡されないためモーションキー含めてすべての操作を受け付けないようにな
-        // る。なので UNSUPPORTED なエディタでは Waltz 特有のキー操作をすべて無効化して普通の VS Code としてフォールバッ
-        // クしてほしくなる。そういったニーズに応えられるよう、UNSUPPORTED というモードとして独立させている。
-        // UNSUPPORTED は普通にモードの一種のように扱われるので、keybindings.json の when 節でも当然利用可能。
-        await enterMode(vimState, editor, 'unsupported');
+        await enterMode(vimState, editor, 'normal');
+        vimState.keysPressed = [];
         return;
     }
 
@@ -212,13 +202,8 @@ export function registerTypeCommand(vimState: VimState): void {
     }
 
     vimState.typeCommandDisposable = vscode.commands.registerCommand('type', async (e: { text: string }) => {
-        const editor = vscode.window.activeTextEditor;
-        if (!editor) {
-            // !editor の場合は巨大なファイルを開いている可能性があるので、デフォルト動作を行う
-            await vscode.commands.executeCommand('default:type', e);
-            return;
-        }
-
+        // editor が undefined (巨大ファイル等) でも typeHandler を呼び出す。
+        // typeHandler 内で fallback のある action は実行される。
         await typeHandler(vimState, e.text);
     });
 }
