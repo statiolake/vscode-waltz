@@ -179,11 +179,10 @@ export async function activate(context: ExtensionContext): Promise<{ getVimState
         }),
     );
 
+    // 起動時に normal モードに入る (big file で activeEditor が undefined でも)
     const activeEditor = vscode.window.activeTextEditor;
-    if (activeEditor) {
-        await enterMode(vimState, activeEditor, 'normal');
-        await onDidChangeActiveTextEditor(vimState, activeEditor);
-    }
+    await enterMode(vimState, activeEditor, 'normal');
+    await onDidChangeActiveTextEditor(vimState, activeEditor);
 
     // Return API for testing
     return {
