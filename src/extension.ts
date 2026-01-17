@@ -31,9 +31,9 @@ async function onDidChangeTextEditorSelection(vimState: VimState, e: TextEditorS
         await enterMode(vimState, e.textEditor, 'normal');
     } else if (allEmpty && vimState.mode !== 'insert') {
         // 選択範囲が無になった場合は、ノーマルモードに戻る。この条件だと visual モードにいて移動したあと逆方向に動かし
-        // て選択範囲が無になったときもノーマルモードに戻るが、まあ良しとする。というのは、VS Code が undo などの組み込
-        // みコマンドが一時的に非空の選択範囲を作成することがあるのだ。最終的には空になるものの、途中で非空の選択範囲が
-        // 作られた瞬間 visual モードに移行してしまうので、最後の空になった瞬間にノーマルモードに戻れるようにしない
+        // て選択範囲が無になったときもノーマルモードに戻るが、まあ良しとする。というのは、undo などの VS Code 組み込み
+        // コマンドが一時的に非空の選択範囲を作成することがあるのだ。最終的には空になるものの、途中で非空の選択範囲が作
+        // られた瞬間 visual モードに移行してしまうので、最後の空になった瞬間にノーマルモードに戻れるようにしない
         // と、undo 後に勝手に visual モードになっているなどの不便が生じる。ただ当然ながら、そのようなケースと `vlh` は
         // 区別がつかないので、`vlh` の方が若干違和感を生じるのは避けられなかった。
         await enterMode(vimState, e.textEditor, 'normal');
@@ -62,16 +62,9 @@ async function onDidChangeTextEditorSelection(vimState: VimState, e: TextEditorS
 async function onDidChangeActiveTextEditor(vimState: VimState, editor: TextEditor | undefined): Promise<void> {
     console.log(`Active editor changed: ${editor?.document.uri.toString()}`);
 
-    // editor が undefined の場合 (巨大ファイル、エディタグループが空など) でも normal モードに遷移する。
-    // 巨大ファイルの場合は fallback が定義されている motion/action が動作する。
-    if (editor === undefined) {
-        await enterMode(vimState, editor, 'normal');
-        vimState.keysPressed = [];
-        return;
-    }
-
-    // エディタが存在する場合はノーマルモードまたはビジュアルモードに遷移
-    if (editor.selections.every((selection) => selection.isEmpty)) {
+    // 選択の状態によってノーマルモードまたはビジュアルモードに遷移
+    // エディタが存在しない場合 (巨大ファイル、エディタグループが空など) はとりあえずノーマルモードへ
+    if (editor === undefined || editor.selections.every((selection) => selection.isEmpty)) {
         await enterMode(vimState, editor, 'normal');
     } else {
         await enterMode(vimState, editor, 'visual');
