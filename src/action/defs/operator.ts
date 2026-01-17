@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { Range, type TextDocument, type TextEditor } from 'vscode';
+import { Position, Range, type TextDocument, type TextEditor } from 'vscode';
 import type { Context } from '../../context';
 import { enterMode } from '../../modes';
 import type { Mode } from '../../modesTypes';
@@ -278,8 +278,11 @@ export function buildOperatorActions(
 }
 
 export const adjustRangeForVisualLine = (document: TextDocument, range: Range): Range => {
-    // Visual Line モードは行末までしか選択しないので改行が含まれず、直接追加する必要がある
-    return new Range(range.start, findNextLineStart(document, range.end));
+    // selection が行の途中からでも、行全体を含む Range を返す
+    // start を行頭に、end を次の行の開始位置に調整
+    const lineStart = new Position(range.start.line, 0);
+    const nextLineStart = findNextLineStart(document, range.end);
+    return new Range(lineStart, nextLineStart);
 };
 
 const getAdjustedSelectionRangesIfVisualLine = (editor: TextEditor, mode: Mode) => {

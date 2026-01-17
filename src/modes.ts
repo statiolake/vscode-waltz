@@ -4,7 +4,6 @@ import { registerTypeCommand, unregisterTypeCommand } from './extension';
 import type { Mode } from './modesTypes';
 import { getCursorStyleForMode } from './utils/cursorStyle';
 import { getModeDisplayText } from './utils/modeDisplay';
-import { expandSelectionsToFullLines } from './utils/visualLine';
 import type { VimState } from './vimState';
 
 export async function enterMode(vimState: VimState, editor: TextEditor | undefined, mode: Mode): Promise<void> {
@@ -50,11 +49,6 @@ export async function reinitUiForState(
         // これ自体はイベント発火の仕組みなのかな。とりあえず避けられそうにないので、影響を最小化するため不必要な場合
         // はセットしないようにしておく。
         editor.selections = editor.selections.map((selection) => new Selection(selection.active, selection.active));
-    }
-
-    if (vimState.mode === 'visualLine' && editor) {
-        // Visual Line モードに入ったら、選択範囲を行全体に拡張する
-        expandSelectionsToFullLines(editor);
     }
 }
 

@@ -14,7 +14,6 @@ import { escapeHandler } from './escapeHandler';
 import { enterMode, reinitUiForState as reinitUiElement } from './modes';
 import { typeHandler } from './typeHandler';
 import type { CommentConfigProvider } from './utils/comment';
-import { expandSelectionsToFullLines } from './utils/visualLine';
 import type { VimState } from './vimState';
 
 // グローバルな CommentConfigProvider（起動時に一度だけ初期化）
@@ -31,17 +30,15 @@ async function onDidChangeTextEditorSelection(vimState: VimState, e: TextEditorS
         await enterMode(vimState, e.textEditor, 'normal');
     } else if (allEmpty && vimState.mode !== 'insert') {
         // 選択範囲が無になった場合は、ノーマルモードに戻る。この条件だと visual モードにいて移動したあと逆方向に動かし
-        // て選択範囲が無になったときもノーマルモードに戻るが、まあ良しとする。というのは、undo などの VS Code 組み込み
+        // て選択範囲が無になったときもノーマルモードに'るが、まあ良'とす'。というのは、und' などの VS Code 組み込み
         // コマンドが一時的に非空の選択範囲を作成することがあるのだ。最終的には空になるものの、途中で非空の選択範囲が作
         // られた瞬間 visual モードに移行してしまうので、最後の空になった瞬間にノーマルモードに戻れるようにしない
         // と、undo 後に勝手に visual モードになっているなどの不便が生じる。ただ当然ながら、そのようなケースと `vlh` は
         // 区別がつかないので、`vlh` の方が若干違和感を生じるのは避けられなかった。
         await enterMode(vimState, e.textEditor, 'normal');
-    } else if (vimState.mode === 'visualLine') {
-        // Visual Line モードでは、選択範囲を行全体に拡張する
-        expandSelectionsToFullLines(e.textEditor);
-    } else if (!allEmpty) {
-        // それ以外のモードで選択状態になった場合は Visual モードへ移行する
+    } else if (!allEmpty && !['visual', 'visualLine'].includes(vimState.mode)) {
+        // 選択状態になった場合は Visual モードへ移行する
+        // (すでに Visual 系モードの場合はそのまま維持)
         await enterMode(vimState, e.textEditor, 'visual');
     }
 
