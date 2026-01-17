@@ -1,3 +1,4 @@
+import * as vscode from 'vscode';
 import type { Context } from '../../context';
 import { newAction } from '../actionBuilder';
 import { delegateAction } from '../actions';
@@ -17,6 +18,9 @@ export function buildClipboardActions(): Action[] {
             execute: async (context: Context) => {
                 await delegateAction(context.vimState.actions, context, ['y', 'y']);
             },
+            fallback: async () => {
+                await vscode.commands.executeCommand('editor.action.clipboardCopyAction');
+            },
         }),
     );
 
@@ -27,6 +31,9 @@ export function buildClipboardActions(): Action[] {
             modes: ['visual', 'visualLine'],
             execute: async (context: Context) => {
                 await delegateAction(context.vimState.actions, context, ['y']);
+            },
+            fallback: async () => {
+                await vscode.commands.executeCommand('editor.action.clipboardCopyAction');
             },
         }),
     );
@@ -39,6 +46,9 @@ export function buildClipboardActions(): Action[] {
             execute: async (context: Context) => {
                 await delegateAction(context.vimState.actions, context, ['d', 'd']);
             },
+            fallback: async () => {
+                await vscode.commands.executeCommand('editor.action.clipboardCutAction');
+            },
         }),
     );
 
@@ -50,6 +60,9 @@ export function buildClipboardActions(): Action[] {
             execute: async (context: Context) => {
                 await delegateAction(context.vimState.actions, context, ['d']);
             },
+            fallback: async () => {
+                await vscode.commands.executeCommand('editor.action.clipboardCutAction');
+            },
         }),
     );
 
@@ -60,6 +73,9 @@ export function buildClipboardActions(): Action[] {
             modes: ['normal', 'visual', 'visualLine'],
             execute: async (context: Context) => {
                 await delegateAction(context.vimState.actions, context, ['p']);
+            },
+            fallback: async () => {
+                await vscode.commands.executeCommand('editor.action.clipboardPasteAction');
             },
         }),
     );
