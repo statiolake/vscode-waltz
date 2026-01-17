@@ -14,7 +14,7 @@ suite('newWholeLineTextObject', () => {
 
         // Position on line2
         const position = new Position(1, 2);
-        const result = textObject(context, ['d'], position);
+        const result = await textObject(context, ['d'], position);
 
         assert.strictEqual(result.result, 'match');
         if (result.result === 'match') {
@@ -34,7 +34,7 @@ suite('newWholeLineTextObject', () => {
 
         // Position on line1
         const position = new Position(0, 2);
-        const result = textObject(context, ['d'], position);
+        const result = await textObject(context, ['d'], position);
 
         assert.strictEqual(result.result, 'match');
         if (result.result === 'match') {
@@ -54,7 +54,7 @@ suite('newWholeLineTextObject', () => {
 
         // Position on line3 (last line)
         const position = new Position(2, 2);
-        const result = textObject(context, ['d'], position);
+        const result = await textObject(context, ['d'], position);
 
         assert.strictEqual(result.result, 'match');
         if (result.result === 'match') {
@@ -83,7 +83,7 @@ suite('newWholeLineTextObject', () => {
 
         // Position on line3 (last line with trailing newline)
         const position = new Position(2, 2);
-        const result = textObject(context, ['d'], position);
+        const result = await textObject(context, ['d'], position);
 
         assert.strictEqual(result.result, 'match');
         if (result.result === 'match') {
@@ -103,7 +103,7 @@ suite('newWholeLineTextObject', () => {
 
         // Position on the only line
         const position = new Position(0, 4);
-        const result = textObject(context, ['d'], position);
+        const result = await textObject(context, ['d'], position);
 
         assert.strictEqual(result.result, 'match');
         if (result.result === 'match') {
@@ -123,7 +123,7 @@ suite('newWholeLineTextObject', () => {
 
         // Position on line2
         const position = new Position(1, 2);
-        const result = textObject(context, ['c'], position);
+        const result = await textObject(context, ['c'], position);
 
         assert.strictEqual(result.result, 'match');
         if (result.result === 'match') {

@@ -2,7 +2,27 @@ import * as assert from 'node:assert';
 import * as vscode from 'vscode';
 import { Position } from 'vscode';
 import { buildTextObjects } from '../../textObject/textObjects';
+import type { TextObject } from '../../textObject/textObjectTypes';
 import { createTestContext } from '../extension.test';
+
+/**
+ * 指定したキーシーケンスにマッチする textObject を見つける
+ */
+async function findTextObjectByKeys(
+    textObjects: TextObject[],
+    keys: string[],
+    editor: vscode.TextEditor,
+): Promise<TextObject | undefined> {
+    const context = createTestContext(editor);
+    const position = new Position(0, 0);
+    for (const to of textObjects) {
+        const result = await to(context, keys, position);
+        if (result.result === 'match' || result.result === 'needsMoreKey') {
+            return to;
+        }
+    }
+    return undefined;
+}
 
 suite('Paragraph Text Objects (ip/ap)', () => {
     suite('ip (inner paragraph)', () => {
@@ -12,18 +32,14 @@ suite('Paragraph Text Objects (ip/ap)', () => {
             const editor = await vscode.window.showTextDocument(doc);
 
             const textObjects = buildTextObjects([]);
-            const ipTextObject = textObjects.find((to) => {
-                const result = to(createTestContext(editor), ['i', 'p'], new Position(0, 0));
-                return result.result === 'match' || result.result === 'needsMoreKey';
-            });
-
+            const ipTextObject = await findTextObjectByKeys(textObjects, ['i', 'p'], editor);
             assert.ok(ipTextObject, 'Should find ip text object');
 
             const context = createTestContext(editor);
 
             // Test cursor on second paragraph (line 3)
             const position = new Position(3, 5);
-            const result = ipTextObject(context, ['i', 'p'], position);
+            const result = await ipTextObject(context, ['i', 'p'], position);
 
             assert.strictEqual(result.result, 'match');
             if (result.result === 'match') {
@@ -38,16 +54,12 @@ suite('Paragraph Text Objects (ip/ap)', () => {
             const editor = await vscode.window.showTextDocument(doc);
 
             const textObjects = buildTextObjects([]);
-            const ipTextObject = textObjects.find((to) => {
-                const result = to(createTestContext(editor), ['i', 'p'], new Position(0, 0));
-                return result.result === 'match' || result.result === 'needsMoreKey';
-            });
-
+            const ipTextObject = await findTextObjectByKeys(textObjects, ['i', 'p'], editor);
             assert.ok(ipTextObject, 'Should find ip text object');
 
             const context = createTestContext(editor);
             const position = new Position(0, 0);
-            const result = ipTextObject(context, ['i', 'p'], position);
+            const result = await ipTextObject(context, ['i', 'p'], position);
 
             assert.strictEqual(result.result, 'match');
             if (result.result === 'match') {
@@ -62,16 +74,12 @@ suite('Paragraph Text Objects (ip/ap)', () => {
             const editor = await vscode.window.showTextDocument(doc);
 
             const textObjects = buildTextObjects([]);
-            const ipTextObject = textObjects.find((to) => {
-                const result = to(createTestContext(editor), ['i', 'p'], new Position(0, 0));
-                return result.result === 'match' || result.result === 'needsMoreKey';
-            });
+            const ipTextObject = await findTextObjectByKeys(textObjects, ['i', 'p'], editor);
+            assert.ok(ipTextObject, 'Should find ip text object');
 
             const context = createTestContext(editor);
             const position = new Position(2, 5);
-            assert.ok(ipTextObject, 'Should find ip text object');
-
-            const result = ipTextObject(context, ['i', 'p'], position);
+            const result = await ipTextObject(context, ['i', 'p'], position);
 
             assert.strictEqual(result.result, 'match');
             if (result.result === 'match') {
@@ -86,16 +94,12 @@ suite('Paragraph Text Objects (ip/ap)', () => {
             const editor = await vscode.window.showTextDocument(doc);
 
             const textObjects = buildTextObjects([]);
-            const ipTextObject = textObjects.find((to) => {
-                const result = to(createTestContext(editor), ['i', 'p'], new Position(0, 0));
-                return result.result === 'match' || result.result === 'needsMoreKey';
-            });
+            const ipTextObject = await findTextObjectByKeys(textObjects, ['i', 'p'], editor);
+            assert.ok(ipTextObject, 'Should find ip text object');
 
             const context = createTestContext(editor);
             const position = new Position(2, 3);
-            assert.ok(ipTextObject, 'Should find ip text object');
-
-            const result = ipTextObject(context, ['i', 'p'], position);
+            const result = await ipTextObject(context, ['i', 'p'], position);
 
             assert.strictEqual(result.result, 'match');
             if (result.result === 'match') {
@@ -110,16 +114,12 @@ suite('Paragraph Text Objects (ip/ap)', () => {
             const editor = await vscode.window.showTextDocument(doc);
 
             const textObjects = buildTextObjects([]);
-            const ipTextObject = textObjects.find((to) => {
-                const result = to(createTestContext(editor), ['i', 'p'], new Position(0, 0));
-                return result.result === 'match' || result.result === 'needsMoreKey';
-            });
+            const ipTextObject = await findTextObjectByKeys(textObjects, ['i', 'p'], editor);
+            assert.ok(ipTextObject, 'Should find ip text object');
 
             const context = createTestContext(editor);
             const position = new Position(1, 3);
-            assert.ok(ipTextObject, 'Should find ip text object');
-
-            const result = ipTextObject(context, ['i', 'p'], position);
+            const result = await ipTextObject(context, ['i', 'p'], position);
 
             assert.strictEqual(result.result, 'match');
             if (result.result === 'match') {
@@ -134,17 +134,13 @@ suite('Paragraph Text Objects (ip/ap)', () => {
             const editor = await vscode.window.showTextDocument(doc);
 
             const textObjects = buildTextObjects([]);
-            const ipTextObject = textObjects.find((to) => {
-                const result = to(createTestContext(editor), ['i', 'p'], new Position(0, 0));
-                return result.result === 'match' || result.result === 'needsMoreKey';
-            });
+            const ipTextObject = await findTextObjectByKeys(textObjects, ['i', 'p'], editor);
+            assert.ok(ipTextObject, 'Should find ip text object');
 
             const context = createTestContext(editor);
             // Cursor on blank line (line 1)
             const position = new Position(1, 0);
-            assert.ok(ipTextObject, 'Should find ip text object');
-
-            const result = ipTextObject(context, ['i', 'p'], position);
+            const result = await ipTextObject(context, ['i', 'p'], position);
 
             assert.strictEqual(result.result, 'match');
             if (result.result === 'match') {
@@ -162,18 +158,14 @@ suite('Paragraph Text Objects (ip/ap)', () => {
             const editor = await vscode.window.showTextDocument(doc);
 
             const textObjects = buildTextObjects([]);
-            const apTextObject = textObjects.find((to) => {
-                const result = to(createTestContext(editor), ['a', 'p'], new Position(0, 0));
-                return result.result === 'match' || result.result === 'needsMoreKey';
-            });
-
+            const apTextObject = await findTextObjectByKeys(textObjects, ['a', 'p'], editor);
             assert.ok(apTextObject, 'Should find ap text object');
 
             const context = createTestContext(editor);
 
             // Test cursor on second paragraph (line 3)
             const position = new Position(3, 5);
-            const result = apTextObject(context, ['a', 'p'], position);
+            const result = await apTextObject(context, ['a', 'p'], position);
 
             assert.strictEqual(result.result, 'match');
             if (result.result === 'match') {
@@ -193,16 +185,12 @@ suite('Paragraph Text Objects (ip/ap)', () => {
             const editor = await vscode.window.showTextDocument(doc);
 
             const textObjects = buildTextObjects([]);
-            const apTextObject = textObjects.find((to) => {
-                const result = to(createTestContext(editor), ['a', 'p'], new Position(0, 0));
-                return result.result === 'match' || result.result === 'needsMoreKey';
-            });
+            const apTextObject = await findTextObjectByKeys(textObjects, ['a', 'p'], editor);
+            assert.ok(apTextObject, 'Should find ap text object');
 
             const context = createTestContext(editor);
             const position = new Position(0, 0);
-            assert.ok(apTextObject, 'Should find ap text object');
-
-            const result = apTextObject(context, ['a', 'p'], position);
+            const result = await apTextObject(context, ['a', 'p'], position);
 
             assert.strictEqual(result.result, 'match');
             if (result.result === 'match') {
@@ -221,16 +209,12 @@ suite('Paragraph Text Objects (ip/ap)', () => {
             const editor = await vscode.window.showTextDocument(doc);
 
             const textObjects = buildTextObjects([]);
-            const apTextObject = textObjects.find((to) => {
-                const result = to(createTestContext(editor), ['a', 'p'], new Position(0, 0));
-                return result.result === 'match' || result.result === 'needsMoreKey';
-            });
+            const apTextObject = await findTextObjectByKeys(textObjects, ['a', 'p'], editor);
+            assert.ok(apTextObject, 'Should find ap text object');
 
             const context = createTestContext(editor);
             const position = new Position(2, 5);
-            assert.ok(apTextObject, 'Should find ap text object');
-
-            const result = apTextObject(context, ['a', 'p'], position);
+            const result = await apTextObject(context, ['a', 'p'], position);
 
             assert.strictEqual(result.result, 'match');
             if (result.result === 'match') {
@@ -246,16 +230,12 @@ suite('Paragraph Text Objects (ip/ap)', () => {
             const editor = await vscode.window.showTextDocument(doc);
 
             const textObjects = buildTextObjects([]);
-            const apTextObject = textObjects.find((to) => {
-                const result = to(createTestContext(editor), ['a', 'p'], new Position(0, 0));
-                return result.result === 'match' || result.result === 'needsMoreKey';
-            });
+            const apTextObject = await findTextObjectByKeys(textObjects, ['a', 'p'], editor);
+            assert.ok(apTextObject, 'Should find ap text object');
 
             const context = createTestContext(editor);
             const position = new Position(0, 0);
-            assert.ok(apTextObject, 'Should find ap text object');
-
-            const result = apTextObject(context, ['a', 'p'], position);
+            const result = await apTextObject(context, ['a', 'p'], position);
 
             assert.strictEqual(result.result, 'match');
             if (result.result === 'match') {
@@ -370,16 +350,12 @@ suite('Paragraph Text Objects (ip/ap)', () => {
             const editor = await vscode.window.showTextDocument(doc);
 
             const textObjects = buildTextObjects([]);
-            const ipTextObject = textObjects.find((to) => {
-                const result = to(createTestContext(editor), ['i', 'p'], new Position(0, 0));
-                return result.result === 'match' || result.result === 'needsMoreKey';
-            });
+            const ipTextObject = await findTextObjectByKeys(textObjects, ['i', 'p'], editor);
+            assert.ok(ipTextObject, 'Should find ip text object');
 
             const context = createTestContext(editor);
             const position = new Position(0, 0);
-            assert.ok(ipTextObject, 'Should find ip text object');
-
-            const result = ipTextObject(context, ['i', 'p'], position);
+            const result = await ipTextObject(context, ['i', 'p'], position);
 
             assert.strictEqual(result.result, 'match');
             if (result.result === 'match') {
@@ -394,16 +370,12 @@ suite('Paragraph Text Objects (ip/ap)', () => {
             const editor = await vscode.window.showTextDocument(doc);
 
             const textObjects = buildTextObjects([]);
-            const ipTextObject = textObjects.find((to) => {
-                const result = to(createTestContext(editor), ['i', 'p'], new Position(0, 0));
-                return result.result === 'match' || result.result === 'needsMoreKey';
-            });
+            const ipTextObject = await findTextObjectByKeys(textObjects, ['i', 'p'], editor);
+            assert.ok(ipTextObject, 'Should find ip text object');
 
             const context = createTestContext(editor);
             const position = new Position(1, 0);
-            assert.ok(ipTextObject, 'Should find ip text object');
-
-            const result = ipTextObject(context, ['i', 'p'], position);
+            const result = await ipTextObject(context, ['i', 'p'], position);
 
             assert.strictEqual(result.result, 'match');
             if (result.result === 'match') {
@@ -418,16 +390,12 @@ suite('Paragraph Text Objects (ip/ap)', () => {
             const editor = await vscode.window.showTextDocument(doc);
 
             const textObjects = buildTextObjects([]);
-            const ipTextObject = textObjects.find((to) => {
-                const result = to(createTestContext(editor), ['i', 'p'], new Position(0, 0));
-                return result.result === 'match' || result.result === 'needsMoreKey';
-            });
+            const ipTextObject = await findTextObjectByKeys(textObjects, ['i', 'p'], editor);
+            assert.ok(ipTextObject, 'Should find ip text object');
 
             const context = createTestContext(editor);
             const position = new Position(0, 5);
-            assert.ok(ipTextObject, 'Should find ip text object');
-
-            const result = ipTextObject(context, ['i', 'p'], position);
+            const result = await ipTextObject(context, ['i', 'p'], position);
 
             assert.strictEqual(result.result, 'match');
             if (result.result === 'match') {

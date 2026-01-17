@@ -21,8 +21,8 @@ import type { TextObject } from './textObjectTypes';
  * Motionの開始位置から終了位置までのRangeを返すTextObjectを作成
  */
 export function motionToTextObject(motion: Motion): TextObject {
-    return (context, keys, position) => {
-        const motionResult = motion.execute(context, keys, position);
+    return async (context, keys, position) => {
+        const motionResult = await motion(context, keys, position);
 
         if (motionResult.result === 'noMatch') {
             return { result: 'noMatch' };
@@ -30,6 +30,12 @@ export function motionToTextObject(motion: Motion): TextObject {
 
         if (motionResult.result === 'needsMoreKey') {
             return { result: 'needsMoreKey' };
+        }
+
+        if (motionResult.result === 'matchAsFallback') {
+            // fallback で実行された場合、position は不明なので noMatch として扱う
+            // (TextObject として使うには position が必要)
+            return { result: 'noMatch' };
         }
 
         // MotionのpositionからRangeを作成

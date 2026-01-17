@@ -63,7 +63,7 @@ export function createYsSurroundAction(textObjects: TextObject[]): Action {
             let matched = true;
             const results: Array<TextObjectResult & { result: 'match' }> = [];
             for (const selection of context.editor.selections) {
-                const result = textObject(context, remainingKeys, selection.active);
+                const result = await textObject(context, remainingKeys, selection.active);
                 if (result.result === 'needsMoreKey') return 'needsMoreKey';
                 if (result.result === 'noMatch') {
                     matched = false;

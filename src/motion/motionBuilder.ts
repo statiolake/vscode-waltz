@@ -14,7 +14,7 @@ export function newMotion(config: {
 }): Motion {
     const keysParser = keysParserPrefix(config.keys);
 
-    const execute = (context: Context, keys: string[], position: Position): MotionResult => {
+    return async (context: Context, keys: string[], position: Position): Promise<MotionResult> => {
         const parseResult = keysParser(keys);
 
         if (parseResult.result === 'noMatch') {
@@ -25,8 +25,12 @@ export function newMotion(config: {
             return { result: 'needsMoreKey' };
         }
 
-        // editor が undefined の場合は noMatch を返す (fallback は別途処理)
+        // editor が undefined の場合 (big file など)
         if (!context.editor) {
+            if (config.fallback) {
+                await config.fallback(context.vimState);
+                return { result: 'matchAsFallback', remainingKeys: parseResult.remainingKeys };
+            }
             return { result: 'noMatch' };
         }
 
@@ -38,12 +42,6 @@ export function newMotion(config: {
             context.vimState.keptColumn = null;
         }
         return { result: 'match', position: requestedPosition, remainingKeys: parseResult.remainingKeys };
-    };
-
-    return {
-        execute,
-        fallback: config.fallback,
-        keysParser,
     };
 }
 
@@ -62,7 +60,7 @@ export function newRegexMotion(config: {
 }): Motion {
     const keysParser = keysParserRegex(config.pattern, config.partial);
 
-    const execute = (context: Context, keys: string[], position: Position): MotionResult => {
+    return async (context: Context, keys: string[], position: Position): Promise<MotionResult> => {
         const parseResult = keysParser(keys);
 
         if (parseResult.result === 'noMatch') {
@@ -73,8 +71,12 @@ export function newRegexMotion(config: {
             return { result: 'needsMoreKey' };
         }
 
-        // editor が undefined の場合は noMatch を返す (fallback は別途処理)
+        // editor が undefined の場合 (big file など)
         if (!context.editor) {
+            if (config.fallback) {
+                await config.fallback(context.vimState);
+                return { result: 'matchAsFallback', remainingKeys: parseResult.remainingKeys };
+            }
             return { result: 'noMatch' };
         }
 
@@ -84,11 +86,5 @@ export function newRegexMotion(config: {
             parseResult.variables,
         );
         return { result: 'match', position: newPosition, remainingKeys: parseResult.remainingKeys };
-    };
-
-    return {
-        execute,
-        fallback: config.fallback,
-        keysParser,
     };
 }

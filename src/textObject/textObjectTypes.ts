@@ -18,8 +18,8 @@ export type TextObjectResult =
     | { result: 'noMatch' };
 
 /**
- * TextObject: (context, keys, position) => TextObjectResult
+ * TextObject: (context, keys, position) => Promise<TextObjectResult>
  *
  * キーシーケンスをパースして、マッチした場合は範囲とメタデータを返す
  */
-export type TextObject = (context: Context, keys: string[], position: Position) => TextObjectResult;
+export type TextObject = (context: Context, keys: string[], position: Position) => Promise<TextObjectResult>;

@@ -97,7 +97,7 @@ export function newRegexAction(config: {
  * MotionをActionに変換
  * Motion自体がキーパースを行うため、単純に委譲する
  * normal モードのみ対応。visual 系は textObjectToVisualAction 経由
- * ただし、big file (editor === undefined) の場合は fallback で visual も対応
+ * ただし、big file (editor === undefined) の場合は matchAsFallback で visual も対応
  */
 export function motionToAction(motion: Motion): Action {
     const normalModes = ['normal'];
@@ -108,15 +108,20 @@ export function motionToAction(motion: Motion): Action {
         const isVisual = visualModes.includes(context.vimState.mode);
 
         // editor が undefined の場合 (big file など)
+        // normal/visual 両方で motion を試す (fallback があれば matchAsFallback が返る)
         if (!context.editor) {
-            // fallback があればキーマッチング後に実行 (normal/visual 両方)
-            if (motion.fallback && (isNormal || isVisual)) {
-                const parseResult = motion.keysParser(keys);
-                if (parseResult.result === 'match') {
-                    await motion.fallback(context.vimState);
+            if (isNormal || isVisual) {
+                // position は使われないのでダミー値
+                const dummyPosition = new Selection(0, 0, 0, 0).active;
+                const result = await motion(context, keys, dummyPosition);
+                if (result.result === 'matchAsFallback') {
                     return 'executed';
                 }
-                return parseResult.result;
+                if (result.result === 'match') {
+                    // editor が undefined なのに match が返ることは通常ないが、念のため
+                    return 'executed';
+                }
+                return result.result;
             }
             return 'noMatch';
         }
@@ -128,8 +133,10 @@ export function motionToAction(motion: Motion): Action {
         // 一つでも match 以外があれば、すぐ返す (パフォーマンスのため)
         const results = [];
         for (const selection of context.editor.selections) {
-            const result = motion.execute(context, keys, selection.active);
-            if (result.result !== 'match') return result.result;
+            const result = await motion(context, keys, selection.active);
+            if (result.result === 'noMatch') return 'noMatch';
+            if (result.result === 'needsMoreKey') return 'needsMoreKey';
+            if (result.result === 'matchAsFallback') return 'executed';
             results.push(result);
         }
 
@@ -165,7 +172,7 @@ export function textObjectToVisualAction(textObject: TextObject): Action {
         // 一つでも match 以外があれば、すぐ返す (パフォーマンスのため)
         const results = [];
         for (const selection of context.editor.selections) {
-            const result = textObject(context, keys, selection.active);
+            const result = await textObject(context, keys, selection.active);
             if (result.result !== 'match') return result.result;
             results.push(result);
         }
@@ -265,9 +272,9 @@ export function newOperatorAction(config: {
         const editor = context.editor;
         for (const textObject of config.textObjects) {
             // 各カーソル位置でTextObjectを実行
-            const results = editor.selections.map((selection) => {
-                return textObject(context, remainingKeys, selection.active);
-            });
+            const results = await Promise.all(
+                editor.selections.map((selection) => textObject(context, remainingKeys, selection.active)),
+            );
 
             const firstResult = results[0];
 

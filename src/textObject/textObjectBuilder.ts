@@ -15,7 +15,7 @@ export function newTextObject(config: {
 }): TextObject {
     const keysParser = keysParserPrefix(config.keys);
 
-    return (context: Context, keys: string[], position: Position): TextObjectResult => {
+    return async (context: Context, keys: string[], position: Position): Promise<TextObjectResult> => {
         const parseResult = keysParser(keys);
 
         if (parseResult.result === 'noMatch') {
@@ -49,7 +49,7 @@ export function newRegexTextObject(config: {
 }): TextObject {
     const keysParser = keysParserRegex(config.pattern, config.partial);
 
-    return (context: Context, keys: string[], position: Position): TextObjectResult => {
+    return async (context: Context, keys: string[], position: Position): Promise<TextObjectResult> => {
         const parseResult = keysParser(keys);
 
         if (parseResult.result === 'noMatch') {
@@ -100,8 +100,8 @@ export function newWholeLineTextObject(config: { keys: string[]; includeLineBrea
     });
 
     // newWholeLineTextObject の結果に isLinewise: true を付与
-    return (context: Context, keys: string[], position: Position) => {
-        const result = baseTextObject(context, keys, position);
+    return async (context: Context, keys: string[], position: Position): Promise<TextObjectResult> => {
+        const result = await baseTextObject(context, keys, position);
         if (result.result === 'match') {
             return {
                 result: 'match',

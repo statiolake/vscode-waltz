@@ -4,7 +4,23 @@ import { Position, Selection } from 'vscode';
 import { motionToAction, newAction } from '../../action/actionBuilder';
 import { newMotion } from '../../motion/motionBuilder';
 import { buildMotions } from '../../motion/motions';
+import type { Motion } from '../../motion/motionTypes';
 import { createTestContext } from '../extension.test';
+
+/**
+ * 指定したキーシーケンスにマッチする motion を見つける
+ */
+async function findMotionByKeys(motions: Motion[], keys: string[]): Promise<Motion | undefined> {
+    const dummyContext = createTestContext(undefined);
+    const dummyPosition = new Position(0, 0);
+    for (const motion of motions) {
+        const result = await motion(dummyContext, keys, dummyPosition);
+        if (result.result === 'match' || result.result === 'matchAsFallback') {
+            return motion;
+        }
+    }
+    return undefined;
+}
 
 suite('Fallback Tests', () => {
     suite('motionToAction fallback', () => {
@@ -231,10 +247,7 @@ suite('Fallback Tests', () => {
 
         test('j fallback should move cursor down', async () => {
             const motions = buildMotions();
-            const jMotion = motions.find((m) => {
-                const result = m.keysParser(['j']);
-                return result.result === 'match';
-            });
+            const jMotion = await findMotionByKeys(motions, ['j']);
             assert.ok(jMotion, 'j motion should exist');
 
             const action = motionToAction(jMotion);
@@ -250,10 +263,7 @@ suite('Fallback Tests', () => {
 
         test('k fallback should move cursor up', async () => {
             const motions = buildMotions();
-            const kMotion = motions.find((m) => {
-                const result = m.keysParser(['k']);
-                return result.result === 'match';
-            });
+            const kMotion = await findMotionByKeys(motions, ['k']);
             assert.ok(kMotion, 'k motion should exist');
 
             const action = motionToAction(kMotion);
@@ -268,12 +278,15 @@ suite('Fallback Tests', () => {
         });
 
         test('h fallback should move cursor left', async () => {
+            // Reset selection before test since findMotionByKeys may have moved cursor
+            editor.selection = new Selection(new Position(2, 3), new Position(2, 3));
+
             const motions = buildMotions();
-            const hMotion = motions.find((m) => {
-                const result = m.keysParser(['h']);
-                return result.result === 'match';
-            });
+            const hMotion = await findMotionByKeys(motions, ['h']);
             assert.ok(hMotion, 'h motion should exist');
+
+            // Reset selection again after findMotionByKeys
+            editor.selection = new Selection(new Position(2, 3), new Position(2, 3));
 
             const action = motionToAction(hMotion);
             const context = createTestContext(undefined);
@@ -287,12 +300,15 @@ suite('Fallback Tests', () => {
         });
 
         test('l fallback should move cursor right', async () => {
+            // Reset selection before test since findMotionByKeys may have moved cursor
+            editor.selection = new Selection(new Position(2, 3), new Position(2, 3));
+
             const motions = buildMotions();
-            const lMotion = motions.find((m) => {
-                const result = m.keysParser(['l']);
-                return result.result === 'match';
-            });
+            const lMotion = await findMotionByKeys(motions, ['l']);
             assert.ok(lMotion, 'l motion should exist');
+
+            // Reset selection again after findMotionByKeys
+            editor.selection = new Selection(new Position(2, 3), new Position(2, 3));
 
             const action = motionToAction(lMotion);
             const context = createTestContext(undefined);
@@ -307,10 +323,7 @@ suite('Fallback Tests', () => {
 
         test('gg fallback should move cursor to top', async () => {
             const motions = buildMotions();
-            const ggMotion = motions.find((m) => {
-                const result = m.keysParser(['g', 'g']);
-                return result.result === 'match';
-            });
+            const ggMotion = await findMotionByKeys(motions, ['g', 'g']);
             assert.ok(ggMotion, 'gg motion should exist');
 
             const action = motionToAction(ggMotion);
@@ -325,10 +338,7 @@ suite('Fallback Tests', () => {
 
         test('G fallback should move cursor to bottom', async () => {
             const motions = buildMotions();
-            const GMotion = motions.find((m) => {
-                const result = m.keysParser(['G']);
-                return result.result === 'match';
-            });
+            const GMotion = await findMotionByKeys(motions, ['G']);
             assert.ok(GMotion, 'G motion should exist');
 
             const action = motionToAction(GMotion);
@@ -347,10 +357,7 @@ suite('Fallback Tests', () => {
 
         test('0 fallback should move cursor to line start', async () => {
             const motions = buildMotions();
-            const zeroMotion = motions.find((m) => {
-                const result = m.keysParser(['0']);
-                return result.result === 'match';
-            });
+            const zeroMotion = await findMotionByKeys(motions, ['0']);
             assert.ok(zeroMotion, '0 motion should exist');
 
             const action = motionToAction(zeroMotion);
@@ -365,10 +372,7 @@ suite('Fallback Tests', () => {
 
         test('$ fallback should move cursor to line end', async () => {
             const motions = buildMotions();
-            const dollarMotion = motions.find((m) => {
-                const result = m.keysParser(['$']);
-                return result.result === 'match';
-            });
+            const dollarMotion = await findMotionByKeys(motions, ['$']);
             assert.ok(dollarMotion, '$ motion should exist');
 
             const action = motionToAction(dollarMotion);
@@ -387,10 +391,7 @@ suite('Fallback Tests', () => {
             editor.selection = new Selection(new Position(2, 0), new Position(2, 0));
 
             const motions = buildMotions();
-            const wMotion = motions.find((m) => {
-                const result = m.keysParser(['w']);
-                return result.result === 'match';
-            });
+            const wMotion = await findMotionByKeys(motions, ['w']);
             assert.ok(wMotion, 'w motion should exist');
 
             const action = motionToAction(wMotion);
@@ -409,11 +410,11 @@ suite('Fallback Tests', () => {
             editor.selection = new Selection(new Position(2, 5), new Position(2, 5));
 
             const motions = buildMotions();
-            const bMotion = motions.find((m) => {
-                const result = m.keysParser(['b']);
-                return result.result === 'match';
-            });
+            const bMotion = await findMotionByKeys(motions, ['b']);
             assert.ok(bMotion, 'b motion should exist');
+
+            // Reset selection again after findMotionByKeys
+            editor.selection = new Selection(new Position(2, 5), new Position(2, 5));
 
             const action = motionToAction(bMotion);
             const context = createTestContext(undefined);

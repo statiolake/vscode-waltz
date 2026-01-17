@@ -1,34 +1,25 @@
 import type { Position } from 'vscode';
 import type { Context } from '../context';
-import type { KeysParser } from '../utils/keysParser/keysParserTypes';
-import type { VimState } from '../vimState';
 
 /**
  * MotionResult: Motion実行の結果
+ *
+ * match: 通常のマッチ。position を返す
+ * matchAsFallback: big file 等で fallback として実行された。position は返さない
+ * needsMoreKey: キーが足りない
+ * noMatch: マッチしない
  */
 export type MotionResult =
     | { result: 'match'; position: Position; remainingKeys: string[] }
+    | { result: 'matchAsFallback'; remainingKeys: string[] }
     | { result: 'needsMoreKey' }
     | { result: 'noMatch' };
 
 /**
- * MotionExecutor: Motion の実行関数
+ * Motion: カーソル移動を行う関数
  *
  * キーシーケンスをパースして、マッチした場合は新しい位置を返す
- * Motionにmodeの概念はない
+ * editor が undefined (big file など) の場合は matchAsFallback を返すことができる
+ * Motion にモードの概念はない
  */
-export type MotionExecutor = (context: Context, keys: string[], position: Position) => MotionResult;
-
-/**
- * Motion: MotionExecutor と fallback を持つ構造体
- *
- * execute: 通常の実行関数
- * fallback: editor が undefined の場合に実行される関数 (big file など)
- *           vimState を受け取り、mode に応じて処理を分岐可能
- * keysParser: キーパーサー (fallback 時のキーマッチングに使用)
- */
-export type Motion = {
-    readonly execute: MotionExecutor;
-    readonly fallback?: (vimState: VimState) => Promise<void>;
-    readonly keysParser: KeysParser;
-};
+export type Motion = (context: Context, keys: string[], position: Position) => Promise<MotionResult>;
