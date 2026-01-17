@@ -191,6 +191,8 @@ export async function activate(context: ExtensionContext): Promise<{ getVimState
 /**
  * type コマンドを登録する。
  * normal/visual モードで呼び出す。
+ * IME 関連のコマンド (compositionStart, compositionEnd, replacePreviousChar) も
+ * 無視するように登録する。
  */
 export function registerTypeCommand(vimState: VimState): void {
     if (vimState.typeCommandDisposable) {
@@ -198,11 +200,38 @@ export function registerTypeCommand(vimState: VimState): void {
         return;
     }
 
-    vimState.typeCommandDisposable = vscode.commands.registerCommand('type', async (e: { text: string }) => {
+    let isComposing = false;
+
+    const typeDisposable = vscode.commands.registerCommand('type', async (e: { text: string }) => {
+        if (isComposing) {
+            // IME 入力中は変な入力が type として渡ってくることがあるので無視する
+            return;
+        }
+
         // editor が undefined (巨大ファイル等) でも typeHandler を呼び出す。
         // typeHandler 内で fallback のある action は実行される。
         await typeHandler(vimState, e.text);
     });
+
+    // IME 関連のコマンドは無視する（normal/visual モードでは IME 入力を受け付けない）
+    const compositionStartDisposable = vscode.commands.registerCommand('compositionStart', () => {
+        isComposing = true;
+        // 無視
+    });
+    const compositionEndDisposable = vscode.commands.registerCommand('compositionEnd', () => {
+        isComposing = false;
+        // 無視
+    });
+    const replacePreviousCharDisposable = vscode.commands.registerCommand('replacePreviousChar', () => {
+        // 無視
+    });
+
+    vimState.typeCommandDisposable = vscode.Disposable.from(
+        typeDisposable,
+        compositionStartDisposable,
+        compositionEndDisposable,
+        replacePreviousCharDisposable,
+    );
 }
 
 /**
