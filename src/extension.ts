@@ -14,6 +14,7 @@ import { escapeHandler } from './escapeHandler';
 import { enterMode, reinitUiForState as reinitUiElement } from './modes';
 import { typeHandler } from './typeHandler';
 import type { CommentConfigProvider } from './utils/comment';
+import { expandSelectionToFullLines } from './utils/visualLine';
 import { clearVisualLineDecoration, updateVisualLineDecoration } from './utils/visualLineDecoration';
 import type { VimState } from './vimState';
 
@@ -174,6 +175,18 @@ export async function activate(context: ExtensionContext): Promise<{ getVimState
             if (result === 'noMatch') {
                 vscode.window.showWarningMessage(`Waltz: No action match: ${args.keys.join('')}`);
             }
+        }),
+        vscode.commands.registerCommand('waltz.adjustSelectionForVisualLine', async () => {
+            const editor = vscode.window.activeTextEditor;
+            if (!editor || vimState.mode !== 'visualLine') {
+                return;
+            }
+
+            // Visual Line モードの場合、selection を行全体に拡張して visual モードに移行
+            editor.selections = editor.selections.map((selection) =>
+                expandSelectionToFullLines(editor.document, selection),
+            );
+            await enterMode(vimState, editor, 'visual');
         }),
     );
 

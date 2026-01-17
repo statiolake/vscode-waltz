@@ -10,9 +10,9 @@ import {
     type OffsetReplaceData,
 } from '../../utils/positionFinder';
 import { isCharacterTypeBoundary } from '../../utils/unicode';
+import { adjustRangeForVisualLine } from '../../utils/visualLine';
 import { newAction, newRegexAction } from '../actionBuilder';
 import type { Action } from '../actionTypes';
-import { adjustRangeForVisualLine } from './operator';
 
 /**
  * 編集アクション

@@ -28,6 +28,12 @@
     ],
     "main": "./out/extension",
     "contributes": {
+        "commands": [
+            {
+                "command": "waltz.adjustSelectionForVisualLine",
+                "title": "Waltz: Adjust Selection for Visual Line Mode"
+            }
+        ],
         "keybindings": [
             {
                 "key": "Escape",

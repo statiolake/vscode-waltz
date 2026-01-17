@@ -1,12 +1,12 @@
+import type { TextEditor } from 'vscode';
 import * as vscode from 'vscode';
-import { Position, Range, type TextDocument, type TextEditor } from 'vscode';
 import type { Context } from '../../context';
 import { enterMode } from '../../modes';
 import type { Mode } from '../../modesTypes';
 import { setRegisterContents } from '../../register';
 import { newWholeLineTextObject } from '../../textObject/textObjectBuilder';
 import type { TextObject } from '../../textObject/textObjectTypes';
-import { findNextLineStart } from '../../utils/positionFinder';
+import { adjustRangeForVisualLine } from '../../utils/visualLine';
 import { newAction, newOperatorAction } from '../actionBuilder';
 import type { Action, ActionResult } from '../actionTypes';
 
@@ -276,14 +276,6 @@ export function buildOperatorActions(
 
     return actions;
 }
-
-export const adjustRangeForVisualLine = (document: TextDocument, range: Range): Range => {
-    // selection が行の途中からでも、行全体を含む Range を返す
-    // start を行頭に、end を次の行の開始位置に調整
-    const lineStart = new Position(range.start.line, 0);
-    const nextLineStart = findNextLineStart(document, range.end);
-    return new Range(lineStart, nextLineStart);
-};
 
 const getAdjustedSelectionRangesIfVisualLine = (editor: TextEditor, mode: Mode) => {
     return editor.selections.map((selection) => {

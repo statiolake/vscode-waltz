@@ -1,7 +1,7 @@
 import * as assert from 'node:assert';
 import * as vscode from 'vscode';
 import { Position, Range } from 'vscode';
-import { adjustRangeForVisualLine } from '../../action/defs/operator';
+import { adjustRangeForVisualLine } from '../../utils/visualLine';
 
 suite('adjustRangeForVisualLine', () => {
     test('should extend range to include newline for middle line', async () => {
