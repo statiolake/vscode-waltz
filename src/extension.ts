@@ -14,6 +14,7 @@ import { escapeHandler } from './escapeHandler';
 import { enterMode, reinitUiForState as reinitUiElement } from './modes';
 import { typeHandler } from './typeHandler';
 import type { CommentConfigProvider } from './utils/comment';
+import { clearVisualLineDecoration, updateVisualLineDecoration } from './utils/visualLineDecoration';
 import type { VimState } from './vimState';
 
 // グローバルな CommentConfigProvider（起動時に一度だけ初期化）
@@ -53,6 +54,13 @@ async function onDidChangeTextEditorSelection(vimState: VimState, e: TextEditorS
         const focusAt =
             vimState.mode === 'visualLine' ? lastSelection.active.with({ character: 0 }) : lastSelection.active;
         e.textEditor.revealRange(new Range(focusAt, focusAt));
+    }
+
+    // Visual Line モードでは行全体をハイライトする decoration を更新
+    if (vimState.mode === 'visualLine') {
+        updateVisualLineDecoration(e.textEditor);
+    } else {
+        clearVisualLineDecoration(e.textEditor);
     }
 }
 
