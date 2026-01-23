@@ -160,568 +160,6 @@
         ],
         "keybindings": [
             {
-                "key": "Escape",
-                "command": "waltz.escapeKey",
-                "when": "editorTextFocus"
-            },
-            {
-                "key": "backspace",
-                "command": "waltz.noop",
-                "when": "editorTextFocus && waltz.mode != 'insert'"
-            },
-            {
-                "key": "delete",
-                "command": "waltz.noop",
-                "when": "editorTextFocus && waltz.mode != 'insert'"
-            },
-            {
-                "key": "tab",
-                "command": "waltz.noop",
-                "when": "editorTextFocus && waltz.mode != 'insert'"
-            },
-            {
-                "mac": "cmd+c",
-                "win": "ctrl+c",
-                "linux": "ctrl+c",
-                "command": "waltz.send",
-                "args": {
-                    "keys": [
-                        "<Waltz>copy"
-                    ]
-                },
-                "when": "editorTextFocus && waltz.mode != 'insert'"
-            },
-            {
-                "mac": "cmd+x",
-                "win": "ctrl+x",
-                "linux": "ctrl+x",
-                "command": "waltz.send",
-                "args": {
-                    "keys": [
-                        "<Waltz>cut"
-                    ]
-                },
-                "when": "editorTextFocus && waltz.mode != 'insert'"
-            },
-            {
-                "mac": "cmd+v",
-                "win": "ctrl+v",
-                "linux": "ctrl+v",
-                "command": "waltz.send",
-                "args": {
-                    "keys": [
-                        "<Waltz>paste"
-                    ]
-                },
-                "when": "editorTextFocus && waltz.mode != 'insert'"
-            },
-            {
-                "mac": "ctrl+a",
-                "command": "waltz.noop",
-                "when": "editorTextFocus && waltz.mode != 'insert'"
-            },
-            {
-                "mac": "ctrl+b",
-                "command": "waltz.noop",
-                "when": "editorTextFocus && waltz.mode != 'insert'"
-            },
-            {
-                "mac": "ctrl+c",
-                "command": "waltz.noop",
-                "when": "editorTextFocus && waltz.mode != 'insert'"
-            },
-            {
-                "mac": "ctrl+d",
-                "command": "waltz.noop",
-                "when": "editorTextFocus && waltz.mode != 'insert'"
-            },
-            {
-                "mac": "ctrl+e",
-                "command": "waltz.noop",
-                "when": "editorTextFocus && waltz.mode != 'insert'"
-            },
-            {
-                "mac": "ctrl+f",
-                "command": "waltz.noop",
-                "when": "editorTextFocus && waltz.mode != 'insert'"
-            },
-            {
-                "mac": "ctrl+g",
-                "command": "waltz.noop",
-                "when": "editorTextFocus && waltz.mode != 'insert'"
-            },
-            {
-                "mac": "ctrl+h",
-                "command": "waltz.noop",
-                "when": "editorTextFocus && waltz.mode != 'insert'"
-            },
-            {
-                "mac": "ctrl+i",
-                "command": "waltz.noop",
-                "when": "editorTextFocus && waltz.mode != 'insert'"
-            },
-            {
-                "mac": "ctrl+j",
-                "command": "waltz.noop",
-                "when": "editorTextFocus && waltz.mode != 'insert'"
-            },
-            {
-                "mac": "ctrl+k",
-                "command": "waltz.noop",
-                "when": "editorTextFocus && waltz.mode != 'insert'"
-            },
-            {
-                "mac": "ctrl+l",
-                "command": "waltz.noop",
-                "when": "editorTextFocus && waltz.mode != 'insert'"
-            },
-            {
-                "mac": "ctrl+m",
-                "command": "waltz.noop",
-                "when": "editorTextFocus && waltz.mode != 'insert'"
-            },
-            {
-                "mac": "ctrl+n",
-                "command": "waltz.noop",
-                "when": "editorTextFocus && waltz.mode != 'insert'"
-            },
-            {
-                "mac": "ctrl+o",
-                "command": "waltz.noop",
-                "when": "editorTextFocus && waltz.mode != 'insert'"
-            },
-            {
-                "mac": "ctrl+p",
-                "command": "waltz.noop",
-                "when": "editorTextFocus && waltz.mode != 'insert'"
-            },
-            {
-                "mac": "ctrl+q",
-                "command": "waltz.noop",
-                "when": "editorTextFocus && waltz.mode != 'insert'"
-            },
-            {
-                "mac": "ctrl+r",
-                "command": "waltz.noop",
-                "when": "editorTextFocus && waltz.mode != 'insert'"
-            },
-            {
-                "mac": "ctrl+s",
-                "command": "waltz.noop",
-                "when": "editorTextFocus && waltz.mode != 'insert'"
-            },
-            {
-                "mac": "ctrl+t",
-                "command": "waltz.noop",
-                "when": "editorTextFocus && waltz.mode != 'insert'"
-            },
-            {
-                "mac": "ctrl+u",
-                "command": "waltz.noop",
-                "when": "editorTextFocus && waltz.mode != 'insert'"
-            },
-            {
-                "mac": "ctrl+v",
-                "command": "waltz.noop",
-                "when": "editorTextFocus && waltz.mode != 'insert'"
-            },
-            {
-                "mac": "ctrl+w",
-                "command": "waltz.noop",
-                "when": "editorTextFocus && waltz.mode != 'insert'"
-            },
-            {
-                "mac": "ctrl+x",
-                "command": "waltz.noop",
-                "when": "editorTextFocus && waltz.mode != 'insert'"
-            },
-            {
-                "mac": "ctrl+y",
-                "command": "waltz.noop",
-                "when": "editorTextFocus && waltz.mode != 'insert'"
-            },
-            {
-                "mac": "ctrl+z",
-                "command": "waltz.noop",
-                "when": "editorTextFocus && waltz.mode != 'insert'"
-            },
-            {
-                "comment": "=== Normal モード基本移動 ==="
-            },
-            {
-                "key": "h",
-                "command": "cursorLeft",
-                "when": "editorTextFocus && waltz.mode == 'normal'"
-            },
-            {
-                "key": "j",
-                "command": "cursorDown",
-                "when": "editorTextFocus && waltz.mode == 'normal'"
-            },
-            {
-                "key": "k",
-                "command": "cursorUp",
-                "when": "editorTextFocus && waltz.mode == 'normal'"
-            },
-            {
-                "key": "l",
-                "command": "cursorRight",
-                "when": "editorTextFocus && waltz.mode == 'normal'"
-            },
-            {
-                "comment": "=== Visual モード基本移動 ==="
-            },
-            {
-                "key": "h",
-                "command": "cursorLeftSelect",
-                "when": "editorTextFocus && waltz.mode == 'visual'"
-            },
-            {
-                "key": "j",
-                "command": "cursorDownSelect",
-                "when": "editorTextFocus && waltz.mode == 'visual'"
-            },
-            {
-                "key": "k",
-                "command": "cursorUpSelect",
-                "when": "editorTextFocus && waltz.mode == 'visual'"
-            },
-            {
-                "key": "l",
-                "command": "cursorRightSelect",
-                "when": "editorTextFocus && waltz.mode == 'visual'"
-            },
-            {
-                "comment": "=== Normal モードワード移動 ==="
-            },
-            {
-                "key": "w",
-                "command": "cursorWordStartRight",
-                "when": "editorTextFocus && waltz.mode == 'normal'"
-            },
-            {
-                "key": "b",
-                "command": "cursorWordStartLeft",
-                "when": "editorTextFocus && waltz.mode == 'normal'"
-            },
-            {
-                "key": "e",
-                "command": "cursorWordEndRight",
-                "when": "editorTextFocus && waltz.mode == 'normal'"
-            },
-            {
-                "comment": "=== Visual モードワード移動 ==="
-            },
-            {
-                "key": "w",
-                "command": "cursorWordStartRightSelect",
-                "when": "editorTextFocus && waltz.mode == 'visual'"
-            },
-            {
-                "key": "b",
-                "command": "cursorWordStartLeftSelect",
-                "when": "editorTextFocus && waltz.mode == 'visual'"
-            },
-            {
-                "key": "e",
-                "command": "cursorWordEndRightSelect",
-                "when": "editorTextFocus && waltz.mode == 'visual'"
-            },
-            {
-                "comment": "=== Normal モード行移動 ==="
-            },
-            {
-                "key": "0",
-                "command": "cursorHome",
-                "when": "editorTextFocus && waltz.mode == 'normal'"
-            },
-            {
-                "key": "shift+4",
-                "command": "cursorEnd",
-                "when": "editorTextFocus && waltz.mode == 'normal'"
-            },
-            {
-                "key": "shift+6",
-                "command": "cursorHome",
-                "when": "editorTextFocus && waltz.mode == 'normal'"
-            },
-            {
-                "comment": "=== Visual モード行移動 ==="
-            },
-            {
-                "key": "0",
-                "command": "cursorHomeSelect",
-                "when": "editorTextFocus && waltz.mode == 'visual'"
-            },
-            {
-                "key": "shift+4",
-                "command": "cursorEndSelect",
-                "when": "editorTextFocus && waltz.mode == 'visual'"
-            },
-            {
-                "key": "shift+6",
-                "command": "cursorHomeSelect",
-                "when": "editorTextFocus && waltz.mode == 'visual'"
-            },
-            {
-                "comment": "=== ファイル移動 ==="
-            },
-            {
-                "key": "shift+g",
-                "command": "cursorBottom",
-                "when": "editorTextFocus && waltz.mode == 'normal'"
-            },
-            {
-                "key": "shift+g",
-                "command": "cursorBottomSelect",
-                "when": "editorTextFocus && waltz.mode == 'visual'"
-            },
-            {
-                "comment": "=== Undo/Redo ==="
-            },
-            {
-                "key": "u",
-                "command": "undo",
-                "when": "editorTextFocus && waltz.mode == 'normal'"
-            },
-            {
-                "key": "ctrl+r",
-                "command": "redo",
-                "when": "editorTextFocus && waltz.mode == 'normal'"
-            },
-            {
-                "comment": "=== 半ページスクロール ==="
-            },
-            {
-                "key": "ctrl+d",
-                "command": "editorScroll",
-                "args": {
-                    "to": "down",
-                    "by": "halfPage"
-                },
-                "when": "editorTextFocus && waltz.mode == 'normal'"
-            },
-            {
-                "key": "ctrl+u",
-                "command": "editorScroll",
-                "args": {
-                    "to": "up",
-                    "by": "halfPage"
-                },
-                "when": "editorTextFocus && waltz.mode == 'normal'"
-            },
-            {
-                "comment": "=== モード切替 ==="
-            },
-            {
-                "key": "i",
-                "command": "waltz.enterInsert",
-                "when": "editorTextFocus && waltz.mode == 'normal'"
-            },
-            {
-                "key": "a",
-                "command": "waltz.enterInsertAfter",
-                "when": "editorTextFocus && waltz.mode == 'normal'"
-            },
-            {
-                "key": "shift+i",
-                "command": "waltz.enterInsertLineStart",
-                "when": "editorTextFocus && waltz.mode == 'normal'"
-            },
-            {
-                "key": "shift+a",
-                "command": "waltz.enterInsertLineEnd",
-                "when": "editorTextFocus && waltz.mode == 'normal'"
-            },
-            {
-                "key": "o",
-                "command": "waltz.enterInsertNewLineBelow",
-                "when": "editorTextFocus && waltz.mode == 'normal'"
-            },
-            {
-                "key": "shift+o",
-                "command": "waltz.enterInsertNewLineAbove",
-                "when": "editorTextFocus && waltz.mode == 'normal'"
-            },
-            {
-                "key": "v",
-                "command": "waltz.enterVisual",
-                "when": "editorTextFocus && waltz.mode == 'normal'"
-            },
-            {
-                "key": "shift+v",
-                "command": "waltz.enterVisualLine",
-                "when": "editorTextFocus && waltz.mode == 'normal'"
-            },
-            {
-                "comment": "=== オペレータ (QuickPick) ==="
-            },
-            {
-                "key": "d",
-                "command": "waltz.deleteOperator",
-                "when": "editorTextFocus && waltz.mode == 'normal'"
-            },
-            {
-                "key": "c",
-                "command": "waltz.changeOperator",
-                "when": "editorTextFocus && waltz.mode == 'normal'"
-            },
-            {
-                "key": "y",
-                "command": "waltz.yankOperator",
-                "when": "editorTextFocus && waltz.mode == 'normal'"
-            },
-            {
-                "comment": "=== Visual モード オペレータ ==="
-            },
-            {
-                "key": "d",
-                "command": "waltz.visualDelete",
-                "when": "editorTextFocus && waltz.mode == 'visual'"
-            },
-            {
-                "key": "c",
-                "command": "waltz.visualChange",
-                "when": "editorTextFocus && waltz.mode == 'visual'"
-            },
-            {
-                "key": "y",
-                "command": "waltz.visualYank",
-                "when": "editorTextFocus && waltz.mode == 'visual'"
-            },
-            {
-                "key": "x",
-                "command": "waltz.visualDelete",
-                "when": "editorTextFocus && waltz.mode == 'visual'"
-            },
-            {
-                "key": "s",
-                "command": "waltz.visualChange",
-                "when": "editorTextFocus && waltz.mode == 'visual'"
-            },
-            {
-                "comment": "=== f/t 文字検索 (QuickPick) ==="
-            },
-            {
-                "key": "f",
-                "command": "waltz.findCharForward",
-                "when": "editorTextFocus && waltz.mode != 'insert'"
-            },
-            {
-                "key": "t",
-                "command": "waltz.findCharForwardBefore",
-                "when": "editorTextFocus && waltz.mode != 'insert'"
-            },
-            {
-                "key": "shift+f",
-                "command": "waltz.findCharBackward",
-                "when": "editorTextFocus && waltz.mode != 'insert'"
-            },
-            {
-                "key": "shift+t",
-                "command": "waltz.findCharBackwardBefore",
-                "when": "editorTextFocus && waltz.mode != 'insert'"
-            },
-            {
-                "key": ";",
-                "command": "waltz.repeatFindChar",
-                "when": "editorTextFocus && waltz.mode != 'insert'"
-            },
-            {
-                "key": ",",
-                "command": "waltz.repeatFindCharReverse",
-                "when": "editorTextFocus && waltz.mode != 'insert'"
-            },
-            {
-                "comment": "=== g プレフィックス (QuickPick) ==="
-            },
-            {
-                "key": "g",
-                "command": "waltz.gotoMenu",
-                "when": "editorTextFocus && waltz.mode != 'insert'"
-            },
-            {
-                "comment": "=== 編集コマンド ==="
-            },
-            {
-                "key": "x",
-                "command": "deleteRight",
-                "when": "editorTextFocus && waltz.mode == 'normal'"
-            },
-            {
-                "key": "p",
-                "command": "waltz.pasteAfter",
-                "when": "editorTextFocus && waltz.mode == 'normal'"
-            },
-            {
-                "key": "shift+p",
-                "command": "waltz.pasteBefore",
-                "when": "editorTextFocus && waltz.mode == 'normal'"
-            },
-            {
-                "key": "shift+j",
-                "command": "editor.action.joinLines",
-                "when": "editorTextFocus && waltz.mode == 'normal'"
-            },
-            {
-                "key": "shift+d",
-                "command": "deleteAllRight",
-                "when": "editorTextFocus && waltz.mode == 'normal'"
-            },
-            {
-                "key": "shift+c",
-                "command": "waltz.changeToEndOfLine",
-                "when": "editorTextFocus && waltz.mode == 'normal'"
-            },
-            {
-                "comment": "=== 段落移動 ==="
-            },
-            {
-                "key": "shift+[",
-                "command": "waltz.paragraphUp",
-                "when": "editorTextFocus && waltz.mode == 'normal'"
-            },
-            {
-                "key": "shift+]",
-                "command": "waltz.paragraphDown",
-                "when": "editorTextFocus && waltz.mode == 'normal'"
-            },
-            {
-                "key": "shift+[",
-                "command": "waltz.paragraphUpSelect",
-                "when": "editorTextFocus && waltz.mode == 'visual'"
-            },
-            {
-                "key": "shift+]",
-                "command": "waltz.paragraphDownSelect",
-                "when": "editorTextFocus && waltz.mode == 'visual'"
-            },
-            {
-                "comment": "=== マッチング括弧 ==="
-            },
-            {
-                "key": "shift+5",
-                "command": "editor.action.jumpToBracket",
-                "when": "editorTextFocus && waltz.mode == 'normal'"
-            },
-            {
-                "key": "shift+5",
-                "command": "editor.action.selectToBracket",
-                "when": "editorTextFocus && waltz.mode == 'visual'"
-            },
-            {
-                "comment": "=== ビューポート制御 ==="
-            },
-            {
-                "key": "z z",
-                "command": "revealLine",
-                "args": {
-                    "lineNumber": "${lineNumber}",
-                    "at": "center"
-                },
-                "when": "editorTextFocus && waltz.mode != 'insert'"
-            },
-            {
                 "key": "d i w",
                 "command": "waltz.delete",
                 "args": {
@@ -1730,9 +1168,294 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
+                "key": "h",
+                "command": "cursorLeft",
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "h",
+                "command": "cursorLeftSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "j",
+                "command": "cursorDown",
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "j",
+                "command": "cursorDownSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "k",
+                "command": "cursorUp",
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "k",
+                "command": "cursorUpSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "l",
+                "command": "cursorRight",
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "l",
+                "command": "cursorRightSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "w",
+                "command": "cursorWordStartRight",
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "w",
+                "command": "cursorWordStartRightSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "b",
+                "command": "cursorWordStartLeft",
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "b",
+                "command": "cursorWordStartLeftSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "e",
+                "command": "cursorWordEndRight",
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "e",
+                "command": "cursorWordEndRightSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "0",
+                "command": "cursorHome",
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "0",
+                "command": "cursorHomeSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "shift+4",
+                "command": "cursorEnd",
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "shift+4",
+                "command": "cursorEndSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "shift+6",
+                "command": "cursorHome",
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "shift+6",
+                "command": "cursorHomeSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "shift+g",
+                "command": "cursorBottom",
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "shift+g",
+                "command": "cursorBottomSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "up",
+                "command": "cursorUp",
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "up",
+                "command": "cursorUpSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "down",
+                "command": "cursorDown",
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "down",
+                "command": "cursorDownSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "left",
+                "command": "cursorLeft",
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "left",
+                "command": "cursorLeftSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "right",
+                "command": "cursorRight",
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "right",
+                "command": "cursorRightSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "pageup",
+                "command": "cursorPageUp",
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "pageup",
+                "command": "cursorPageUpSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "pagedown",
+                "command": "cursorPageDown",
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "pagedown",
+                "command": "cursorPageDownSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "home",
+                "command": "cursorHome",
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "home",
+                "command": "cursorHomeSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "end",
+                "command": "cursorEnd",
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "end",
+                "command": "cursorEndSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "ctrl+left",
+                "command": "cursorWordLeft",
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "ctrl+left",
+                "command": "cursorWordLeftSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "ctrl+right",
+                "command": "cursorWordRight",
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "ctrl+right",
+                "command": "cursorWordRightSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "alt+left",
+                "command": "cursorWordLeft",
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "alt+left",
+                "command": "cursorWordLeftSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "alt+right",
+                "command": "cursorWordEndRight",
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "alt+right",
+                "command": "cursorWordEndRightSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "ctrl+home",
+                "command": "cursorTop",
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "ctrl+home",
+                "command": "cursorTopSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "ctrl+end",
+                "command": "cursorBottom",
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "ctrl+end",
+                "command": "cursorBottomSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "shift+[",
+                "command": "waltz.paragraphUp",
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "shift+[",
+                "command": "waltz.paragraphUpSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "shift+]",
+                "command": "waltz.paragraphDown",
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "shift+]",
+                "command": "waltz.paragraphDownSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "shift+5",
+                "command": "editor.action.jumpToBracket",
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "shift+5",
+                "command": "editor.action.selectToBracket",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
                 "key": "g g",
                 "command": "cursorTop",
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "g g",
+                "command": "cursorTopSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
             },
             {
                 "key": "g e",
@@ -1740,9 +1463,19 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
+                "key": "g e",
+                "command": "cursorWordEndLeftSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
                 "key": "g shift+e",
                 "command": "cursorWordEndLeft",
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "g shift+e",
+                "command": "cursorWordEndLeftSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
             },
             {
                 "key": "g j",
@@ -1750,9 +1483,19 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
+                "key": "g j",
+                "command": "cursorDisplayDownSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
                 "key": "g k",
                 "command": "cursorDisplayUp",
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "g k",
+                "command": "cursorDisplayUpSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
             },
             {
                 "key": "g 0",
@@ -1760,9 +1503,19 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
+                "key": "g 0",
+                "command": "cursorLineStartSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
                 "key": "g shift+4",
                 "command": "cursorLineEnd",
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "g shift+4",
+                "command": "cursorLineEndSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
             },
             {
                 "key": "g d",
@@ -1815,109 +1568,191 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "g g",
-                "command": "cursorTopSelect",
+                "key": "Escape",
+                "command": "waltz.escapeKey",
+                "when": "editorTextFocus"
+            },
+            {
+                "key": "i",
+                "command": "waltz.enterInsert",
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "a",
+                "command": "waltz.enterInsertAfter",
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "shift+i",
+                "command": "waltz.enterInsertLineStart",
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "shift+a",
+                "command": "waltz.enterInsertLineEnd",
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "o",
+                "command": "waltz.enterInsertBelow",
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "shift+o",
+                "command": "waltz.enterInsertAbove",
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "v",
+                "command": "waltz.enterVisual",
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "shift+v",
+                "command": "waltz.enterVisualLine",
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "x",
+                "command": "waltz.deleteChar",
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "s",
+                "command": "waltz.substituteChar",
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "shift+d",
+                "command": "waltz.deleteToEnd",
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "shift+c",
+                "command": "waltz.changeToEndOfLine",
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "shift+j",
+                "command": "editor.action.joinLines",
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "p",
+                "command": "waltz.pasteAfter",
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "shift+p",
+                "command": "waltz.pasteBefore",
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "u",
+                "command": "undo",
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "ctrl+r",
+                "command": "redo",
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "d",
+                "command": "waltz.visualDelete",
                 "when": "editorTextFocus && waltz.mode == 'visual'"
             },
             {
-                "key": "g e",
-                "command": "cursorWordEndLeftSelect",
+                "key": "x",
+                "command": "waltz.visualDelete",
                 "when": "editorTextFocus && waltz.mode == 'visual'"
             },
             {
-                "key": "g shift+e",
-                "command": "cursorWordEndLeftSelect",
+                "key": "c",
+                "command": "waltz.visualChange",
                 "when": "editorTextFocus && waltz.mode == 'visual'"
             },
             {
-                "key": "g j",
-                "command": "cursorDisplayDownSelect",
+                "key": "s",
+                "command": "waltz.visualChange",
                 "when": "editorTextFocus && waltz.mode == 'visual'"
             },
             {
-                "key": "g k",
-                "command": "cursorDisplayUpSelect",
+                "key": "y",
+                "command": "waltz.visualYank",
                 "when": "editorTextFocus && waltz.mode == 'visual'"
             },
             {
-                "key": "g 0",
-                "command": "cursorLineStartSelect",
-                "when": "editorTextFocus && waltz.mode == 'visual'"
+                "key": "f",
+                "command": "waltz.findCharForward",
+                "when": "editorTextFocus && waltz.mode != 'insert'"
             },
             {
-                "key": "g shift+4",
-                "command": "cursorLineEndSelect",
-                "when": "editorTextFocus && waltz.mode == 'visual'"
+                "key": "t",
+                "command": "waltz.findCharForwardBefore",
+                "when": "editorTextFocus && waltz.mode != 'insert'"
             },
             {
-                "key": "up",
-                "command": "cursorUpSelect",
-                "when": "editorTextFocus && waltz.mode == 'visual'"
+                "key": "shift+f",
+                "command": "waltz.findCharBackward",
+                "when": "editorTextFocus && waltz.mode != 'insert'"
             },
             {
-                "key": "down",
-                "command": "cursorDownSelect",
-                "when": "editorTextFocus && waltz.mode == 'visual'"
+                "key": "shift+t",
+                "command": "waltz.findCharBackwardBefore",
+                "when": "editorTextFocus && waltz.mode != 'insert'"
             },
             {
-                "key": "left",
-                "command": "cursorLeftSelect",
-                "when": "editorTextFocus && waltz.mode == 'visual'"
+                "key": ";",
+                "command": "waltz.repeatFindChar",
+                "when": "editorTextFocus && waltz.mode != 'insert'"
             },
             {
-                "key": "right",
-                "command": "cursorRightSelect",
-                "when": "editorTextFocus && waltz.mode == 'visual'"
+                "key": ",",
+                "command": "waltz.repeatFindCharReverse",
+                "when": "editorTextFocus && waltz.mode != 'insert'"
             },
             {
-                "key": "pageup",
-                "command": "cursorPageUpSelect",
-                "when": "editorTextFocus && waltz.mode == 'visual'"
+                "key": "ctrl+d",
+                "command": "editorScroll",
+                "args": {
+                    "to": "down",
+                    "by": "halfPage"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert'"
             },
             {
-                "key": "pagedown",
-                "command": "cursorPageDownSelect",
-                "when": "editorTextFocus && waltz.mode == 'visual'"
+                "key": "ctrl+u",
+                "command": "editorScroll",
+                "args": {
+                    "to": "up",
+                    "by": "halfPage"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert'"
             },
             {
-                "key": "home",
-                "command": "cursorHomeSelect",
-                "when": "editorTextFocus && waltz.mode == 'visual'"
+                "key": "z z",
+                "command": "revealLine",
+                "args": {
+                    "lineNumber": "",
+                    "at": "center"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "end",
-                "command": "cursorEndSelect",
-                "when": "editorTextFocus && waltz.mode == 'visual'"
+                "key": "backspace",
+                "command": "waltz.noop",
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "ctrl+left",
-                "command": "cursorWordLeftSelect",
-                "when": "editorTextFocus && waltz.mode == 'visual'"
+                "key": "delete",
+                "command": "waltz.noop",
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "ctrl+right",
-                "command": "cursorWordRightSelect",
-                "when": "editorTextFocus && waltz.mode == 'visual'"
-            },
-            {
-                "key": "alt+left",
-                "command": "cursorWordLeftSelect",
-                "when": "editorTextFocus && waltz.mode == 'visual'"
-            },
-            {
-                "key": "alt+right",
-                "command": "cursorWordEndRightSelect",
-                "when": "editorTextFocus && waltz.mode == 'visual'"
-            },
-            {
-                "key": "ctrl+home",
-                "command": "cursorTopSelect",
-                "when": "editorTextFocus && waltz.mode == 'visual'"
-            },
-            {
-                "key": "ctrl+end",
-                "command": "cursorBottomSelect",
-                "when": "editorTextFocus && waltz.mode == 'visual'"
+                "key": "tab",
+                "command": "waltz.noop",
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             }
         ],
         "configuration": {
