@@ -91,6 +91,9 @@ const basicMovement = [
     { key: 'w', normal: 'cursorWordStartRight', visual: 'cursorWordStartRightSelect' },
     { key: 'b', normal: 'cursorWordStartLeft', visual: 'cursorWordStartLeftSelect' },
     { key: 'e', normal: 'cursorWordEndRight', visual: 'cursorWordEndRightSelect' },
+    // WORD movement (whitespace-delimited)
+    { key: 'shift+w', normal: 'waltz.WORDForward', visual: 'waltz.WORDForward' },  // W
+    { key: 'shift+b', normal: 'waltz.WORDBackward', visual: 'waltz.WORDBackward' },  // B
     // Line movement
     { key: '0', normal: 'cursorHome', visual: 'cursorHomeSelect' },
     { key: 'shift+4', normal: 'cursorEnd', visual: 'cursorEndSelect' },  // $

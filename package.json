@@ -1446,6 +1446,26 @@
                 "when": "editorTextFocus && waltz.mode == 'visual'"
             },
             {
+                "key": "shift+w",
+                "command": "waltz.WORDForward",
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "shift+w",
+                "command": "waltz.WORDForward",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "shift+b",
+                "command": "waltz.WORDBackward",
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "shift+b",
+                "command": "waltz.WORDBackward",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
                 "key": "0",
                 "command": "cursorHome",
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
