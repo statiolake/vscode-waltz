@@ -161,8 +161,8 @@ const modeSwitching = [
     { key: 'a', command: 'waltz.enterInsertAfter', when: NORMAL },
     { key: 'shift+i', command: 'waltz.enterInsertLineStart', when: NORMAL },
     { key: 'shift+a', command: 'waltz.enterInsertLineEnd', when: NORMAL },
-    { key: 'o', command: 'waltz.enterInsertBelow', when: NORMAL },
-    { key: 'shift+o', command: 'waltz.enterInsertAbove', when: NORMAL },
+    { key: 'o', command: 'waltz.enterInsertNewLineBelow', when: NORMAL },
+    { key: 'shift+o', command: 'waltz.enterInsertNewLineAbove', when: NORMAL },
     { key: 'v', command: 'waltz.enterVisual', when: NORMAL },
     { key: 'shift+v', command: 'waltz.enterVisualLine', when: NORMAL },
 ];

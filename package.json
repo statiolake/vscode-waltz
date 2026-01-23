@@ -1822,12 +1822,12 @@
             },
             {
                 "key": "o",
-                "command": "waltz.enterInsertBelow",
+                "command": "waltz.enterInsertNewLineBelow",
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
                 "key": "shift+o",
-                "command": "waltz.enterInsertAbove",
+                "command": "waltz.enterInsertNewLineAbove",
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
