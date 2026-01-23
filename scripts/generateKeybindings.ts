@@ -131,7 +131,8 @@ const GENERATED_COMMANDS = new Set([
 
 function generateKeybindings(): Keybinding[] {
     const keybindings: Keybinding[] = [];
-    const normalWhen = "editorTextFocus && waltz.mode == 'normal'";
+    // Use != 'insert' && != 'visual' instead of == 'normal' so it works before extension activation
+    const normalWhen = "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'";
     const visualWhen = "editorTextFocus && waltz.mode == 'visual'";
 
     // Generate operator + textObject combinations
