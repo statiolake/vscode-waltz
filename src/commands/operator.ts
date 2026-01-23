@@ -1,131 +1,186 @@
 import * as vscode from 'vscode';
-import { Position, Range } from 'vscode';
+import { Position, Range, Selection } from 'vscode';
 import { enterMode } from '../modes';
 import type { VimState } from '../vimState';
 
 /**
- * d/c/y オペレータ
- * QuickPick でモーション/TextObject 入力を待ち、即時発火
+ * Operator commands with args support
+ * Called via keybindings like: { "command": "waltz.delete", "args": { "textObject": "iw" } }
  */
-const motionItems = [
-    { label: 'w', description: 'Word (start)' },
-    { label: 'b', description: 'Word backward' },
-    { label: 'e', description: 'Word end' },
-    { label: '$', description: 'End of line' },
-    { label: '0', description: 'Start of line' },
-    { label: '^', description: 'First non-blank' },
-    { label: '{', description: 'Paragraph backward' },
-    { label: '}', description: 'Paragraph forward' },
-    { label: 'gg', description: 'Document start' },
-    { label: 'G', description: 'Document end' },
-    { label: 'iw', description: 'Inner word' },
-    { label: 'aw', description: 'Around word' },
-    { label: 'i(', description: 'Inner parentheses' },
-    { label: 'a(', description: 'Around parentheses' },
-    { label: 'i{', description: 'Inner braces' },
-    { label: 'a{', description: 'Around braces' },
-    { label: 'i[', description: 'Inner brackets' },
-    { label: 'a[', description: 'Around brackets' },
-    { label: 'i<', description: 'Inner angle brackets' },
-    { label: 'a<', description: 'Around angle brackets' },
-    { label: "i'", description: 'Inner single quotes' },
-    { label: "a'", description: 'Around single quotes' },
-    { label: 'i"', description: 'Inner double quotes' },
-    { label: 'a"', description: 'Around double quotes' },
-    { label: 'i`', description: 'Inner backticks' },
-    { label: 'a`', description: 'Around backticks' },
-];
 
-// Single-character inputs that should immediately fire
-const immediateMatches = new Set([
-    'w',
-    'W',
-    'b',
-    'B',
-    'e',
-    'E',
-    '$',
-    '0',
-    '^',
-    '{',
-    '}',
-    'G',
-    'j',
-    'k',
-    'h',
-    'l',
-    '%',
-]);
-
-// Two-character inputs that should immediately fire
-const twoCharMatches = new Set([
-    'iw',
-    'aw',
-    'iW',
-    'aW',
-    'i(',
-    'a(',
-    'i)',
-    'a)',
-    'ib',
-    'ab',
-    'i{',
-    'a{',
-    'i}',
-    'a}',
-    'iB',
-    'aB',
-    'i[',
-    'a[',
-    'i]',
-    'a]',
-    'i<',
-    'a<',
-    'i>',
-    'a>',
-    "i'",
-    "a'",
-    'i"',
-    'a"',
-    'i`',
-    'a`',
-    'it',
-    'at',
-    'gg',
-    'ge',
-    'gE',
-]);
-
-function shouldFireImmediately(input: string, operatorKey: string): boolean {
-    // dd, cc, yy - line operation
-    if (input === operatorKey) return true;
-
-    // Single-char motions
-    if (input.length === 1 && immediateMatches.has(input)) return true;
-
-    // Two-char text objects and motions
-    if (input.length === 2 && twoCharMatches.has(input)) return true;
-
-    // f/t/F/T with character
-    if (input.length === 2 && ['f', 't', 'F', 'T'].includes(input[0])) return true;
-
-    return false;
+interface OperatorArgs {
+    textObject?: string; // "iw", "aw", "i(", etc.
+    motion?: string; // "w", "b", "$", etc.
+    line?: boolean; // true for dd, cc, yy
 }
 
 /**
- * Calculate range for a motion
+ * Get range for a text object
+ */
+function getTextObjectRange(
+    document: vscode.TextDocument,
+    position: Position,
+    textObject: string,
+): Range | null {
+    const inner = textObject.startsWith('i');
+    const type = textObject.slice(1);
+
+    switch (type) {
+        case 'w':
+        case 'W': {
+            const wordRange = document.getWordRangeAtPosition(position);
+            if (wordRange) {
+                if (inner) {
+                    return wordRange;
+                }
+                // "around" includes trailing whitespace
+                const line = document.lineAt(position.line).text;
+                let end = wordRange.end.character;
+                while (end < line.length && /\s/.test(line[end])) {
+                    end++;
+                }
+                return new Range(wordRange.start, new Position(position.line, end));
+            }
+            return null;
+        }
+        case '(':
+        case ')':
+        case 'b': {
+            return findPairRange(document, position, '(', ')', inner);
+        }
+        case '{':
+        case '}':
+        case 'B': {
+            return findPairRange(document, position, '{', '}', inner);
+        }
+        case '[':
+        case ']': {
+            return findPairRange(document, position, '[', ']', inner);
+        }
+        case '<':
+        case '>': {
+            return findPairRange(document, position, '<', '>', inner);
+        }
+        case "'":
+        case '"':
+        case '`': {
+            return findQuoteRange(document, position, type, inner);
+        }
+        default:
+            return null;
+    }
+}
+
+/**
+ * Find matching pair range (parentheses, braces, brackets)
+ */
+function findPairRange(
+    document: vscode.TextDocument,
+    position: Position,
+    open: string,
+    close: string,
+    inner: boolean,
+): Range | null {
+    const text = document.getText();
+    const offset = document.offsetAt(position);
+
+    // Search backward for opening
+    let depth = 0;
+    let openPos = -1;
+    for (let i = offset; i >= 0; i--) {
+        if (text[i] === close) depth++;
+        if (text[i] === open) {
+            if (depth === 0) {
+                openPos = i;
+                break;
+            }
+            depth--;
+        }
+    }
+
+    if (openPos === -1) return null;
+
+    // Search forward for closing
+    depth = 0;
+    let closePos = -1;
+    for (let i = openPos; i < text.length; i++) {
+        if (text[i] === open) depth++;
+        if (text[i] === close) {
+            depth--;
+            if (depth === 0) {
+                closePos = i;
+                break;
+            }
+        }
+    }
+
+    if (closePos === -1) return null;
+
+    const start = document.positionAt(inner ? openPos + 1 : openPos);
+    const end = document.positionAt(inner ? closePos : closePos + 1);
+    return new Range(start, end);
+}
+
+/**
+ * Find quote range
+ */
+function findQuoteRange(
+    document: vscode.TextDocument,
+    position: Position,
+    quote: string,
+    inner: boolean,
+): Range | null {
+    const line = document.lineAt(position.line).text;
+    const col = position.character;
+
+    // Find opening quote (search backward)
+    let openPos = -1;
+    for (let i = col; i >= 0; i--) {
+        if (line[i] === quote) {
+            openPos = i;
+            break;
+        }
+    }
+
+    // If not found backward, check if we're at or before a quote
+    if (openPos === -1) {
+        for (let i = col; i < line.length; i++) {
+            if (line[i] === quote) {
+                openPos = i;
+                break;
+            }
+        }
+    }
+
+    if (openPos === -1) return null;
+
+    // Find closing quote
+    let closePos = -1;
+    for (let i = openPos + 1; i < line.length; i++) {
+        if (line[i] === quote) {
+            closePos = i;
+            break;
+        }
+    }
+
+    if (closePos === -1) return null;
+
+    const start = new Position(position.line, inner ? openPos + 1 : openPos);
+    const end = new Position(position.line, inner ? closePos : closePos + 1);
+    return new Range(start, end);
+}
+
+/**
+ * Get range for a motion
  */
 function getMotionRange(
-    editor: vscode.TextEditor,
-    motion: string,
+    document: vscode.TextDocument,
     position: Position,
+    motion: string,
 ): Range | null {
-    const document = editor.document;
-
     switch (motion) {
         case 'w':
         case 'W': {
-            // Word motion: from current position to start of next word
             const wordRange = document.getWordRangeAtPosition(position);
             if (wordRange) {
                 return new Range(position, wordRange.end);
@@ -134,7 +189,6 @@ function getMotionRange(
         }
         case 'e':
         case 'E': {
-            // Word end motion
             const wordRange = document.getWordRangeAtPosition(position);
             if (wordRange) {
                 return new Range(position, wordRange.end);
@@ -143,7 +197,6 @@ function getMotionRange(
         }
         case 'b':
         case 'B': {
-            // Word backward motion
             const wordRange = document.getWordRangeAtPosition(position);
             if (wordRange) {
                 return new Range(wordRange.start, position);
@@ -151,18 +204,19 @@ function getMotionRange(
             return new Range(position.translate(0, -1), position);
         }
         case '$': {
-            // End of line
             const lineEnd = document.lineAt(position.line).range.end;
             return new Range(position, lineEnd);
         }
-        case '0':
-        case '^': {
-            // Start of line
+        case '0': {
             const lineStart = new Position(position.line, 0);
             return new Range(lineStart, position);
         }
+        case '^': {
+            const line = document.lineAt(position.line);
+            const firstNonWhitespace = line.firstNonWhitespaceCharacterIndex;
+            return new Range(new Position(position.line, firstNonWhitespace), position);
+        }
         case 'j': {
-            // Down one line (linewise)
             const startLine = position.line;
             const endLine = Math.min(startLine + 1, document.lineCount - 1);
             return new Range(
@@ -171,7 +225,6 @@ function getMotionRange(
             );
         }
         case 'k': {
-            // Up one line (linewise)
             const startLine = Math.max(position.line - 1, 0);
             const endLine = position.line;
             return new Range(
@@ -180,14 +233,12 @@ function getMotionRange(
             );
         }
         case 'h': {
-            // Left one character
             if (position.character > 0) {
                 return new Range(position.translate(0, -1), position);
             }
             return null;
         }
         case 'l': {
-            // Right one character
             const lineLength = document.lineAt(position.line).text.length;
             if (position.character < lineLength) {
                 return new Range(position, position.translate(0, 1));
@@ -195,29 +246,16 @@ function getMotionRange(
             return null;
         }
         case 'G': {
-            // To end of document (linewise)
             return new Range(
                 new Position(position.line, 0),
                 document.lineAt(document.lineCount - 1).rangeIncludingLineBreak.end,
             );
         }
         case 'gg': {
-            // To start of document (linewise)
             return new Range(
                 new Position(0, 0),
                 document.lineAt(position.line).rangeIncludingLineBreak.end,
             );
-        }
-        case 'iw':
-        case 'aw': {
-            // Inner/around word
-            const wordRange = document.getWordRangeAtPosition(position);
-            if (wordRange) {
-                return motion === 'aw'
-                    ? new Range(wordRange.start, wordRange.end.translate(0, 1))
-                    : wordRange;
-            }
-            return null;
         }
         default:
             return null;
@@ -225,136 +263,130 @@ function getMotionRange(
 }
 
 /**
- * Delete entire line (dd)
+ * Execute delete operation
  */
-async function deleteLine(editor: vscode.TextEditor): Promise<void> {
-    await editor.edit((editBuilder) => {
-        for (const selection of editor.selections) {
-            const line = editor.document.lineAt(selection.active.line);
-            editBuilder.delete(line.rangeIncludingLineBreak);
-        }
-    });
-}
-
-/**
- * Yank entire line (yy)
- */
-async function yankLine(editor: vscode.TextEditor): Promise<void> {
-    const lines = editor.selections.map((selection) => {
-        const line = editor.document.lineAt(selection.active.line);
-        return editor.document.getText(line.rangeIncludingLineBreak);
-    });
-    await vscode.env.clipboard.writeText(lines.join(''));
-}
-
-/**
- * Change entire line (cc)
- */
-async function changeLine(editor: vscode.TextEditor, vimState: VimState): Promise<void> {
-    // Delete line content but keep indentation
-    await editor.edit((editBuilder) => {
-        for (const selection of editor.selections) {
-            const line = editor.document.lineAt(selection.active.line);
-            const firstNonWhitespace = line.firstNonWhitespaceCharacterIndex;
-            const deleteRange = new Range(
-                new Position(selection.active.line, firstNonWhitespace),
-                line.range.end,
-            );
-            editBuilder.delete(deleteRange);
-        }
-    });
-    enterMode(vimState, editor, 'insert');
-}
-
-async function operatorCommand(
-    operatorKey: string,
-    operatorName: string,
-    getVimState: () => VimState,
+async function executeDelete(
+    editor: vscode.TextEditor,
+    args: OperatorArgs,
 ): Promise<void> {
-    const editor = vscode.window.activeTextEditor;
-    if (!editor) return;
-
-    const quickPick = vscode.window.createQuickPick();
-    quickPick.items = [{ label: operatorKey, description: `${operatorName} line` }, ...motionItems];
-    quickPick.placeholder = `${operatorName}: Type motion/text object (${operatorKey} for line, w for word, iw for inner word, ...)`;
-
-    let input = '';
-    const result = await new Promise<string>((resolve) => {
-        quickPick.onDidChangeValue((value) => {
-            input = value;
-            // Check if we should fire immediately
-            if (shouldFireImmediately(value, operatorKey)) {
-                quickPick.hide();
-                resolve(value);
-            }
-        });
-
-        quickPick.onDidAccept(() => {
-            const selected = quickPick.selectedItems[0];
-            quickPick.hide();
-            resolve(selected?.label ?? input);
-        });
-
-        quickPick.onDidHide(() => {
-            resolve('');
-            quickPick.dispose();
-        });
-
-        quickPick.show();
-    });
-
-    if (!result) return;
-
-    const vimState = getVimState();
-
-    // Handle line operations (dd, yy, cc)
-    if (result === operatorKey) {
-        switch (operatorKey) {
-            case 'd':
-                await deleteLine(editor);
-                break;
-            case 'y':
-                await yankLine(editor);
-                break;
-            case 'c':
-                await changeLine(editor, vimState);
-                break;
-        }
-        return;
-    }
-
-    // Handle motion-based operations
+    const document = editor.document;
     const ranges: Range[] = [];
-    for (const selection of editor.selections) {
-        const range = getMotionRange(editor, result, selection.active);
-        if (range) {
-            ranges.push(range);
+
+    if (args.line) {
+        for (const selection of editor.selections) {
+            const line = document.lineAt(selection.active.line);
+            ranges.push(line.rangeIncludingLineBreak);
+        }
+    } else if (args.textObject) {
+        for (const selection of editor.selections) {
+            const range = getTextObjectRange(document, selection.active, args.textObject);
+            if (range) ranges.push(range);
+        }
+    } else if (args.motion) {
+        for (const selection of editor.selections) {
+            const range = getMotionRange(document, selection.active, args.motion);
+            if (range) ranges.push(range);
         }
     }
 
     if (ranges.length === 0) return;
 
-    // Copy text to clipboard
-    const text = ranges.map((range) => editor.document.getText(range)).join('\n');
+    // Copy to clipboard
+    const text = ranges.map((r) => document.getText(r)).join('\n');
     await vscode.env.clipboard.writeText(text);
 
-    // Execute operation
-    switch (operatorKey) {
-        case 'd':
-        case 'c':
-            await editor.edit((editBuilder) => {
-                for (const range of ranges) {
-                    editBuilder.delete(range);
-                }
-            });
-            if (operatorKey === 'c') {
-                enterMode(vimState, editor, 'insert');
-            }
-            break;
-        case 'y':
-            // Just yank, don't delete
-            break;
+    // Delete
+    await editor.edit((editBuilder) => {
+        for (const range of ranges) {
+            editBuilder.delete(range);
+        }
+    });
+}
+
+/**
+ * Execute change operation
+ */
+async function executeChange(
+    editor: vscode.TextEditor,
+    args: OperatorArgs,
+    vimState: VimState,
+): Promise<void> {
+    const document = editor.document;
+    const ranges: Range[] = [];
+
+    if (args.line) {
+        for (const selection of editor.selections) {
+            const line = document.lineAt(selection.active.line);
+            const firstNonWhitespace = line.firstNonWhitespaceCharacterIndex;
+            ranges.push(new Range(new Position(selection.active.line, firstNonWhitespace), line.range.end));
+        }
+    } else if (args.textObject) {
+        for (const selection of editor.selections) {
+            const range = getTextObjectRange(document, selection.active, args.textObject);
+            if (range) ranges.push(range);
+        }
+    } else if (args.motion) {
+        for (const selection of editor.selections) {
+            const range = getMotionRange(document, selection.active, args.motion);
+            if (range) ranges.push(range);
+        }
     }
+
+    if (ranges.length === 0) return;
+
+    // Copy to clipboard
+    const text = ranges.map((r) => document.getText(r)).join('\n');
+    await vscode.env.clipboard.writeText(text);
+
+    // Delete and enter insert mode
+    await editor.edit((editBuilder) => {
+        for (const range of ranges) {
+            editBuilder.delete(range);
+        }
+    });
+
+    enterMode(vimState, editor, 'insert');
+}
+
+/**
+ * Execute yank operation
+ */
+async function executeYank(
+    editor: vscode.TextEditor,
+    args: OperatorArgs,
+): Promise<void> {
+    const document = editor.document;
+    const ranges: Range[] = [];
+
+    if (args.line) {
+        for (const selection of editor.selections) {
+            const line = document.lineAt(selection.active.line);
+            ranges.push(line.rangeIncludingLineBreak);
+        }
+    } else if (args.textObject) {
+        for (const selection of editor.selections) {
+            const range = getTextObjectRange(document, selection.active, args.textObject);
+            if (range) ranges.push(range);
+        }
+    } else if (args.motion) {
+        for (const selection of editor.selections) {
+            const range = getMotionRange(document, selection.active, args.motion);
+            if (range) ranges.push(range);
+        }
+    }
+
+    if (ranges.length === 0) return;
+
+    // Copy to clipboard
+    const text = ranges.map((r) => document.getText(r)).join('\n');
+    await vscode.env.clipboard.writeText(text);
+
+    // Flash selection briefly to indicate yank
+    const originalSelections = editor.selections;
+    editor.selections = ranges.map((r) => new Selection(r.start, r.end));
+    setTimeout(() => {
+        editor.selections = originalSelections;
+    }, 150);
 }
 
 export function registerOperatorCommands(
@@ -362,14 +394,17 @@ export function registerOperatorCommands(
     getVimState: () => VimState,
 ): void {
     context.subscriptions.push(
-        vscode.commands.registerCommand('waltz.deleteOperator', () =>
-            operatorCommand('d', 'Delete', getVimState),
-        ),
-        vscode.commands.registerCommand('waltz.changeOperator', () =>
-            operatorCommand('c', 'Change', getVimState),
-        ),
-        vscode.commands.registerCommand('waltz.yankOperator', () =>
-            operatorCommand('y', 'Yank', getVimState),
-        ),
+        vscode.commands.registerCommand('waltz.delete', (args: OperatorArgs) => {
+            const editor = vscode.window.activeTextEditor;
+            if (editor) executeDelete(editor, args || {});
+        }),
+        vscode.commands.registerCommand('waltz.change', (args: OperatorArgs) => {
+            const editor = vscode.window.activeTextEditor;
+            if (editor) executeChange(editor, args || {}, getVimState());
+        }),
+        vscode.commands.registerCommand('waltz.yank', (args: OperatorArgs) => {
+            const editor = vscode.window.activeTextEditor;
+            if (editor) executeYank(editor, args || {});
+        }),
     );
 }

@@ -345,7 +345,9 @@
                 "command": "waltz.noop",
                 "when": "editorTextFocus && waltz.mode != 'insert'"
             },
-            {"comment": "=== Normal モード基本移動 ==="},
+            {
+                "comment": "=== Normal モード基本移動 ==="
+            },
             {
                 "key": "h",
                 "command": "cursorLeft",
@@ -366,7 +368,9 @@
                 "command": "cursorRight",
                 "when": "editorTextFocus && waltz.mode == 'normal'"
             },
-            {"comment": "=== Visual モード基本移動 ==="},
+            {
+                "comment": "=== Visual モード基本移動 ==="
+            },
             {
                 "key": "h",
                 "command": "cursorLeftSelect",
@@ -387,7 +391,9 @@
                 "command": "cursorRightSelect",
                 "when": "editorTextFocus && waltz.mode == 'visual'"
             },
-            {"comment": "=== Normal モードワード移動 ==="},
+            {
+                "comment": "=== Normal モードワード移動 ==="
+            },
             {
                 "key": "w",
                 "command": "cursorWordStartRight",
@@ -403,7 +409,9 @@
                 "command": "cursorWordEndRight",
                 "when": "editorTextFocus && waltz.mode == 'normal'"
             },
-            {"comment": "=== Visual モードワード移動 ==="},
+            {
+                "comment": "=== Visual モードワード移動 ==="
+            },
             {
                 "key": "w",
                 "command": "cursorWordStartRightSelect",
@@ -419,7 +427,9 @@
                 "command": "cursorWordEndRightSelect",
                 "when": "editorTextFocus && waltz.mode == 'visual'"
             },
-            {"comment": "=== Normal モード行移動 ==="},
+            {
+                "comment": "=== Normal モード行移動 ==="
+            },
             {
                 "key": "0",
                 "command": "cursorHome",
@@ -435,7 +445,9 @@
                 "command": "cursorHome",
                 "when": "editorTextFocus && waltz.mode == 'normal'"
             },
-            {"comment": "=== Visual モード行移動 ==="},
+            {
+                "comment": "=== Visual モード行移動 ==="
+            },
             {
                 "key": "0",
                 "command": "cursorHomeSelect",
@@ -451,7 +463,9 @@
                 "command": "cursorHomeSelect",
                 "when": "editorTextFocus && waltz.mode == 'visual'"
             },
-            {"comment": "=== ファイル移動 ==="},
+            {
+                "comment": "=== ファイル移動 ==="
+            },
             {
                 "key": "shift+g",
                 "command": "cursorBottom",
@@ -462,7 +476,9 @@
                 "command": "cursorBottomSelect",
                 "when": "editorTextFocus && waltz.mode == 'visual'"
             },
-            {"comment": "=== Undo/Redo ==="},
+            {
+                "comment": "=== Undo/Redo ==="
+            },
             {
                 "key": "u",
                 "command": "undo",
@@ -473,20 +489,30 @@
                 "command": "redo",
                 "when": "editorTextFocus && waltz.mode == 'normal'"
             },
-            {"comment": "=== 半ページスクロール ==="},
+            {
+                "comment": "=== 半ページスクロール ==="
+            },
             {
                 "key": "ctrl+d",
                 "command": "editorScroll",
-                "args": { "to": "down", "by": "halfPage" },
+                "args": {
+                    "to": "down",
+                    "by": "halfPage"
+                },
                 "when": "editorTextFocus && waltz.mode == 'normal'"
             },
             {
                 "key": "ctrl+u",
                 "command": "editorScroll",
-                "args": { "to": "up", "by": "halfPage" },
+                "args": {
+                    "to": "up",
+                    "by": "halfPage"
+                },
                 "when": "editorTextFocus && waltz.mode == 'normal'"
             },
-            {"comment": "=== モード切替 ==="},
+            {
+                "comment": "=== モード切替 ==="
+            },
             {
                 "key": "i",
                 "command": "waltz.enterInsert",
@@ -527,7 +553,9 @@
                 "command": "waltz.enterVisualLine",
                 "when": "editorTextFocus && waltz.mode == 'normal'"
             },
-            {"comment": "=== オペレータ (QuickPick) ==="},
+            {
+                "comment": "=== オペレータ (QuickPick) ==="
+            },
             {
                 "key": "d",
                 "command": "waltz.deleteOperator",
@@ -543,7 +571,9 @@
                 "command": "waltz.yankOperator",
                 "when": "editorTextFocus && waltz.mode == 'normal'"
             },
-            {"comment": "=== Visual モード オペレータ ==="},
+            {
+                "comment": "=== Visual モード オペレータ ==="
+            },
             {
                 "key": "d",
                 "command": "waltz.visualDelete",
@@ -569,7 +599,9 @@
                 "command": "waltz.visualChange",
                 "when": "editorTextFocus && waltz.mode == 'visual'"
             },
-            {"comment": "=== f/t 文字検索 (QuickPick) ==="},
+            {
+                "comment": "=== f/t 文字検索 (QuickPick) ==="
+            },
             {
                 "key": "f",
                 "command": "waltz.findCharForward",
@@ -600,13 +632,17 @@
                 "command": "waltz.repeatFindCharReverse",
                 "when": "editorTextFocus && waltz.mode != 'insert'"
             },
-            {"comment": "=== g プレフィックス (QuickPick) ==="},
+            {
+                "comment": "=== g プレフィックス (QuickPick) ==="
+            },
             {
                 "key": "g",
                 "command": "waltz.gotoMenu",
                 "when": "editorTextFocus && waltz.mode != 'insert'"
             },
-            {"comment": "=== 編集コマンド ==="},
+            {
+                "comment": "=== 編集コマンド ==="
+            },
             {
                 "key": "x",
                 "command": "deleteRight",
@@ -637,7 +673,9 @@
                 "command": "waltz.changeToEndOfLine",
                 "when": "editorTextFocus && waltz.mode == 'normal'"
             },
-            {"comment": "=== 段落移動 ==="},
+            {
+                "comment": "=== 段落移動 ==="
+            },
             {
                 "key": "shift+[",
                 "command": "waltz.paragraphUp",
@@ -658,7 +696,9 @@
                 "command": "waltz.paragraphDownSelect",
                 "when": "editorTextFocus && waltz.mode == 'visual'"
             },
-            {"comment": "=== マッチング括弧 ==="},
+            {
+                "comment": "=== マッチング括弧 ==="
+            },
             {
                 "key": "shift+5",
                 "command": "editor.action.jumpToBracket",
@@ -669,12 +709,1025 @@
                 "command": "editor.action.selectToBracket",
                 "when": "editorTextFocus && waltz.mode == 'visual'"
             },
-            {"comment": "=== ビューポート制御 ==="},
+            {
+                "comment": "=== ビューポート制御 ==="
+            },
             {
                 "key": "z z",
                 "command": "revealLine",
-                "args": { "lineNumber": "${lineNumber}", "at": "center" },
+                "args": {
+                    "lineNumber": "${lineNumber}",
+                    "at": "center"
+                },
                 "when": "editorTextFocus && waltz.mode != 'insert'"
+            },
+            {
+                "key": "d i w",
+                "command": "waltz.delete",
+                "args": {
+                    "textObject": "iw"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "d a w",
+                "command": "waltz.delete",
+                "args": {
+                    "textObject": "aw"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "d i W",
+                "command": "waltz.delete",
+                "args": {
+                    "textObject": "iW"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "d a W",
+                "command": "waltz.delete",
+                "args": {
+                    "textObject": "aW"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "d i (",
+                "command": "waltz.delete",
+                "args": {
+                    "textObject": "i("
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "d a (",
+                "command": "waltz.delete",
+                "args": {
+                    "textObject": "a("
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "d i )",
+                "command": "waltz.delete",
+                "args": {
+                    "textObject": "i)"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "d a )",
+                "command": "waltz.delete",
+                "args": {
+                    "textObject": "a)"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "d i {",
+                "command": "waltz.delete",
+                "args": {
+                    "textObject": "i{"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "d a {",
+                "command": "waltz.delete",
+                "args": {
+                    "textObject": "a{"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "d i }",
+                "command": "waltz.delete",
+                "args": {
+                    "textObject": "i}"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "d a }",
+                "command": "waltz.delete",
+                "args": {
+                    "textObject": "a}"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "d i [",
+                "command": "waltz.delete",
+                "args": {
+                    "textObject": "i["
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "d a [",
+                "command": "waltz.delete",
+                "args": {
+                    "textObject": "a["
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "d i ]",
+                "command": "waltz.delete",
+                "args": {
+                    "textObject": "i]"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "d a ]",
+                "command": "waltz.delete",
+                "args": {
+                    "textObject": "a]"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "d i <",
+                "command": "waltz.delete",
+                "args": {
+                    "textObject": "i<"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "d a <",
+                "command": "waltz.delete",
+                "args": {
+                    "textObject": "a<"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "d i >",
+                "command": "waltz.delete",
+                "args": {
+                    "textObject": "i>"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "d a >",
+                "command": "waltz.delete",
+                "args": {
+                    "textObject": "a>"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "d i '",
+                "command": "waltz.delete",
+                "args": {
+                    "textObject": "i'"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "d a '",
+                "command": "waltz.delete",
+                "args": {
+                    "textObject": "a'"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "d i \"",
+                "command": "waltz.delete",
+                "args": {
+                    "textObject": "i\""
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "d a \"",
+                "command": "waltz.delete",
+                "args": {
+                    "textObject": "a\""
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "d i `",
+                "command": "waltz.delete",
+                "args": {
+                    "textObject": "i`"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "d a `",
+                "command": "waltz.delete",
+                "args": {
+                    "textObject": "a`"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "d w",
+                "command": "waltz.delete",
+                "args": {
+                    "motion": "w"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "d W",
+                "command": "waltz.delete",
+                "args": {
+                    "motion": "W"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "d b",
+                "command": "waltz.delete",
+                "args": {
+                    "motion": "b"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "d B",
+                "command": "waltz.delete",
+                "args": {
+                    "motion": "B"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "d e",
+                "command": "waltz.delete",
+                "args": {
+                    "motion": "e"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "d E",
+                "command": "waltz.delete",
+                "args": {
+                    "motion": "E"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "d 0",
+                "command": "waltz.delete",
+                "args": {
+                    "motion": "0"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "d shift+4",
+                "command": "waltz.delete",
+                "args": {
+                    "motion": "$"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "d shift+6",
+                "command": "waltz.delete",
+                "args": {
+                    "motion": "^"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "d j",
+                "command": "waltz.delete",
+                "args": {
+                    "motion": "j"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "d k",
+                "command": "waltz.delete",
+                "args": {
+                    "motion": "k"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "d h",
+                "command": "waltz.delete",
+                "args": {
+                    "motion": "h"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "d l",
+                "command": "waltz.delete",
+                "args": {
+                    "motion": "l"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "d g g",
+                "command": "waltz.delete",
+                "args": {
+                    "motion": "gg"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "d shift+g",
+                "command": "waltz.delete",
+                "args": {
+                    "motion": "G"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "d d",
+                "command": "waltz.delete",
+                "args": {
+                    "line": true
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "c i w",
+                "command": "waltz.change",
+                "args": {
+                    "textObject": "iw"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "c a w",
+                "command": "waltz.change",
+                "args": {
+                    "textObject": "aw"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "c i W",
+                "command": "waltz.change",
+                "args": {
+                    "textObject": "iW"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "c a W",
+                "command": "waltz.change",
+                "args": {
+                    "textObject": "aW"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "c i (",
+                "command": "waltz.change",
+                "args": {
+                    "textObject": "i("
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "c a (",
+                "command": "waltz.change",
+                "args": {
+                    "textObject": "a("
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "c i )",
+                "command": "waltz.change",
+                "args": {
+                    "textObject": "i)"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "c a )",
+                "command": "waltz.change",
+                "args": {
+                    "textObject": "a)"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "c i {",
+                "command": "waltz.change",
+                "args": {
+                    "textObject": "i{"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "c a {",
+                "command": "waltz.change",
+                "args": {
+                    "textObject": "a{"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "c i }",
+                "command": "waltz.change",
+                "args": {
+                    "textObject": "i}"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "c a }",
+                "command": "waltz.change",
+                "args": {
+                    "textObject": "a}"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "c i [",
+                "command": "waltz.change",
+                "args": {
+                    "textObject": "i["
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "c a [",
+                "command": "waltz.change",
+                "args": {
+                    "textObject": "a["
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "c i ]",
+                "command": "waltz.change",
+                "args": {
+                    "textObject": "i]"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "c a ]",
+                "command": "waltz.change",
+                "args": {
+                    "textObject": "a]"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "c i <",
+                "command": "waltz.change",
+                "args": {
+                    "textObject": "i<"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "c a <",
+                "command": "waltz.change",
+                "args": {
+                    "textObject": "a<"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "c i >",
+                "command": "waltz.change",
+                "args": {
+                    "textObject": "i>"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "c a >",
+                "command": "waltz.change",
+                "args": {
+                    "textObject": "a>"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "c i '",
+                "command": "waltz.change",
+                "args": {
+                    "textObject": "i'"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "c a '",
+                "command": "waltz.change",
+                "args": {
+                    "textObject": "a'"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "c i \"",
+                "command": "waltz.change",
+                "args": {
+                    "textObject": "i\""
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "c a \"",
+                "command": "waltz.change",
+                "args": {
+                    "textObject": "a\""
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "c i `",
+                "command": "waltz.change",
+                "args": {
+                    "textObject": "i`"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "c a `",
+                "command": "waltz.change",
+                "args": {
+                    "textObject": "a`"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "c w",
+                "command": "waltz.change",
+                "args": {
+                    "motion": "w"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "c W",
+                "command": "waltz.change",
+                "args": {
+                    "motion": "W"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "c b",
+                "command": "waltz.change",
+                "args": {
+                    "motion": "b"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "c B",
+                "command": "waltz.change",
+                "args": {
+                    "motion": "B"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "c e",
+                "command": "waltz.change",
+                "args": {
+                    "motion": "e"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "c E",
+                "command": "waltz.change",
+                "args": {
+                    "motion": "E"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "c 0",
+                "command": "waltz.change",
+                "args": {
+                    "motion": "0"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "c shift+4",
+                "command": "waltz.change",
+                "args": {
+                    "motion": "$"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "c shift+6",
+                "command": "waltz.change",
+                "args": {
+                    "motion": "^"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "c j",
+                "command": "waltz.change",
+                "args": {
+                    "motion": "j"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "c k",
+                "command": "waltz.change",
+                "args": {
+                    "motion": "k"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "c h",
+                "command": "waltz.change",
+                "args": {
+                    "motion": "h"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "c l",
+                "command": "waltz.change",
+                "args": {
+                    "motion": "l"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "c g g",
+                "command": "waltz.change",
+                "args": {
+                    "motion": "gg"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "c shift+g",
+                "command": "waltz.change",
+                "args": {
+                    "motion": "G"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "c c",
+                "command": "waltz.change",
+                "args": {
+                    "line": true
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "y i w",
+                "command": "waltz.yank",
+                "args": {
+                    "textObject": "iw"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "y a w",
+                "command": "waltz.yank",
+                "args": {
+                    "textObject": "aw"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "y i W",
+                "command": "waltz.yank",
+                "args": {
+                    "textObject": "iW"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "y a W",
+                "command": "waltz.yank",
+                "args": {
+                    "textObject": "aW"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "y i (",
+                "command": "waltz.yank",
+                "args": {
+                    "textObject": "i("
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "y a (",
+                "command": "waltz.yank",
+                "args": {
+                    "textObject": "a("
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "y i )",
+                "command": "waltz.yank",
+                "args": {
+                    "textObject": "i)"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "y a )",
+                "command": "waltz.yank",
+                "args": {
+                    "textObject": "a)"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "y i {",
+                "command": "waltz.yank",
+                "args": {
+                    "textObject": "i{"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "y a {",
+                "command": "waltz.yank",
+                "args": {
+                    "textObject": "a{"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "y i }",
+                "command": "waltz.yank",
+                "args": {
+                    "textObject": "i}"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "y a }",
+                "command": "waltz.yank",
+                "args": {
+                    "textObject": "a}"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "y i [",
+                "command": "waltz.yank",
+                "args": {
+                    "textObject": "i["
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "y a [",
+                "command": "waltz.yank",
+                "args": {
+                    "textObject": "a["
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "y i ]",
+                "command": "waltz.yank",
+                "args": {
+                    "textObject": "i]"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "y a ]",
+                "command": "waltz.yank",
+                "args": {
+                    "textObject": "a]"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "y i <",
+                "command": "waltz.yank",
+                "args": {
+                    "textObject": "i<"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "y a <",
+                "command": "waltz.yank",
+                "args": {
+                    "textObject": "a<"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "y i >",
+                "command": "waltz.yank",
+                "args": {
+                    "textObject": "i>"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "y a >",
+                "command": "waltz.yank",
+                "args": {
+                    "textObject": "a>"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "y i '",
+                "command": "waltz.yank",
+                "args": {
+                    "textObject": "i'"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "y a '",
+                "command": "waltz.yank",
+                "args": {
+                    "textObject": "a'"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "y i \"",
+                "command": "waltz.yank",
+                "args": {
+                    "textObject": "i\""
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "y a \"",
+                "command": "waltz.yank",
+                "args": {
+                    "textObject": "a\""
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "y i `",
+                "command": "waltz.yank",
+                "args": {
+                    "textObject": "i`"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "y a `",
+                "command": "waltz.yank",
+                "args": {
+                    "textObject": "a`"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "y w",
+                "command": "waltz.yank",
+                "args": {
+                    "motion": "w"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "y W",
+                "command": "waltz.yank",
+                "args": {
+                    "motion": "W"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "y b",
+                "command": "waltz.yank",
+                "args": {
+                    "motion": "b"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "y B",
+                "command": "waltz.yank",
+                "args": {
+                    "motion": "B"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "y e",
+                "command": "waltz.yank",
+                "args": {
+                    "motion": "e"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "y E",
+                "command": "waltz.yank",
+                "args": {
+                    "motion": "E"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "y 0",
+                "command": "waltz.yank",
+                "args": {
+                    "motion": "0"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "y shift+4",
+                "command": "waltz.yank",
+                "args": {
+                    "motion": "$"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "y shift+6",
+                "command": "waltz.yank",
+                "args": {
+                    "motion": "^"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "y j",
+                "command": "waltz.yank",
+                "args": {
+                    "motion": "j"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "y k",
+                "command": "waltz.yank",
+                "args": {
+                    "motion": "k"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "y h",
+                "command": "waltz.yank",
+                "args": {
+                    "motion": "h"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "y l",
+                "command": "waltz.yank",
+                "args": {
+                    "motion": "l"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "y g g",
+                "command": "waltz.yank",
+                "args": {
+                    "motion": "gg"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "y shift+g",
+                "command": "waltz.yank",
+                "args": {
+                    "motion": "G"
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "y y",
+                "command": "waltz.yank",
+                "args": {
+                    "line": true
+                },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
             }
         ],
         "configuration": {
@@ -800,7 +1853,8 @@
         "package": "vsce package",
         "publish": "vsce publish",
         "pretest": "npm run compile && npm run lint",
-        "test": "vscode-test"
+        "test": "vscode-test",
+        "generate-keybindings": "ts-node scripts/generateKeybindings.ts"
     },
     "lint-staged": {
         "*.{ts,js,mjs,json}": [
