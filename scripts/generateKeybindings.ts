@@ -69,9 +69,70 @@ const motions = [
     { keys: 'shift+g', id: 'G' },
 ];
 
+// g-prefix commands (fixed mappings)
+const gPrefixCommands = [
+    // Navigation
+    { key: 'g g', command: 'cursorTop' },
+    { key: 'g e', command: 'cursorWordEndLeft' },
+    { key: 'g shift+e', command: 'cursorWordEndLeft' },  // gE (same as ge in VS Code)
+    { key: 'g j', command: 'cursorDisplayDown' },
+    { key: 'g k', command: 'cursorDisplayUp' },
+    { key: 'g 0', command: 'cursorHomeSelect' },  // Display line start
+    { key: 'g shift+4', command: 'cursorEndSelect' },  // g$ - Display line end
+    // LSP / IDE
+    { key: 'g d', command: 'editor.action.revealDefinition' },
+    { key: 'g shift+d', command: 'editor.action.revealDeclaration' },
+    { key: 'g y', command: 'editor.action.goToTypeDefinition' },
+    { key: 'g shift+i', command: 'editor.action.goToImplementation' },
+    { key: 'g r', command: 'editor.action.goToReferences' },
+    { key: 'g shift+r', command: 'editor.action.rename' },
+    { key: 'g h', command: 'editor.action.showHover' },
+    { key: 'g .', command: 'editor.action.quickFix' },
+    { key: 'g f', command: 'editor.action.formatDocument' },
+    { key: 'g p', command: 'workbench.actions.view.problems' },
+];
+
+// g-prefix commands for visual mode (with Select variants)
+const gPrefixVisualCommands = [
+    { key: 'g g', command: 'cursorTopSelect' },
+    { key: 'g e', command: 'cursorWordEndLeftSelect' },
+    { key: 'g shift+e', command: 'cursorWordEndLeftSelect' },
+    { key: 'g j', command: 'cursorDisplayDownSelect' },
+    { key: 'g k', command: 'cursorDisplayUpSelect' },
+];
+
+// Commands that are marked as "generated" and will be replaced on regeneration
+const GENERATED_COMMANDS = new Set([
+    'waltz.delete',
+    'waltz.change',
+    'waltz.yank',
+    // g-prefix native commands
+    'cursorTop',
+    'cursorTopSelect',
+    'cursorWordEndLeft',
+    'cursorWordEndLeftSelect',
+    'cursorDisplayDown',
+    'cursorDisplayDownSelect',
+    'cursorDisplayUp',
+    'cursorDisplayUpSelect',
+    'cursorHomeSelect',
+    'cursorEndSelect',
+    'editor.action.revealDefinition',
+    'editor.action.revealDeclaration',
+    'editor.action.goToTypeDefinition',
+    'editor.action.goToImplementation',
+    'editor.action.goToReferences',
+    'editor.action.rename',
+    'editor.action.showHover',
+    'editor.action.quickFix',
+    'editor.action.formatDocument',
+    'workbench.actions.view.problems',
+]);
+
 function generateKeybindings(): Keybinding[] {
     const keybindings: Keybinding[] = [];
-    const when = "editorTextFocus && waltz.mode == 'normal'";
+    const normalWhen = "editorTextFocus && waltz.mode == 'normal'";
+    const visualWhen = "editorTextFocus && waltz.mode == 'visual'";
 
     // Generate operator + textObject combinations
     for (const op of operators) {
@@ -80,7 +141,7 @@ function generateKeybindings(): Keybinding[] {
                 key: `${op.key} ${obj.keys}`,
                 command: op.command,
                 args: { textObject: obj.id },
-                when,
+                when: normalWhen,
             });
         }
 
@@ -90,7 +151,7 @@ function generateKeybindings(): Keybinding[] {
                 key: `${op.key} ${motion.keys}`,
                 command: op.command,
                 args: { motion: motion.id },
-                when,
+                when: normalWhen,
             });
         }
 
@@ -99,11 +160,44 @@ function generateKeybindings(): Keybinding[] {
             key: `${op.key} ${op.key}`,
             command: op.command,
             args: { line: true },
-            when,
+            when: normalWhen,
+        });
+    }
+
+    // Add g-prefix commands for normal mode
+    for (const cmd of gPrefixCommands) {
+        keybindings.push({
+            key: cmd.key,
+            command: cmd.command,
+            when: normalWhen,
+        });
+    }
+
+    // Add g-prefix commands for visual mode
+    for (const cmd of gPrefixVisualCommands) {
+        keybindings.push({
+            key: cmd.key,
+            command: cmd.command,
+            when: visualWhen,
         });
     }
 
     return keybindings;
+}
+
+function isGeneratedKeybinding(kb: Keybinding): boolean {
+    // Check if it's an operator with args
+    if (GENERATED_COMMANDS.has(kb.command)) {
+        // For operator commands, only consider those with args as generated
+        if (kb.command === 'waltz.delete' || kb.command === 'waltz.change' || kb.command === 'waltz.yank') {
+            return !!kb.args;
+        }
+        // For g-prefix commands, check if the key starts with 'g '
+        if (kb.key.startsWith('g ')) {
+            return true;
+        }
+    }
+    return false;
 }
 
 function main() {
@@ -115,18 +209,9 @@ function main() {
     const packageJsonPath = path.join(__dirname, '..', 'package.json');
     const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
 
-    // Find the marker comment position or filter out old generated keybindings
+    // Filter out old generated keybindings
     const existingKeybindings: Keybinding[] = packageJson.contributes.keybindings || [];
-
-    // Remove any existing generated keybindings (those with waltz.delete/change/yank + args)
-    const filteredKeybindings = existingKeybindings.filter((kb: Keybinding) => {
-        const isGenerated =
-            (kb.command === 'waltz.delete' ||
-             kb.command === 'waltz.change' ||
-             kb.command === 'waltz.yank') &&
-            kb.args;
-        return !isGenerated;
-    });
+    const filteredKeybindings = existingKeybindings.filter((kb: Keybinding) => !isGeneratedKeybinding(kb));
 
     // Add new generated keybindings
     packageJson.contributes.keybindings = [...filteredKeybindings, ...keybindings];

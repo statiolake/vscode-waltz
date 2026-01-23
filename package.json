@@ -1728,6 +1728,116 @@
                     "line": true
                 },
                 "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "g g",
+                "command": "cursorTop",
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "g e",
+                "command": "cursorWordEndLeft",
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "g shift+e",
+                "command": "cursorWordEndLeft",
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "g j",
+                "command": "cursorDisplayDown",
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "g k",
+                "command": "cursorDisplayUp",
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "g 0",
+                "command": "cursorHomeSelect",
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "g shift+4",
+                "command": "cursorEndSelect",
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "g d",
+                "command": "editor.action.revealDefinition",
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "g shift+d",
+                "command": "editor.action.revealDeclaration",
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "g y",
+                "command": "editor.action.goToTypeDefinition",
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "g shift+i",
+                "command": "editor.action.goToImplementation",
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "g r",
+                "command": "editor.action.goToReferences",
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "g shift+r",
+                "command": "editor.action.rename",
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "g h",
+                "command": "editor.action.showHover",
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "g .",
+                "command": "editor.action.quickFix",
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "g f",
+                "command": "editor.action.formatDocument",
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "g p",
+                "command": "workbench.actions.view.problems",
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "g g",
+                "command": "cursorTopSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "g e",
+                "command": "cursorWordEndLeftSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "g shift+e",
+                "command": "cursorWordEndLeftSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "g j",
+                "command": "cursorDisplayDownSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "g k",
+                "command": "cursorDisplayUpSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
             }
         ],
         "configuration": {
