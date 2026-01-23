@@ -116,17 +116,19 @@ function repeatFindChar(vimState: VimState, reverse: boolean): void {
 
 export function registerFindCommands(context: vscode.ExtensionContext, getVimState: () => VimState): void {
     context.subscriptions.push(
+        // f and t both move to the character (same behavior in waltz)
         vscode.commands.registerCommand('waltz.findCharForward', () =>
             findCharCommand(getVimState(), 'forward', false),
         ),
         vscode.commands.registerCommand('waltz.findCharForwardBefore', () =>
-            findCharCommand(getVimState(), 'forward', true),
+            findCharCommand(getVimState(), 'forward', false),
         ),
+        // F and T both move to the character backward (same behavior in waltz)
         vscode.commands.registerCommand('waltz.findCharBackward', () =>
             findCharCommand(getVimState(), 'backward', false),
         ),
         vscode.commands.registerCommand('waltz.findCharBackwardBefore', () =>
-            findCharCommand(getVimState(), 'backward', true),
+            findCharCommand(getVimState(), 'backward', false),
         ),
         vscode.commands.registerCommand('waltz.repeatFindChar', () => repeatFindChar(getVimState(), false)),
         vscode.commands.registerCommand('waltz.repeatFindCharReverse', () => repeatFindChar(getVimState(), true)),
