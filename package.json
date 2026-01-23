@@ -1168,6 +1168,214 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
+                "key": "i w",
+                "command": "waltz.selectTextObject",
+                "args": {
+                    "textObject": "iw"
+                },
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "a w",
+                "command": "waltz.selectTextObject",
+                "args": {
+                    "textObject": "aw"
+                },
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "i W",
+                "command": "waltz.selectTextObject",
+                "args": {
+                    "textObject": "iW"
+                },
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "a W",
+                "command": "waltz.selectTextObject",
+                "args": {
+                    "textObject": "aW"
+                },
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "i (",
+                "command": "waltz.selectTextObject",
+                "args": {
+                    "textObject": "i("
+                },
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "a (",
+                "command": "waltz.selectTextObject",
+                "args": {
+                    "textObject": "a("
+                },
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "i )",
+                "command": "waltz.selectTextObject",
+                "args": {
+                    "textObject": "i)"
+                },
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "a )",
+                "command": "waltz.selectTextObject",
+                "args": {
+                    "textObject": "a)"
+                },
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "i {",
+                "command": "waltz.selectTextObject",
+                "args": {
+                    "textObject": "i{"
+                },
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "a {",
+                "command": "waltz.selectTextObject",
+                "args": {
+                    "textObject": "a{"
+                },
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "i }",
+                "command": "waltz.selectTextObject",
+                "args": {
+                    "textObject": "i}"
+                },
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "a }",
+                "command": "waltz.selectTextObject",
+                "args": {
+                    "textObject": "a}"
+                },
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "i [",
+                "command": "waltz.selectTextObject",
+                "args": {
+                    "textObject": "i["
+                },
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "a [",
+                "command": "waltz.selectTextObject",
+                "args": {
+                    "textObject": "a["
+                },
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "i ]",
+                "command": "waltz.selectTextObject",
+                "args": {
+                    "textObject": "i]"
+                },
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "a ]",
+                "command": "waltz.selectTextObject",
+                "args": {
+                    "textObject": "a]"
+                },
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "i <",
+                "command": "waltz.selectTextObject",
+                "args": {
+                    "textObject": "i<"
+                },
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "a <",
+                "command": "waltz.selectTextObject",
+                "args": {
+                    "textObject": "a<"
+                },
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "i >",
+                "command": "waltz.selectTextObject",
+                "args": {
+                    "textObject": "i>"
+                },
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "a >",
+                "command": "waltz.selectTextObject",
+                "args": {
+                    "textObject": "a>"
+                },
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "i '",
+                "command": "waltz.selectTextObject",
+                "args": {
+                    "textObject": "i'"
+                },
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "a '",
+                "command": "waltz.selectTextObject",
+                "args": {
+                    "textObject": "a'"
+                },
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "i \"",
+                "command": "waltz.selectTextObject",
+                "args": {
+                    "textObject": "i\""
+                },
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "a \"",
+                "command": "waltz.selectTextObject",
+                "args": {
+                    "textObject": "a\""
+                },
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "i `",
+                "command": "waltz.selectTextObject",
+                "args": {
+                    "textObject": "i`"
+                },
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "a `",
+                "command": "waltz.selectTextObject",
+                "args": {
+                    "textObject": "a`"
+                },
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
                 "key": "h",
                 "command": "cursorLeft",
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"

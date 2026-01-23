@@ -389,6 +389,39 @@ async function executeYank(
     }, 150);
 }
 
+/**
+ * Execute select text object operation (for visual mode)
+ */
+function executeSelectTextObject(
+    editor: vscode.TextEditor,
+    args: { textObject: string },
+): void {
+    const document = editor.document;
+    const newSelections: Selection[] = [];
+
+    for (const selection of editor.selections) {
+        const range = getTextObjectRange(document, selection.active, args.textObject);
+        if (range) {
+            // Extend selection to include the text object range
+            const newStart = selection.anchor.isBefore(range.start) ? selection.anchor : range.start;
+            const newEnd = selection.anchor.isAfter(range.end) ? selection.anchor : range.end;
+
+            // Determine anchor and active based on current selection direction
+            if (selection.isReversed) {
+                newSelections.push(new Selection(newEnd, newStart));
+            } else {
+                newSelections.push(new Selection(newStart, newEnd));
+            }
+        } else {
+            newSelections.push(selection);
+        }
+    }
+
+    if (newSelections.length > 0) {
+        editor.selections = newSelections;
+    }
+}
+
 export function registerOperatorCommands(
     context: vscode.ExtensionContext,
     getVimState: () => VimState,
@@ -405,6 +438,10 @@ export function registerOperatorCommands(
         vscode.commands.registerCommand('waltz.yank', (args: OperatorArgs) => {
             const editor = vscode.window.activeTextEditor;
             if (editor) executeYank(editor, args || {});
+        }),
+        vscode.commands.registerCommand('waltz.selectTextObject', (args: { textObject: string }) => {
+            const editor = vscode.window.activeTextEditor;
+            if (editor && args?.textObject) executeSelectTextObject(editor, args);
         }),
     );
 }

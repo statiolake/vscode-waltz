@@ -257,6 +257,16 @@ function generateKeybindings(): Keybinding[] {
         });
     }
 
+    // Visual mode text object selection (viw, vaw, vi(, etc.)
+    for (const obj of textObjects) {
+        keybindings.push({
+            key: obj.keys,
+            command: 'waltz.selectTextObject',
+            args: { textObject: obj.id },
+            when: VISUAL,
+        });
+    }
+
     // Basic movement (normal and visual)
     for (const cmd of basicMovement) {
         keybindings.push({ key: cmd.key, command: cmd.normal, when: NORMAL });
