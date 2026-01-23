@@ -10,7 +10,6 @@ import {
     type OffsetReplaceData,
 } from '../../utils/positionFinder';
 import { isCharacterTypeBoundary } from '../../utils/unicode';
-import { adjustRangeForVisualLine } from '../../utils/visualLine';
 import { newAction, newRegexAction } from '../actionBuilder';
 import type { Action } from '../actionTypes';
 
@@ -43,7 +42,7 @@ export function buildEditActions(): Action[] {
         // p - レジスタの内容をカーソル後にペースト
         newAction({
             keys: ['p'],
-            modes: ['normal', 'visual', 'visualLine'],
+            modes: ['normal', 'visual'],
             execute: async (context) => {
                 const editor = context.editor;
 
@@ -78,11 +77,7 @@ export function buildEditActions(): Action[] {
                             editBuilder.insert(insertPos, insertText);
                         } else {
                             // 通常: 選択範囲位置に挿入
-                            const range =
-                                context.vimState.mode === 'visualLine'
-                                    ? adjustRangeForVisualLine(editor.document, selection)
-                                    : selection;
-                            editBuilder.replace(range, content.text);
+                            editBuilder.replace(selection, content.text);
                             replaces.push({
                                 range: OffsetRange.fromRange(editor.document, selection),
                                 newText: content.text,
@@ -112,7 +107,7 @@ export function buildEditActions(): Action[] {
         // P - レジスタの内容をカーソル前にペースト
         newAction({
             keys: ['P'],
-            modes: ['normal', 'visual', 'visualLine'],
+            modes: ['normal', 'visual'],
             execute: async (context) => {
                 const editor = context.editor;
 
@@ -147,11 +142,7 @@ export function buildEditActions(): Action[] {
                             editBuilder.insert(insertPos, insertText);
                         } else {
                             // 通常: 選択範囲位置に挿入
-                            const range =
-                                context.vimState.mode === 'visualLine'
-                                    ? adjustRangeForVisualLine(editor.document, selection)
-                                    : selection;
-                            editBuilder.replace(range, content.text);
+                            editBuilder.replace(selection, content.text);
                             replaces.push({
                                 range: OffsetRange.fromRange(editor.document, selection),
                                 newText: content.text,
@@ -185,7 +176,7 @@ export function buildEditActions(): Action[] {
         // J - 行を結合
         newAction({
             keys: ['J'],
-            modes: ['normal', 'visual', 'visualLine'],
+            modes: ['normal', 'visual'],
             execute: async (context) => {
                 const editor = context.editor;
                 const document = editor.document;
@@ -257,7 +248,7 @@ export function buildEditActions(): Action[] {
         newRegexAction({
             pattern: /^r(?<replaceTo>.{1})$/,
             partial: /^r(.{0,1})$/,
-            modes: ['normal', 'visual', 'visualLine'],
+            modes: ['normal', 'visual'],
             execute: async (context, variables) => {
                 const replaceChar = variables.replaceTo;
                 if (!replaceChar || replaceChar.length !== 1) return;

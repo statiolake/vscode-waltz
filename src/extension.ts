@@ -8,14 +8,13 @@ import {
     type TextEditorSelectionChangeEvent,
 } from 'vscode';
 import { buildActions, delegateAction } from './action/actions';
+import { registerCommands } from './commands';
 import type { Context } from './context';
 import { createCommentConfigProvider, createVimState } from './contextInitializers';
 import { escapeHandler } from './escapeHandler';
 import { enterMode, reinitUiForState as reinitUiElement } from './modes';
 import { typeHandler } from './typeHandler';
 import type { CommentConfigProvider } from './utils/comment';
-import { expandSelectionToFullLines } from './utils/visualLine';
-import { clearVisualLineDecoration, updateVisualLineDecoration } from './utils/visualLineDecoration';
 import type { VimState } from './vimState';
 
 // グローバルな CommentConfigProvider（起動時に一度だけ初期化）
@@ -38,9 +37,9 @@ async function onDidChangeTextEditorSelection(vimState: VimState, e: TextEditorS
         // と、undo 後に勝手に visual モードになっているなどの不便が生じる。ただ当然ながら、そのようなケースと `vlh` は
         // 区別がつかないので、`vlh` の方が若干違和感を生じるのは避けられなかった。
         await enterMode(vimState, e.textEditor, 'normal');
-    } else if (!allEmpty && !['visual', 'visualLine'].includes(vimState.mode)) {
+    } else if (!allEmpty && vimState.mode !== 'visual') {
         // 選択状態になった場合は Visual モードへ移行する
-        // (すでに Visual 系モードの場合はそのまま維持)
+        // (すでに Visual モードの場合はそのまま維持)
         await enterMode(vimState, e.textEditor, 'visual');
     }
 
@@ -51,17 +50,7 @@ async function onDidChangeTextEditorSelection(vimState: VimState, e: TextEditorS
 
         // マルチカーソルの場合、最後のカーソル位置を reveal したいので最後のカーソルを見る
         const lastSelection = e.selections[e.selections.length - 1];
-        // VisualLine モードの場合、通常行末にカーソルがあるが目線は行頭にあってほしいので、行頭を見る
-        const focusAt =
-            vimState.mode === 'visualLine' ? lastSelection.active.with({ character: 0 }) : lastSelection.active;
-        e.textEditor.revealRange(new Range(focusAt, focusAt));
-    }
-
-    // Visual Line モードでは行全体をハイライトする decoration を更新
-    if (vimState.mode === 'visualLine') {
-        updateVisualLineDecoration(e.textEditor);
-    } else {
-        clearVisualLineDecoration(e.textEditor);
+        e.textEditor.revealRange(new Range(lastSelection.active, lastSelection.active));
     }
 }
 
@@ -176,19 +165,10 @@ export async function activate(context: ExtensionContext): Promise<{ getVimState
                 vscode.window.showWarningMessage(`Waltz: No action match: ${args.keys.join('')}`);
             }
         }),
-        vscode.commands.registerCommand('waltz.adjustSelectionForVisualLine', async () => {
-            const editor = vscode.window.activeTextEditor;
-            if (!editor || vimState.mode !== 'visualLine') {
-                return;
-            }
-
-            // Visual Line モードの場合、selection を行全体に拡張して visual モードに移行
-            editor.selections = editor.selections.map((selection) =>
-                expandSelectionToFullLines(editor.document, selection),
-            );
-            await enterMode(vimState, editor, 'visual');
-        }),
     );
+
+    // Register new commands (goto menu, find char, operators, mode switching)
+    registerCommands(context, () => vimState);
 
     // 起動時に normal モードに入る (big file で activeEditor が undefined でも)
     const activeEditor = vscode.window.activeTextEditor;
@@ -202,8 +182,7 @@ export async function activate(context: ExtensionContext): Promise<{ getVimState
 }
 
 /**
- * type コマンドを登録する。
- * normal/visual モードで呼び出す。
+ * 入力を無視するため type コマンドを登録する。
  * IME 関連のコマンド (compositionStart, compositionEnd, replacePreviousChar) も
  * 無視するように登録する。
  */
@@ -213,26 +192,14 @@ export function registerTypeCommand(vimState: VimState): void {
         return;
     }
 
-    let isComposing = false;
-
-    const typeDisposable = vscode.commands.registerCommand('type', async (e: { text: string }) => {
-        if (isComposing) {
-            // IME 入力中は変な入力が type として渡ってくることがあるので無視する
-            return;
-        }
-
-        // editor が undefined (巨大ファイル等) でも typeHandler を呼び出す。
-        // typeHandler 内で fallback のある action は実行される。
-        await typeHandler(vimState, e.text);
+    const typeDisposable = vscode.commands.registerCommand('type', async () => {
+        // 無視
     });
 
-    // IME 関連のコマンドは無視する（normal/visual モードでは IME 入力を受け付けない）
     const compositionStartDisposable = vscode.commands.registerCommand('compositionStart', () => {
-        isComposing = true;
         // 無視
     });
     const compositionEndDisposable = vscode.commands.registerCommand('compositionEnd', () => {
-        isComposing = false;
         // 無視
     });
     const replacePreviousCharDisposable = vscode.commands.registerCommand('replacePreviousChar', () => {

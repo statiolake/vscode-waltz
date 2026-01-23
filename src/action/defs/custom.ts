@@ -8,7 +8,7 @@ import type { Action } from '../actionTypes';
  */
 const CustomBindingSchema = z.object({
     keys: z.array(z.string()).min(1, 'keys must have at least one element'),
-    modes: z.array(z.enum(['normal', 'visual', 'visualLine', 'insert'])).optional(),
+    modes: z.array(z.enum(['normal', 'visual', 'insert'])).optional(),
     commands: z
         .array(
             z.object({
@@ -47,7 +47,7 @@ export function buildCustomActions(): Action[] {
 
     for (const binding of customBindings) {
         // modes が指定されていない場合は全モード対応
-        const modes = binding.modes ?? ['normal', 'visual', 'visualLine', 'insert'];
+        const modes = binding.modes ?? ['normal', 'visual', 'insert'];
 
         // アクションを作成
         const action = newAction({

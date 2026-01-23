@@ -16,7 +16,6 @@ const defaultCursorStyles: Record<Mode, CursorStyleString> = {
     normal: 'line',
     insert: 'line-thin',
     visual: 'line-thin',
-    visualLine: 'line-thin',
 };
 
 function getCursorStyleConfigKey(mode: Mode): string {

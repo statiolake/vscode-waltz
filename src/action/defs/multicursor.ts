@@ -1,7 +1,6 @@
 import * as vscode from 'vscode';
 import { Selection } from 'vscode';
 import { enterMode } from '../../modes';
-import { findLineEnd, findLineStartAfterIndent } from '../../utils/positionFinder';
 import { filterRangeByPattern, splitRangeByPattern } from '../../utils/rangeUtils';
 import { newAction } from '../actionBuilder';
 import type { Action } from '../actionTypes';
@@ -103,54 +102,10 @@ export function buildMulticursorActions(): Action[] {
             },
         }),
 
-        // Visual Line mode の I - 各行の先頭にマルチカーソルを挿入
-        newAction({
-            keys: ['I'],
-            modes: ['visualLine'],
-            execute: async (context) => {
-                const editor = context.editor;
-                // Visual Line の各行の先頭にカーソルを配置
-                editor.selections = editor.selections.flatMap((selection) => {
-                    const startLine = Math.min(selection.anchor.line, selection.active.line);
-                    const endLine = Math.max(selection.anchor.line, selection.active.line);
-                    const cursors: Selection[] = [];
-                    for (let line = startLine; line <= endLine; line++) {
-                        const lineStart = findLineStartAfterIndent(editor.document, new vscode.Position(line, 0));
-                        cursors.push(new Selection(lineStart, lineStart));
-                    }
-                    return cursors;
-                });
-                // Insert モードに入る
-                await enterMode(context.vimState, editor, 'insert');
-            },
-        }),
-
-        // Visual Line mode の A - 各行の末尾にマルチカーソルを挿入
-        newAction({
-            keys: ['A'],
-            modes: ['visualLine'],
-            execute: async (context) => {
-                const doc = context.editor.document;
-                // Visual Line の各行の末尾にカーソルを配置
-                context.editor.selections = context.editor.selections.flatMap((selection) => {
-                    const startLine = Math.min(selection.anchor.line, selection.active.line);
-                    const endLine = Math.max(selection.anchor.line, selection.active.line);
-                    const cursors: Selection[] = [];
-                    for (let line = startLine; line <= endLine; line++) {
-                        const lineEnd = findLineEnd(doc, new vscode.Position(line, 0));
-                        cursors.push(new Selection(lineEnd, lineEnd));
-                    }
-                    return cursors;
-                });
-                // Insert モードに入る
-                await enterMode(context.vimState, context.editor, 'insert');
-            },
-        }),
-
         // s - 選択範囲を正規表現で分割
         newAction({
             keys: ['s'],
-            modes: ['visual', 'visualLine'],
+            modes: ['visual'],
             execute: async (context) => {
                 const pattern = await vscode.window.showInputBox({
                     prompt: 'Enter regex pattern to split selections',
@@ -185,10 +140,6 @@ export function buildMulticursorActions(): Action[] {
                     return ranges.map((range) => new Selection(range.start, range.end));
                 });
 
-                if (context.vimState.mode === 'visualLine') {
-                    // Visual Line モードの場合、Visual モードに切り替えないとせっかく分割しても行全体が選択されてしまう
-                    enterMode(context.vimState, context.editor, 'visual');
-                }
                 context.editor.selections = newSelections;
             },
         }),
@@ -196,7 +147,7 @@ export function buildMulticursorActions(): Action[] {
         // m - 正規表現にマッチする部分のみを選択
         newAction({
             keys: ['m'],
-            modes: ['visual', 'visualLine'],
+            modes: ['visual'],
             execute: async (context) => {
                 const pattern = await vscode.window.showInputBox({
                     prompt: 'Enter regex pattern to match',
@@ -235,10 +186,6 @@ export function buildMulticursorActions(): Action[] {
                     return;
                 }
 
-                if (context.vimState.mode === 'visualLine') {
-                    // Visual Line モードの場合、Visual モードに切り替えないとせっかく分割しても行全体が選択されてしまう
-                    enterMode(context.vimState, context.editor, 'visual');
-                }
                 context.editor.selections = newSelections;
             },
         }),

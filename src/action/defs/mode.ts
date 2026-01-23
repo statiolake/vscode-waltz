@@ -93,7 +93,7 @@ export function buildModeActions(): Action[] {
         // v - Visual モードに入る
         newAction({
             keys: ['v'],
-            modes: ['normal', 'visualLine'],
+            modes: ['normal'],
             execute: async (context) => {
                 enterMode(context.vimState, context.editor, 'visual');
             },
@@ -102,15 +102,16 @@ export function buildModeActions(): Action[] {
             },
         }),
 
-        // V - Visual Line モードに入る
+        // V - 行選択 (VS Code native cursorLineSelect)
         newAction({
             keys: ['V'],
             modes: ['normal', 'visual'],
             execute: async (context) => {
-                enterMode(context.vimState, context.editor, 'visualLine');
+                await vscode.commands.executeCommand('expandLineSelection');
+                enterMode(context.vimState, context.editor, 'visual');
             },
             fallback: async (vimState) => {
-                // Big file モードでは visualLine の decoration が使えないので visual に
+                await vscode.commands.executeCommand('expandLineSelection');
                 enterMode(vimState, undefined, 'visual');
             },
         }),

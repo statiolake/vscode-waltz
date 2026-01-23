@@ -5,7 +5,6 @@ const defaultModeDisplays: Record<Mode, string> = {
     normal: '-- NORMAL --',
     insert: '-- INSERT --',
     visual: '-- VISUAL --',
-    visualLine: '-- VISUAL LINE --',
 };
 
 function getModeDisplayLabelConfigKey(mode: Mode): string {

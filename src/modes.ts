@@ -4,7 +4,6 @@ import { registerTypeCommand, unregisterTypeCommand } from './extension';
 import type { Mode } from './modesTypes';
 import { getCursorStyleForMode } from './utils/cursorStyle';
 import { getModeDisplayText } from './utils/modeDisplay';
-import { clearVisualLineDecoration, updateVisualLineDecoration } from './utils/visualLineDecoration';
 import type { VimState } from './vimState';
 
 export async function enterMode(vimState: VimState, editor: TextEditor | undefined, mode: Mode): Promise<void> {
@@ -32,7 +31,6 @@ export async function reinitUiForState(
     updateModeContext(vimState.mode);
     updateCursorStyle(editor, vimState.mode);
     updateStatusBar(vimState, vimState.mode, editor === undefined);
-    updateVisualLineHighlight(editor, vimState.mode);
 
     // ここから先の処理は重たく副作用も大きいので、明示的に指定されない限りスキップする
     if (!opts.adjustSelections) return;
@@ -71,12 +69,3 @@ function updateStatusBar(vimState: VimState, mode: Mode, isLimited: boolean): vo
     statusBarItem.show();
 }
 
-function updateVisualLineHighlight(editor: TextEditor | undefined, mode: Mode): void {
-    if (!editor) return;
-
-    if (mode === 'visualLine') {
-        updateVisualLineDecoration(editor);
-    } else {
-        clearVisualLineDecoration(editor);
-    }
-}

@@ -10,7 +10,7 @@ export function buildViewportActions(): Action[] {
         // zz - カーソル行を画面中央に
         newAction({
             keys: ['z', 'z'],
-            modes: ['normal', 'visual', 'visualLine'],
+            modes: ['normal', 'visual'],
             execute: async (context) => {
                 const editor = context.editor;
 
@@ -25,7 +25,7 @@ export function buildViewportActions(): Action[] {
         // zt - カーソル行を画面上部に
         newAction({
             keys: ['z', 't'],
-            modes: ['normal', 'visual', 'visualLine'],
+            modes: ['normal', 'visual'],
             execute: async (context) => {
                 const editor = context.editor;
 
@@ -40,7 +40,7 @@ export function buildViewportActions(): Action[] {
         // zb - カーソル行を画面下部に
         newAction({
             keys: ['z', 'b'],
-            modes: ['normal', 'visual', 'visualLine'],
+            modes: ['normal', 'visual'],
             execute: async (context) => {
                 const editor = context.editor;
 

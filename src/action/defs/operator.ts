@@ -1,12 +1,9 @@
-import type { TextEditor } from 'vscode';
 import * as vscode from 'vscode';
 import type { Context } from '../../context';
 import { enterMode } from '../../modes';
-import type { Mode } from '../../modesTypes';
 import { setRegisterContents } from '../../register';
 import { newWholeLineTextObject } from '../../textObject/textObjectBuilder';
 import type { TextObject } from '../../textObject/textObjectTypes';
-import { adjustRangeForVisualLine } from '../../utils/visualLine';
 import { newAction, newOperatorAction } from '../actionBuilder';
 import type { Action, ActionResult } from '../actionTypes';
 
@@ -182,27 +179,18 @@ export function buildOperatorActions(
         // d - 削除
         newAction({
             keys: ['d'],
-            modes: ['visual', 'visualLine'],
+            modes: ['visual'],
             execute: async (context) => {
                 const editor = context.editor;
-                const ranges = getAdjustedSelectionRangesIfVisualLine(editor, context.vimState.mode);
-                const isLinewise = context.vimState.mode === 'visualLine';
-                const contents = ranges.map((range) => {
-                    let text = editor.document.getText(range);
-
-                    // For linewise operations, strip ONLY the final trailing newline from register content
-                    // This preserves blank lines in the middle of the selection
-                    if (isLinewise) {
-                        text = trimLastNewline(text);
-                    }
-
-                    return { text, isLinewise };
+                const contents = editor.selections.map((selection) => {
+                    const text = editor.document.getText(selection);
+                    return { text, isLinewise: false };
                 });
 
                 await setRegisterContents(context.vimState, contents);
 
                 await context.editor.edit((editBuilder) => {
-                    for (const range of ranges) editBuilder.delete(range);
+                    for (const selection of editor.selections) editBuilder.delete(selection);
                 });
 
                 enterMode(context.vimState, context.editor, 'normal');
@@ -212,21 +200,12 @@ export function buildOperatorActions(
         // y - ヤンク
         newAction({
             keys: ['y'],
-            modes: ['visual', 'visualLine'],
+            modes: ['visual'],
             execute: async (context) => {
                 const editor = context.editor;
-                const ranges = getAdjustedSelectionRangesIfVisualLine(editor, context.vimState.mode);
-                const isLinewise = context.vimState.mode === 'visualLine';
-                const contents = ranges.map((range) => {
-                    let text = editor.document.getText(range);
-
-                    // For linewise operations, strip ONLY the final trailing newline from register content
-                    // This preserves blank lines in the middle of the selection
-                    if (isLinewise) {
-                        text = trimLastNewline(text);
-                    }
-
-                    return { text, isLinewise };
+                const contents = editor.selections.map((selection) => {
+                    const text = editor.document.getText(selection);
+                    return { text, isLinewise: false };
                 });
 
                 await setRegisterContents(context.vimState, contents);
@@ -238,27 +217,18 @@ export function buildOperatorActions(
         // c - 変更
         newAction({
             keys: ['c'],
-            modes: ['visual', 'visualLine'],
+            modes: ['visual'],
             execute: async (context) => {
                 const editor = context.editor;
-                const ranges = getAdjustedSelectionRangesIfVisualLine(editor, context.vimState.mode);
-                const isLinewise = context.vimState.mode === 'visualLine';
-                const contents = ranges.map((range) => {
-                    let text = editor.document.getText(range);
-
-                    // For linewise operations, strip ONLY the final trailing newline from register content
-                    // This preserves blank lines in the middle of the selection
-                    if (isLinewise) {
-                        text = trimLastNewline(text);
-                    }
-
-                    return { text, isLinewise };
+                const contents = editor.selections.map((selection) => {
+                    const text = editor.document.getText(selection);
+                    return { text, isLinewise: false };
                 });
 
                 await setRegisterContents(context.vimState, contents);
 
                 await context.editor.edit((editBuilder) => {
-                    for (const range of ranges) editBuilder.delete(range);
+                    for (const selection of editor.selections) editBuilder.delete(selection);
                 });
                 enterMode(context.vimState, context.editor, 'insert');
             },
@@ -267,7 +237,7 @@ export function buildOperatorActions(
         // s - 変更のエイリアス
         newAction({
             keys: ['s'],
-            modes: ['visual', 'visualLine'],
+            modes: ['visual'],
             execute: async (context) => {
                 await delegateAction(actions, context, ['c']);
             },
@@ -276,13 +246,3 @@ export function buildOperatorActions(
 
     return actions;
 }
-
-const getAdjustedSelectionRangesIfVisualLine = (editor: TextEditor, mode: Mode) => {
-    return editor.selections.map((selection) => {
-        if (mode === 'visualLine') {
-            return adjustRangeForVisualLine(editor.document, selection);
-        } else {
-            return selection;
-        }
-    });
-};

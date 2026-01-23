@@ -101,7 +101,7 @@ export function newRegexAction(config: {
  */
 export function motionToAction(motion: Motion): Action {
     const normalModes = ['normal'];
-    const visualModes = ['visual', 'visualLine'];
+    const visualModes = ['visual'];
 
     return async (context: Context, keys: string[]): Promise<ActionResult> => {
         const isNormal = normalModes.includes(context.vimState.mode);
@@ -160,7 +160,7 @@ export function motionToAction(motion: Motion): Action {
 }
 
 export function textObjectToVisualAction(textObject: TextObject): Action {
-    const modes = ['visual', 'visualLine'];
+    const modes: Mode[] = ['visual'];
     return async (context: Context, keys: string[]): Promise<ActionResult> => {
         // モードチェック
         if (!modes.includes(context.vimState.mode)) return 'noMatch';

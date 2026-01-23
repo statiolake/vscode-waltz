@@ -200,7 +200,7 @@ export const csSurroundAction = newRegexAction({
 export const visualSurroundAction = newRegexAction({
     pattern: /^S(?<char>.)$/,
     partial: /^S(.{0,1})$/,
-    modes: ['visual', 'visualLine'],
+    modes: ['visual'],
     execute: async (context, variables) => {
         const char = variables.char;
         if (!char) return;

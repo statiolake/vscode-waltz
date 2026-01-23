@@ -46,8 +46,116 @@
                 "title": "Waltz: Execute Action"
             },
             {
-                "command": "waltz.adjustSelectionForVisualLine",
-                "title": "Waltz: Adjust Selection for Visual Line Mode"
+                "command": "waltz.gotoMenu",
+                "title": "Waltz: Goto Menu (g prefix)"
+            },
+            {
+                "command": "waltz.findCharForward",
+                "title": "Waltz: Find Character Forward (f)"
+            },
+            {
+                "command": "waltz.findCharForwardBefore",
+                "title": "Waltz: Find Character Forward Before (t)"
+            },
+            {
+                "command": "waltz.findCharBackward",
+                "title": "Waltz: Find Character Backward (F)"
+            },
+            {
+                "command": "waltz.findCharBackwardBefore",
+                "title": "Waltz: Find Character Backward Before (T)"
+            },
+            {
+                "command": "waltz.deleteOperator",
+                "title": "Waltz: Delete Operator (d)"
+            },
+            {
+                "command": "waltz.changeOperator",
+                "title": "Waltz: Change Operator (c)"
+            },
+            {
+                "command": "waltz.yankOperator",
+                "title": "Waltz: Yank Operator (y)"
+            },
+            {
+                "command": "waltz.enterInsert",
+                "title": "Waltz: Enter Insert Mode (i)"
+            },
+            {
+                "command": "waltz.enterInsertAfter",
+                "title": "Waltz: Enter Insert Mode After Cursor (a)"
+            },
+            {
+                "command": "waltz.enterInsertLineStart",
+                "title": "Waltz: Enter Insert Mode at Line Start (I)"
+            },
+            {
+                "command": "waltz.enterInsertLineEnd",
+                "title": "Waltz: Enter Insert Mode at Line End (A)"
+            },
+            {
+                "command": "waltz.enterInsertNewLineBelow",
+                "title": "Waltz: Enter Insert Mode New Line Below (o)"
+            },
+            {
+                "command": "waltz.enterInsertNewLineAbove",
+                "title": "Waltz: Enter Insert Mode New Line Above (O)"
+            },
+            {
+                "command": "waltz.enterVisual",
+                "title": "Waltz: Enter Visual Mode (v)"
+            },
+            {
+                "command": "waltz.enterVisualLine",
+                "title": "Waltz: Enter Visual Line Mode (V)"
+            },
+            {
+                "command": "waltz.visualDelete",
+                "title": "Waltz: Delete Selection (Visual mode d)"
+            },
+            {
+                "command": "waltz.visualChange",
+                "title": "Waltz: Change Selection (Visual mode c)"
+            },
+            {
+                "command": "waltz.visualYank",
+                "title": "Waltz: Yank Selection (Visual mode y)"
+            },
+            {
+                "command": "waltz.repeatFindChar",
+                "title": "Waltz: Repeat Find Character (;)"
+            },
+            {
+                "command": "waltz.repeatFindCharReverse",
+                "title": "Waltz: Repeat Find Character Reverse (,)"
+            },
+            {
+                "command": "waltz.pasteAfter",
+                "title": "Waltz: Paste After (p)"
+            },
+            {
+                "command": "waltz.pasteBefore",
+                "title": "Waltz: Paste Before (P)"
+            },
+            {
+                "command": "waltz.changeToEndOfLine",
+                "title": "Waltz: Change to End of Line (C)"
+            },
+            {
+                "command": "waltz.paragraphUp",
+                "title": "Waltz: Move to Previous Paragraph ({)"
+            },
+            {
+                "command": "waltz.paragraphDown",
+                "title": "Waltz: Move to Next Paragraph (})"
+            },
+            {
+                "command": "waltz.paragraphUpSelect",
+                "title": "Waltz: Select to Previous Paragraph"
+            },
+            {
+                "command": "waltz.paragraphDownSelect",
+                "title": "Waltz: Select to Next Paragraph"
             }
         ],
         "keybindings": [
@@ -236,6 +344,337 @@
                 "mac": "ctrl+z",
                 "command": "waltz.noop",
                 "when": "editorTextFocus && waltz.mode != 'insert'"
+            },
+            {"comment": "=== Normal モード基本移動 ==="},
+            {
+                "key": "h",
+                "command": "cursorLeft",
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "j",
+                "command": "cursorDown",
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "k",
+                "command": "cursorUp",
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "l",
+                "command": "cursorRight",
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {"comment": "=== Visual モード基本移動 ==="},
+            {
+                "key": "h",
+                "command": "cursorLeftSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "j",
+                "command": "cursorDownSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "k",
+                "command": "cursorUpSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "l",
+                "command": "cursorRightSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {"comment": "=== Normal モードワード移動 ==="},
+            {
+                "key": "w",
+                "command": "cursorWordStartRight",
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "b",
+                "command": "cursorWordStartLeft",
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "e",
+                "command": "cursorWordEndRight",
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {"comment": "=== Visual モードワード移動 ==="},
+            {
+                "key": "w",
+                "command": "cursorWordStartRightSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "b",
+                "command": "cursorWordStartLeftSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "e",
+                "command": "cursorWordEndRightSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {"comment": "=== Normal モード行移動 ==="},
+            {
+                "key": "0",
+                "command": "cursorHome",
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "shift+4",
+                "command": "cursorEnd",
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "shift+6",
+                "command": "cursorHome",
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {"comment": "=== Visual モード行移動 ==="},
+            {
+                "key": "0",
+                "command": "cursorHomeSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "shift+4",
+                "command": "cursorEndSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "shift+6",
+                "command": "cursorHomeSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {"comment": "=== ファイル移動 ==="},
+            {
+                "key": "shift+g",
+                "command": "cursorBottom",
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "shift+g",
+                "command": "cursorBottomSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {"comment": "=== Undo/Redo ==="},
+            {
+                "key": "u",
+                "command": "undo",
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "ctrl+r",
+                "command": "redo",
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {"comment": "=== 半ページスクロール ==="},
+            {
+                "key": "ctrl+d",
+                "command": "editorScroll",
+                "args": { "to": "down", "by": "halfPage" },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "ctrl+u",
+                "command": "editorScroll",
+                "args": { "to": "up", "by": "halfPage" },
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {"comment": "=== モード切替 ==="},
+            {
+                "key": "i",
+                "command": "waltz.enterInsert",
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "a",
+                "command": "waltz.enterInsertAfter",
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "shift+i",
+                "command": "waltz.enterInsertLineStart",
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "shift+a",
+                "command": "waltz.enterInsertLineEnd",
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "o",
+                "command": "waltz.enterInsertNewLineBelow",
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "shift+o",
+                "command": "waltz.enterInsertNewLineAbove",
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "v",
+                "command": "waltz.enterVisual",
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "shift+v",
+                "command": "waltz.enterVisualLine",
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {"comment": "=== オペレータ (QuickPick) ==="},
+            {
+                "key": "d",
+                "command": "waltz.deleteOperator",
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "c",
+                "command": "waltz.changeOperator",
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "y",
+                "command": "waltz.yankOperator",
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {"comment": "=== Visual モード オペレータ ==="},
+            {
+                "key": "d",
+                "command": "waltz.visualDelete",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "c",
+                "command": "waltz.visualChange",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "y",
+                "command": "waltz.visualYank",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "x",
+                "command": "waltz.visualDelete",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "s",
+                "command": "waltz.visualChange",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {"comment": "=== f/t 文字検索 (QuickPick) ==="},
+            {
+                "key": "f",
+                "command": "waltz.findCharForward",
+                "when": "editorTextFocus && waltz.mode != 'insert'"
+            },
+            {
+                "key": "t",
+                "command": "waltz.findCharForwardBefore",
+                "when": "editorTextFocus && waltz.mode != 'insert'"
+            },
+            {
+                "key": "shift+f",
+                "command": "waltz.findCharBackward",
+                "when": "editorTextFocus && waltz.mode != 'insert'"
+            },
+            {
+                "key": "shift+t",
+                "command": "waltz.findCharBackwardBefore",
+                "when": "editorTextFocus && waltz.mode != 'insert'"
+            },
+            {
+                "key": ";",
+                "command": "waltz.repeatFindChar",
+                "when": "editorTextFocus && waltz.mode != 'insert'"
+            },
+            {
+                "key": ",",
+                "command": "waltz.repeatFindCharReverse",
+                "when": "editorTextFocus && waltz.mode != 'insert'"
+            },
+            {"comment": "=== g プレフィックス (QuickPick) ==="},
+            {
+                "key": "g",
+                "command": "waltz.gotoMenu",
+                "when": "editorTextFocus && waltz.mode != 'insert'"
+            },
+            {"comment": "=== 編集コマンド ==="},
+            {
+                "key": "x",
+                "command": "deleteRight",
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "p",
+                "command": "waltz.pasteAfter",
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "shift+p",
+                "command": "waltz.pasteBefore",
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "shift+j",
+                "command": "editor.action.joinLines",
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "shift+d",
+                "command": "deleteAllRight",
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "shift+c",
+                "command": "waltz.changeToEndOfLine",
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {"comment": "=== 段落移動 ==="},
+            {
+                "key": "shift+[",
+                "command": "waltz.paragraphUp",
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "shift+]",
+                "command": "waltz.paragraphDown",
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "shift+[",
+                "command": "waltz.paragraphUpSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "shift+]",
+                "command": "waltz.paragraphDownSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {"comment": "=== マッチング括弧 ==="},
+            {
+                "key": "shift+5",
+                "command": "editor.action.jumpToBracket",
+                "when": "editorTextFocus && waltz.mode == 'normal'"
+            },
+            {
+                "key": "shift+5",
+                "command": "editor.action.selectToBracket",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {"comment": "=== ビューポート制御 ==="},
+            {
+                "key": "z z",
+                "command": "revealLine",
+                "args": { "lineNumber": "${lineNumber}", "at": "center" },
+                "when": "editorTextFocus && waltz.mode != 'insert'"
             }
         ],
         "configuration": {
@@ -268,7 +707,6 @@
                                     "enum": [
                                         "normal",
                                         "visual",
-                                        "visualLine",
                                         "insert"
                                     ]
                                 }
@@ -334,19 +772,6 @@
                         "underline-thin"
                     ]
                 },
-                "waltz.cursorStyle.visualLine": {
-                    "type": "string",
-                    "default": "line-thin",
-                    "description": "Cursor style in visual line mode.",
-                    "enum": [
-                        "block",
-                        "block-outline",
-                        "line",
-                        "line-thin",
-                        "underline",
-                        "underline-thin"
-                    ]
-                },
                 "waltz.modeDisplay.normal.label": {
                     "type": "string",
                     "default": "-- NORMAL --",
@@ -361,11 +786,6 @@
                     "type": "string",
                     "default": "-- VISUAL --",
                     "description": "Display text for visual mode in the status bar."
-                },
-                "waltz.modeDisplay.visualLine.label": {
-                    "type": "string",
-                    "default": "-- VISUAL LINE --",
-                    "description": "Display text for visual line mode in the status bar."
                 }
             }
         }

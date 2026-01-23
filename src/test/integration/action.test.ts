@@ -453,61 +453,6 @@ suite('Action Integration Tests', () => {
         });
     });
 
-    suite('Visual Line mode persistence', () => {
-        // Helper to wait for events to be processed and reach stable state
-        const waitForStableState = () => new Promise((resolve) => setTimeout(resolve, 100));
-
-        test('V followed by j should stay in visualLine mode', async () => {
-            const doc = await vscode.workspace.openTextDocument({ content: 'line1\nline2\nline3' });
-            const editor = await vscode.window.showTextDocument(doc);
-
-            // Position cursor on line1
-            await setCursorPosition(editor, new Position(0, 0));
-            await waitForStableState();
-
-            // Execute V (enter visual line mode)
-            await executeWaltz(['V']);
-            await waitForStableState();
-
-            // Verify we're in visualLine mode
-            let vimState = await getVimState();
-            assert.strictEqual(vimState.mode, 'visualLine', 'Should be in visualLine mode after V');
-
-            // Execute j (move down)
-            await executeWaltz(['j']);
-            await waitForStableState();
-
-            // Verify we're still in visualLine mode (not switched to visual)
-            vimState = await getVimState();
-            assert.strictEqual(vimState.mode, 'visualLine', 'Should still be in visualLine mode after j');
-        });
-
-        test('V followed by h should stay in visualLine mode', async () => {
-            const doc = await vscode.workspace.openTextDocument({ content: 'hello world\nline2\nline3' });
-            const editor = await vscode.window.showTextDocument(doc);
-
-            // Position cursor in the middle of first line
-            await setCursorPosition(editor, new Position(0, 5));
-            await waitForStableState();
-
-            // Execute V (enter visual line mode)
-            await executeWaltz(['V']);
-            await waitForStableState();
-
-            // Verify we're in visualLine mode
-            let vimState = await getVimState();
-            assert.strictEqual(vimState.mode, 'visualLine', 'Should be in visualLine mode after V');
-
-            // Execute h (move left)
-            await executeWaltz(['h']);
-            await waitForStableState();
-
-            // Verify we're still in visualLine mode
-            vimState = await getVimState();
-            assert.strictEqual(vimState.mode, 'visualLine', 'Should still be in visualLine mode after h');
-        });
-    });
-
     suite('J (join lines) behavior', () => {
         test('J should join current line with next line', async () => {
             const doc = await vscode.workspace.openTextDocument({ content: 'line1\nline2\nline3' });

@@ -33,14 +33,6 @@ export async function escapeHandler(vimState: VimState): Promise<void> {
             await enterMode(vimState, editor, 'normal');
             break;
         }
-        case 'visualLine': {
-            const newSelections = editor.selections.map((selection) => {
-                return new Selection(selection.active, selection.active);
-            });
-            editor.selections = newSelections;
-            await enterMode(vimState, editor, 'normal');
-            break;
-        }
     }
 
     vimState.keysPressed = [];

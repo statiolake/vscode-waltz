@@ -83,7 +83,7 @@ export function buildLspActions(): Action[] {
         // g. - コードアクション/クイックフィックスを表示
         newAction({
             keys: ['g', '.'],
-            modes: ['normal', 'visual', 'visualLine'],
+            modes: ['normal', 'visual'],
             execute: async (_context) => {
                 await vscode.commands.executeCommand('editor.action.quickFix');
             },
@@ -92,7 +92,7 @@ export function buildLspActions(): Action[] {
         // gf - ドキュメントをフォーマット
         newAction({
             keys: ['g', 'f'],
-            modes: ['normal', 'visual', 'visualLine'],
+            modes: ['normal', 'visual'],
             execute: async (_context) => {
                 await vscode.commands.executeCommand('editor.action.formatDocument');
             },
