@@ -1844,58 +1844,6 @@
             "type": "object",
             "title": "Waltz Configuration",
             "properties": {
-                "waltz.customBindings": {
-                    "type": "array",
-                    "default": [],
-                    "description": "Custom key bindings that execute VSCode commands.",
-                    "items": {
-                        "type": "object",
-                        "required": [
-                            "keys",
-                            "commands"
-                        ],
-                        "properties": {
-                            "keys": {
-                                "type": "array",
-                                "description": "Key sequence to trigger the commands (e.g., [\"g\", \"d\"]).",
-                                "items": {
-                                    "type": "string"
-                                }
-                            },
-                            "modes": {
-                                "type": "array",
-                                "description": "Vim modes where this binding is active. If not specified, applies to all modes.",
-                                "items": {
-                                    "type": "string",
-                                    "enum": [
-                                        "normal",
-                                        "visual",
-                                        "insert"
-                                    ]
-                                }
-                            },
-                            "commands": {
-                                "type": "array",
-                                "description": "Array of VSCode commands to execute sequentially.",
-                                "items": {
-                                    "type": "object",
-                                    "required": [
-                                        "command"
-                                    ],
-                                    "properties": {
-                                        "command": {
-                                            "type": "string",
-                                            "description": "VSCode command to execute (e.g., \"editor.action.revealDefinition\")."
-                                        },
-                                        "args": {
-                                            "description": "Optional arguments to pass to the command."
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
                 "waltz.cursorStyle.normal": {
                     "type": "string",
                     "default": "line",

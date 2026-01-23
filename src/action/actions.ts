@@ -4,7 +4,6 @@ import { buildTextObjects } from '../textObject/textObjects';
 import { motionToAction, textObjectToVisualAction } from './actionBuilder';
 import type { Action, ActionResult } from './actionTypes';
 import { buildClipboardActions } from './defs/clipboard';
-import { buildCustomActions } from './defs/custom';
 import { buildEditActions } from './defs/edit';
 import { buildLspActions } from './defs/lsp';
 import { buildMiscActions } from './defs/misc';
@@ -59,10 +58,6 @@ export function buildActions(): Action[] {
     // Surround actions
     console.log('Building surround actions');
     actions.push(createYsSurroundAction(textObjects), dsSurroundAction, csSurroundAction, visualSurroundAction);
-
-    // カスタムバインディング
-    console.log('Building custom bindings');
-    actions.push(...buildCustomActions());
 
     console.log(`Built ${actions.length} total actions`);
     return actions;
