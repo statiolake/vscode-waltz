@@ -1756,12 +1756,12 @@
             },
             {
                 "key": "g 0",
-                "command": "cursorHomeSelect",
+                "command": "cursorLineStart",
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
                 "key": "g shift+4",
-                "command": "cursorEndSelect",
+                "command": "cursorLineEnd",
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
@@ -1837,6 +1837,86 @@
             {
                 "key": "g k",
                 "command": "cursorDisplayUpSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "g 0",
+                "command": "cursorLineStartSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "g shift+4",
+                "command": "cursorLineEndSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "up",
+                "command": "cursorUpSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "down",
+                "command": "cursorDownSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "left",
+                "command": "cursorLeftSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "right",
+                "command": "cursorRightSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "pageup",
+                "command": "cursorPageUpSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "pagedown",
+                "command": "cursorPageDownSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "home",
+                "command": "cursorHomeSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "end",
+                "command": "cursorEndSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "ctrl+left",
+                "command": "cursorWordLeftSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "ctrl+right",
+                "command": "cursorWordRightSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "alt+left",
+                "command": "cursorWordLeftSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "alt+right",
+                "command": "cursorWordEndRightSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "ctrl+home",
+                "command": "cursorTopSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "ctrl+end",
+                "command": "cursorBottomSelect",
                 "when": "editorTextFocus && waltz.mode == 'visual'"
             }
         ],
