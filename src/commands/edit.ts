@@ -86,6 +86,48 @@ async function changeToEndOfLine(vimState: VimState): Promise<void> {
     enterMode(vimState, editor, 'insert');
 }
 
+async function deleteChar(_vimState: VimState): Promise<void> {
+    const editor = vscode.window.activeTextEditor;
+    if (!editor) return;
+
+    // Delete character under cursor and copy to clipboard
+    await editor.edit((editBuilder) => {
+        for (const selection of editor.selections) {
+            if (selection.isEmpty) {
+                const line = editor.document.lineAt(selection.active.line);
+                if (selection.active.character < line.text.length) {
+                    const charRange = new vscode.Range(
+                        selection.active,
+                        selection.active.translate(0, 1),
+                    );
+                    editBuilder.delete(charRange);
+                }
+            } else {
+                editBuilder.delete(selection);
+            }
+        }
+    });
+}
+
+async function substituteChar(vimState: VimState): Promise<void> {
+    const editor = vscode.window.activeTextEditor;
+    if (!editor) return;
+
+    // Delete character under cursor
+    await deleteChar(vimState);
+
+    // Enter insert mode
+    enterMode(vimState, editor, 'insert');
+}
+
+async function deleteToEnd(_vimState: VimState): Promise<void> {
+    const editor = vscode.window.activeTextEditor;
+    if (!editor) return;
+
+    // Delete to end of line
+    await vscode.commands.executeCommand('deleteAllRight');
+}
+
 function findParagraphBoundary(document: vscode.TextDocument, startLine: number, direction: 'up' | 'down'): number {
     const lineCount = document.lineCount;
     let line = startLine;
@@ -132,6 +174,9 @@ export function registerEditCommands(context: vscode.ExtensionContext, getVimSta
         vscode.commands.registerCommand('waltz.pasteAfter', () => pasteAfter(getVimState())),
         vscode.commands.registerCommand('waltz.pasteBefore', () => pasteBefore(getVimState())),
         vscode.commands.registerCommand('waltz.changeToEndOfLine', () => changeToEndOfLine(getVimState())),
+        vscode.commands.registerCommand('waltz.deleteChar', () => deleteChar(getVimState())),
+        vscode.commands.registerCommand('waltz.substituteChar', () => substituteChar(getVimState())),
+        vscode.commands.registerCommand('waltz.deleteToEnd', () => deleteToEnd(getVimState())),
         vscode.commands.registerCommand('waltz.paragraphUp', () => paragraphMove(getVimState(), 'up', false)),
         vscode.commands.registerCommand('waltz.paragraphDown', () => paragraphMove(getVimState(), 'down', false)),
         vscode.commands.registerCommand('waltz.paragraphUpSelect', () => paragraphMove(getVimState(), 'up', true)),

@@ -155,6 +155,18 @@
             {
                 "command": "waltz.WORDBackward",
                 "title": "Waltz: Move to Previous WORD (B)"
+            },
+            {
+                "command": "waltz.deleteChar",
+                "title": "Waltz: Delete Character (x)"
+            },
+            {
+                "command": "waltz.substituteChar",
+                "title": "Waltz: Substitute Character (s)"
+            },
+            {
+                "command": "waltz.deleteToEnd",
+                "title": "Waltz: Delete to End of Line (D)"
             }
         ],
         "keybindings": [
