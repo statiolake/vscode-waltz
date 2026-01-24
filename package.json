@@ -1960,12 +1960,27 @@
             },
             {
                 "key": "z z",
-                "command": "revealLine",
+                "command": "waltz.revealCursorLine",
                 "args": {
-                    "lineNumber": "",
                     "at": "center"
                 },
-                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+                "when": "editorTextFocus && waltz.mode != 'insert'"
+            },
+            {
+                "key": "z t",
+                "command": "waltz.revealCursorLine",
+                "args": {
+                    "at": "top"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert'"
+            },
+            {
+                "key": "z b",
+                "command": "waltz.revealCursorLine",
+                "args": {
+                    "at": "bottom"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert'"
             },
             {
                 "key": "backspace",

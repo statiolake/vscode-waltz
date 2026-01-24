@@ -6,6 +6,7 @@ import { registerGotoCommands } from './goto';
 import { registerModeCommands } from './mode';
 import { registerMotionCommands } from './motion';
 import { registerOperatorCommands } from './operator';
+import { registerViewportCommands } from './viewport';
 
 /**
  * Register all new commands
@@ -17,4 +18,5 @@ export function registerCommands(context: vscode.ExtensionContext, getVimState: 
     registerModeCommands(context, getVimState);
     registerEditCommands(context, getVimState);
     registerMotionCommands(context, getVimState);
+    registerViewportCommands(context);
 }

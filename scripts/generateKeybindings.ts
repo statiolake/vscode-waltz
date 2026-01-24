@@ -210,7 +210,9 @@ const findCommands = [
 const viewportCommands = [
     { key: 'ctrl+d', command: 'editorScroll', args: { to: 'down', by: 'halfPage' }, when: NOT_INSERT },
     { key: 'ctrl+u', command: 'editorScroll', args: { to: 'up', by: 'halfPage' }, when: NOT_INSERT },
-    { key: 'z z', command: 'revealLine', args: { lineNumber: '', at: 'center' }, when: NORMAL },
+    { key: 'z z', command: 'waltz.revealCursorLine', args: { at: 'center' }, when: NOT_INSERT },
+    { key: 'z t', command: 'waltz.revealCursorLine', args: { at: 'top' }, when: NOT_INSERT },
+    { key: 'z b', command: 'waltz.revealCursorLine', args: { at: 'bottom' }, when: NOT_INSERT },
 ];
 
 // ============================================================
