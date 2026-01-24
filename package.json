@@ -19,12 +19,7 @@
         "Keymaps"
     ],
     "activationEvents": [
-        "onStartupFinished",
-        "onCommand:type",
-        "onCommand:waltz.escapeKey",
-        "onCommand:waltz.noop",
-        "onCommand:waltz.send",
-        "onCommand:waltz.execute"
+        "onStartupFinished"
     ],
     "main": "./out/extension",
     "contributes": {
@@ -38,16 +33,20 @@
                 "title": "Waltz: No Operation"
             },
             {
-                "command": "waltz.send",
-                "title": "Waltz: Send Keys"
+                "command": "waltz.delete",
+                "title": "Waltz: Delete"
             },
             {
-                "command": "waltz.execute",
-                "title": "Waltz: Execute Action"
+                "command": "waltz.change",
+                "title": "Waltz: Change"
             },
             {
-                "command": "waltz.gotoMenu",
-                "title": "Waltz: Goto Menu (g prefix)"
+                "command": "waltz.yank",
+                "title": "Waltz: Yank"
+            },
+            {
+                "command": "waltz.selectTextObject",
+                "title": "Waltz: Select Text Object"
             },
             {
                 "command": "waltz.findCharForward",
@@ -66,16 +65,12 @@
                 "title": "Waltz: Find Character Backward Before (T)"
             },
             {
-                "command": "waltz.deleteOperator",
-                "title": "Waltz: Delete Operator (d)"
+                "command": "waltz.repeatFindChar",
+                "title": "Waltz: Repeat Find Character (;)"
             },
             {
-                "command": "waltz.changeOperator",
-                "title": "Waltz: Change Operator (c)"
-            },
-            {
-                "command": "waltz.yankOperator",
-                "title": "Waltz: Yank Operator (y)"
+                "command": "waltz.repeatFindCharReverse",
+                "title": "Waltz: Repeat Find Character Reverse (,)"
             },
             {
                 "command": "waltz.enterInsert",
@@ -111,23 +106,15 @@
             },
             {
                 "command": "waltz.visualDelete",
-                "title": "Waltz: Delete Selection (Visual mode d)"
+                "title": "Waltz: Delete Selection"
             },
             {
                 "command": "waltz.visualChange",
-                "title": "Waltz: Change Selection (Visual mode c)"
+                "title": "Waltz: Change Selection"
             },
             {
                 "command": "waltz.visualYank",
-                "title": "Waltz: Yank Selection (Visual mode y)"
-            },
-            {
-                "command": "waltz.repeatFindChar",
-                "title": "Waltz: Repeat Find Character (;)"
-            },
-            {
-                "command": "waltz.repeatFindCharReverse",
-                "title": "Waltz: Repeat Find Character Reverse (,)"
+                "title": "Waltz: Yank Selection"
             },
             {
                 "command": "waltz.pasteAfter",
@@ -156,6 +143,18 @@
             {
                 "command": "waltz.paragraphDownSelect",
                 "title": "Waltz: Select to Next Paragraph"
+            },
+            {
+                "command": "waltz.revealCursorLine",
+                "title": "Waltz: Reveal Cursor Line"
+            },
+            {
+                "command": "waltz.WORDForward",
+                "title": "Waltz: Move to Next WORD (W)"
+            },
+            {
+                "command": "waltz.WORDBackward",
+                "title": "Waltz: Move to Previous WORD (B)"
             }
         ],
         "keybindings": [
