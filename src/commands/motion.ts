@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { Position, Selection } from 'vscode';
+import { type Position, Selection } from 'vscode';
 import type { VimState } from '../vimState';
 
 /**

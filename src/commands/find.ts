@@ -105,13 +105,7 @@ function repeatFindChar(vimState: VimState, reverse: boolean): void {
     const actualDirection = reverse ? (direction === 'after' ? 'before' : 'after') : direction;
     const stopBefore = distance === 'nearer';
 
-    executeFindChar(
-        editor,
-        vimState,
-        character,
-        actualDirection === 'after' ? 'forward' : 'backward',
-        stopBefore,
-    );
+    executeFindChar(editor, vimState, character, actualDirection === 'after' ? 'forward' : 'backward', stopBefore);
 }
 
 export function registerFindCommands(context: vscode.ExtensionContext, getVimState: () => VimState): void {

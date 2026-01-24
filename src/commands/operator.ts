@@ -17,11 +17,7 @@ interface OperatorArgs {
 /**
  * Get range for a text object
  */
-function getTextObjectRange(
-    document: vscode.TextDocument,
-    position: Position,
-    textObject: string,
-): Range | null {
+function getTextObjectRange(document: vscode.TextDocument, position: Position, textObject: string): Range | null {
     const inner = textObject.startsWith('i');
     const type = textObject.slice(1);
 
@@ -173,11 +169,7 @@ function findQuoteRange(
 /**
  * Get range for a motion
  */
-function getMotionRange(
-    document: vscode.TextDocument,
-    position: Position,
-    motion: string,
-): Range | null {
+function getMotionRange(document: vscode.TextDocument, position: Position, motion: string): Range | null {
     switch (motion) {
         case 'w':
         case 'W': {
@@ -219,18 +211,12 @@ function getMotionRange(
         case 'j': {
             const startLine = position.line;
             const endLine = Math.min(startLine + 1, document.lineCount - 1);
-            return new Range(
-                new Position(startLine, 0),
-                document.lineAt(endLine).rangeIncludingLineBreak.end,
-            );
+            return new Range(new Position(startLine, 0), document.lineAt(endLine).rangeIncludingLineBreak.end);
         }
         case 'k': {
             const startLine = Math.max(position.line - 1, 0);
             const endLine = position.line;
-            return new Range(
-                new Position(startLine, 0),
-                document.lineAt(endLine).rangeIncludingLineBreak.end,
-            );
+            return new Range(new Position(startLine, 0), document.lineAt(endLine).rangeIncludingLineBreak.end);
         }
         case 'h': {
             if (position.character > 0) {
@@ -252,10 +238,7 @@ function getMotionRange(
             );
         }
         case 'gg': {
-            return new Range(
-                new Position(0, 0),
-                document.lineAt(position.line).rangeIncludingLineBreak.end,
-            );
+            return new Range(new Position(0, 0), document.lineAt(position.line).rangeIncludingLineBreak.end);
         }
         default:
             return null;
@@ -265,10 +248,7 @@ function getMotionRange(
 /**
  * Execute delete operation
  */
-async function executeDelete(
-    editor: vscode.TextEditor,
-    args: OperatorArgs,
-): Promise<void> {
+async function executeDelete(editor: vscode.TextEditor, args: OperatorArgs): Promise<void> {
     const document = editor.document;
     const ranges: Range[] = [];
 
@@ -306,11 +286,7 @@ async function executeDelete(
 /**
  * Execute change operation
  */
-async function executeChange(
-    editor: vscode.TextEditor,
-    args: OperatorArgs,
-    vimState: VimState,
-): Promise<void> {
+async function executeChange(editor: vscode.TextEditor, args: OperatorArgs, vimState: VimState): Promise<void> {
     const document = editor.document;
     const ranges: Range[] = [];
 
@@ -351,10 +327,7 @@ async function executeChange(
 /**
  * Execute yank operation
  */
-async function executeYank(
-    editor: vscode.TextEditor,
-    args: OperatorArgs,
-): Promise<void> {
+async function executeYank(editor: vscode.TextEditor, args: OperatorArgs): Promise<void> {
     const document = editor.document;
     const ranges: Range[] = [];
 
@@ -392,10 +365,7 @@ async function executeYank(
 /**
  * Execute select text object operation (for visual mode)
  */
-function executeSelectTextObject(
-    editor: vscode.TextEditor,
-    args: { textObject: string },
-): void {
+function executeSelectTextObject(editor: vscode.TextEditor, args: { textObject: string }): void {
     const document = editor.document;
     const newSelections: Selection[] = [];
 
@@ -422,10 +392,7 @@ function executeSelectTextObject(
     }
 }
 
-export function registerOperatorCommands(
-    context: vscode.ExtensionContext,
-    getVimState: () => VimState,
-): void {
+export function registerOperatorCommands(context: vscode.ExtensionContext, getVimState: () => VimState): void {
     context.subscriptions.push(
         vscode.commands.registerCommand('waltz.delete', (args: OperatorArgs) => {
             const editor = vscode.window.activeTextEditor;

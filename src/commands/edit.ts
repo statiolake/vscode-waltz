@@ -86,11 +86,7 @@ async function changeToEndOfLine(vimState: VimState): Promise<void> {
     enterMode(vimState, editor, 'insert');
 }
 
-function findParagraphBoundary(
-    document: vscode.TextDocument,
-    startLine: number,
-    direction: 'up' | 'down',
-): number {
+function findParagraphBoundary(document: vscode.TextDocument, startLine: number, direction: 'up' | 'down'): number {
     const lineCount = document.lineCount;
     let line = startLine;
 

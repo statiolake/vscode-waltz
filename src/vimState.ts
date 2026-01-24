@@ -1,5 +1,4 @@
 import type { Disposable, StatusBarItem } from 'vscode';
-import type { Action } from './action/actionTypes';
 import type { Mode } from './modesTypes';
 
 /**
@@ -10,7 +9,6 @@ export type VimState = {
 
     mode: Mode;
     keysPressed: string[];
-    actions: Action[];
     register: {
         contents: Array<RegisterContent>;
         lastClipboardText: string;

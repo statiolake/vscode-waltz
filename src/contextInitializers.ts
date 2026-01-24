@@ -1,6 +1,5 @@
 import type { StatusBarItem } from 'vscode';
 import * as vscode from 'vscode';
-import { buildActions } from './action/actions';
 import { CommentConfigProvider } from './utils/comment';
 import type { VimState } from './vimState';
 
@@ -14,7 +13,6 @@ export function createVimState(statusBarItem?: StatusBarItem): VimState {
         statusBarItem: statusBarItem ?? createDummyStatusBarItem(),
         mode: 'insert',
         keysPressed: [],
-        actions: buildActions(),
         register: {
             contents: [],
             lastClipboardText: '',

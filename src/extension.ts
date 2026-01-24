@@ -7,9 +7,7 @@ import {
     type TextEditor,
     type TextEditorSelectionChangeEvent,
 } from 'vscode';
-import { buildActions, delegateAction } from './action/actions';
 import { registerCommands } from './commands';
-import type { Context } from './context';
 import { createCommentConfigProvider, createVimState } from './contextInitializers';
 import { escapeHandler } from './escapeHandler';
 import { enterMode, reinitUiForState as reinitUiElement } from './modes';
@@ -70,8 +68,6 @@ async function onDidChangeActiveTextEditor(vimState: VimState, editor: TextEdito
 function onDidChangeConfiguration(vimState: VimState, e: ConfigurationChangeEvent): void {
     if (!e.affectsConfiguration('waltz')) return;
 
-    vimState.actions = buildActions();
-
     reinitUiElement(vimState, vscode.window.activeTextEditor);
 }
 
@@ -123,35 +119,6 @@ export async function activate(context: ExtensionContext): Promise<{ getVimState
         }),
         vscode.commands.registerCommand('waltz.noop', () => {
             // Do nothing - used to ignore keys in certain modes
-        }),
-        vscode.commands.registerCommand('waltz.execute', async (args: unknown) => {
-            // バリデーション
-            if (!args || typeof args !== 'object' || !('keys' in args) || !Array.isArray(args.keys)) {
-                console.error('waltz.execute: keys argument must be an array');
-                return;
-            }
-
-            // アクティブなエディタの確認
-            const editor = vscode.window.activeTextEditor;
-            if (!editor) {
-                console.error('waltz.execute: no active editor');
-                return;
-            }
-
-            // Context の構築
-            const context: Context = {
-                editor,
-                vimState,
-                commentConfigProvider: globalCommentConfigProvider,
-            };
-
-            // delegateAction で実行
-            const result = await delegateAction(vimState.actions, context, args.keys);
-
-            // 結果の出力
-            if (result === 'noMatch') {
-                vscode.window.showWarningMessage(`Waltz: No action match: ${args.keys.join('')}`);
-            }
         }),
     );
 

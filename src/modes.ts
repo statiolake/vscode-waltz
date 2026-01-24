@@ -68,4 +68,3 @@ function updateStatusBar(vimState: VimState, mode: Mode, isLimited: boolean): vo
     statusBarItem.text = getModeDisplayText(mode, isLimited);
     statusBarItem.show();
 }
-
