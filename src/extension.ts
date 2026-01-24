@@ -13,7 +13,6 @@ import type { Context } from './context';
 import { createCommentConfigProvider, createVimState } from './contextInitializers';
 import { escapeHandler } from './escapeHandler';
 import { enterMode, reinitUiForState as reinitUiElement } from './modes';
-import { typeHandler } from './typeHandler';
 import type { CommentConfigProvider } from './utils/comment';
 import type { VimState } from './vimState';
 
@@ -31,11 +30,11 @@ async function onDidChangeTextEditorSelection(vimState: VimState, e: TextEditorS
         await enterMode(vimState, e.textEditor, 'normal');
     } else if (allEmpty && vimState.mode !== 'insert') {
         // 選択範囲が無になった場合は、ノーマルモードに戻る。この条件だと visual モードにいて移動したあと逆方向に動かし
-        // て選択範囲が無になったときもノーマルモードに'るが、まあ良'とす'。というのは、und' などの VS Code 組み込み
-        // コマンドが一時的に非空の選択範囲を作成することがあるのだ。最終的には空になるものの、途中で非空の選択範囲が作
-        // られた瞬間 visual モードに移行してしまうので、最後の空になった瞬間にノーマルモードに戻れるようにしない
-        // と、undo 後に勝手に visual モードになっているなどの不便が生じる。ただ当然ながら、そのようなケースと `vlh` は
-        // 区別がつかないので、`vlh` の方が若干違和感を生じるのは避けられなかった。
+        // て選択範囲が無になったときもノーマルモードに戻ってしまうが、まあ良しとする。というのは、undo などの VS Code
+        // 組み込みコマンドが一時的に非空の選択範囲を作成することがあるのだ。最終的には空になるものの、途中で非空の選択
+        // 範囲が作られた瞬間 visual モードに移行してしまうので、最後の空になった瞬間にノーマルモードに戻れるようにしな
+        // いと、undo 後に勝手に visual モードになっているなどの不便が生じる。ただ当然ながら、そのようなケースと `vlh`
+        // は区別がつかないので、`vlh` の方が若干違和感を生じるのは避けられなかった。
         await enterMode(vimState, e.textEditor, 'normal');
     } else if (!allEmpty && vimState.mode !== 'visual') {
         // 選択状態になった場合は Visual モードへ移行する
@@ -124,17 +123,6 @@ export async function activate(context: ExtensionContext): Promise<{ getVimState
         }),
         vscode.commands.registerCommand('waltz.noop', () => {
             // Do nothing - used to ignore keys in certain modes
-        }),
-        vscode.commands.registerCommand('waltz.send', async (args: unknown) => {
-            // バリデーション
-            if (!args || typeof args !== 'object' || !('keys' in args) || !Array.isArray(args.keys)) {
-                console.error('waltz.send: keys argument must be an array');
-                return;
-            }
-
-            for (const char of args.keys) {
-                await typeHandler(vimState, char);
-            }
         }),
         vscode.commands.registerCommand('waltz.execute', async (args: unknown) => {
             // バリデーション

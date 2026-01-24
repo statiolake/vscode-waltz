@@ -1,4 +1,3 @@
-import type { Mutex } from 'await-semaphore';
 import type { Disposable, StatusBarItem } from 'vscode';
 import type { Action } from './action/actionTypes';
 import type { Mode } from './modesTypes';
@@ -8,10 +7,8 @@ import type { Mode } from './modesTypes';
  */
 export type VimState = {
     statusBarItem: StatusBarItem;
-    actionMutex: Mutex;
 
     mode: Mode;
-    keysQueued: string[];
     keysPressed: string[];
     actions: Action[];
     register: {

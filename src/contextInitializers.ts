@@ -1,4 +1,3 @@
-import { Mutex } from 'await-semaphore';
 import type { StatusBarItem } from 'vscode';
 import * as vscode from 'vscode';
 import { buildActions } from './action/actions';
@@ -13,9 +12,7 @@ import type { VimState } from './vimState';
 export function createVimState(statusBarItem?: StatusBarItem): VimState {
     return {
         statusBarItem: statusBarItem ?? createDummyStatusBarItem(),
-        actionMutex: new Mutex(),
         mode: 'insert',
-        keysQueued: [],
         keysPressed: [],
         actions: buildActions(),
         register: {
