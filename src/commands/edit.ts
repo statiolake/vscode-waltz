@@ -90,7 +90,7 @@ async function deleteChar(_vimState: VimState): Promise<void> {
     const editor = vscode.window.activeTextEditor;
     if (!editor) return;
 
-    // Delete character under cursor and copy to clipboard
+    // Delete the character after cursor position (between cursor and next position)
     await editor.edit((editBuilder) => {
         for (const selection of editor.selections) {
             if (selection.isEmpty) {
@@ -113,7 +113,7 @@ async function substituteChar(vimState: VimState): Promise<void> {
     const editor = vscode.window.activeTextEditor;
     if (!editor) return;
 
-    // Delete character under cursor
+    // Delete the character after cursor position
     await deleteChar(vimState);
 
     // Enter insert mode
