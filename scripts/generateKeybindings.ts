@@ -92,8 +92,9 @@ const basicMovement = [
     { key: 'b', normal: 'cursorWordStartLeft', visual: 'cursorWordStartLeftSelect' },
     { key: 'e', normal: 'cursorWordEndRight', visual: 'cursorWordEndRightSelect' },
     // WORD movement (whitespace-delimited)
-    { key: 'shift+w', normal: 'waltz.WORDForward', visual: 'waltz.WORDForward' },  // W
-    { key: 'shift+b', normal: 'waltz.WORDBackward', visual: 'waltz.WORDBackward' },  // B
+    { key: 'shift+w', normal: 'waltz.cursorWhitespaceWordStartRight', visual: 'waltz.cursorWhitespaceWordStartRightSelect' },  // W
+    { key: 'shift+b', normal: 'waltz.cursorWhitespaceWordStartLeft', visual: 'waltz.cursorWhitespaceWordStartLeftSelect' },  // B
+    { key: 'shift+e', normal: 'waltz.cursorWhitespaceWordEndRight', visual: 'waltz.cursorWhitespaceWordEndRightSelect' },  // E
     // Line movement
     { key: '0', normal: 'cursorHome', visual: 'cursorHomeSelect' },
     { key: 'shift+4', normal: 'cursorEnd', visual: 'cursorEndSelect' },  // $
@@ -133,7 +134,7 @@ const basicMovement = [
 const gPrefixCommands = [
     { key: 'g g', normal: 'cursorTop', visual: 'cursorTopSelect' },
     { key: 'g e', normal: 'cursorWordEndLeft', visual: 'cursorWordEndLeftSelect' },
-    { key: 'g shift+e', normal: 'cursorWordEndLeft', visual: 'cursorWordEndLeftSelect' },
+    { key: 'g shift+e', normal: 'waltz.cursorWhitespaceWordEndLeft', visual: 'waltz.cursorWhitespaceWordEndLeftSelect' },  // gE
     { key: 'g j', normal: 'cursorDisplayDown', visual: 'cursorDisplayDownSelect' },
     { key: 'g k', normal: 'cursorDisplayUp', visual: 'cursorDisplayUpSelect' },
     { key: 'g 0', normal: 'cursorLineStart', visual: 'cursorLineStartSelect' },

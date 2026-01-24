@@ -17,6 +17,6 @@ export function registerCommands(context: vscode.ExtensionContext, getVimState: 
     registerOperatorCommands(context, getVimState);
     registerModeCommands(context, getVimState);
     registerEditCommands(context, getVimState);
-    registerMotionCommands(context, getVimState);
+    registerMotionCommands(context);
     registerViewportCommands(context);
 }

@@ -1458,22 +1458,32 @@
             },
             {
                 "key": "shift+w",
-                "command": "waltz.WORDForward",
+                "command": "waltz.cursorWhitespaceWordStartRight",
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
                 "key": "shift+w",
-                "command": "waltz.WORDForward",
+                "command": "waltz.cursorWhitespaceWordStartRightSelect",
                 "when": "editorTextFocus && waltz.mode == 'visual'"
             },
             {
                 "key": "shift+b",
-                "command": "waltz.WORDBackward",
+                "command": "waltz.cursorWhitespaceWordStartLeft",
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
                 "key": "shift+b",
-                "command": "waltz.WORDBackward",
+                "command": "waltz.cursorWhitespaceWordStartLeftSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "shift+e",
+                "command": "waltz.cursorWhitespaceWordEndRight",
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "shift+e",
+                "command": "waltz.cursorWhitespaceWordEndRightSelect",
                 "when": "editorTextFocus && waltz.mode == 'visual'"
             },
             {
@@ -1708,12 +1718,12 @@
             },
             {
                 "key": "g shift+e",
-                "command": "cursorWordEndLeft",
+                "command": "waltz.cursorWhitespaceWordEndLeft",
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
                 "key": "g shift+e",
-                "command": "cursorWordEndLeftSelect",
+                "command": "waltz.cursorWhitespaceWordEndLeftSelect",
                 "when": "editorTextFocus && waltz.mode == 'visual'"
             },
             {
