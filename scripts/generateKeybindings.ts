@@ -166,7 +166,7 @@ const modeSwitching = [
     { key: 'o', command: 'waltz.enterInsertNewLineBelow', when: NORMAL },
     { key: 'shift+o', command: 'waltz.enterInsertNewLineAbove', when: NORMAL },
     { key: 'v', command: 'waltz.enterVisual', when: NORMAL },
-    { key: 'shift+v', command: 'waltz.enterVisualLine', when: NORMAL },
+    { key: 'shift+v', command: 'expandLineSelection', when: NOT_INSERT },
 ];
 
 // ============================================================

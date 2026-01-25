@@ -65,13 +65,4 @@ export function registerModeCommands(context: vscode.ExtensionContext, getVimSta
             enterMode(getVimState(), editor, 'visual');
         }),
     );
-
-    // V - Visual line (select line)
-    context.subscriptions.push(
-        vscode.commands.registerCommand('waltz.enterVisualLine', async () => {
-            const editor = vscode.window.activeTextEditor;
-            await vscode.commands.executeCommand('expandLineSelection');
-            enterMode(getVimState(), editor, 'visual');
-        }),
-    );
 }

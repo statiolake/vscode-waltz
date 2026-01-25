@@ -97,10 +97,6 @@
                 "title": "Waltz: Enter Visual Mode (v)"
             },
             {
-                "command": "waltz.enterVisualLine",
-                "title": "Waltz: Enter Visual Line Mode (V)"
-            },
-            {
                 "command": "waltz.visualChange",
                 "title": "Waltz: Change Selection"
             },
@@ -1848,8 +1844,8 @@
             },
             {
                 "key": "shift+v",
-                "command": "waltz.enterVisualLine",
-                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+                "command": "expandLineSelection",
+                "when": "editorTextFocus && waltz.mode != 'insert'"
             },
             {
                 "key": "x",
