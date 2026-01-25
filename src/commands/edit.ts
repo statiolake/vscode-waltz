@@ -4,26 +4,8 @@ import { enterMode } from '../modes';
 import type { VimState } from '../vimState';
 
 /**
- * 編集コマンド (Visual モード d/c/y、ペースト、段落移動など)
+ * 編集コマンド (Visual モード c、ペースト、段落移動など)
  */
-
-async function visualDelete(vimState: VimState): Promise<void> {
-    const editor = vscode.window.activeTextEditor;
-    if (!editor) return;
-
-    // Copy selection to clipboard
-    await vscode.commands.executeCommand('editor.action.clipboardCopyAction');
-
-    // Delete selection
-    await editor.edit((editBuilder) => {
-        for (const selection of editor.selections) {
-            editBuilder.delete(selection);
-        }
-    });
-
-    // Return to normal mode
-    enterMode(vimState, editor, 'normal');
-}
 
 async function visualChange(vimState: VimState): Promise<void> {
     const editor = vscode.window.activeTextEditor;
@@ -41,20 +23,6 @@ async function visualChange(vimState: VimState): Promise<void> {
 
     // Enter insert mode
     enterMode(vimState, editor, 'insert');
-}
-
-async function visualYank(vimState: VimState): Promise<void> {
-    const editor = vscode.window.activeTextEditor;
-    if (!editor) return;
-
-    // Copy selection to clipboard
-    await vscode.commands.executeCommand('editor.action.clipboardCopyAction');
-
-    // Collapse selection to start
-    editor.selections = editor.selections.map((selection) => new Selection(selection.start, selection.start));
-
-    // Return to normal mode
-    enterMode(vimState, editor, 'normal');
 }
 
 async function changeToEndOfLine(vimState: VimState): Promise<void> {
@@ -150,9 +118,7 @@ function paragraphMove(vimState: VimState, direction: 'up' | 'down', select: boo
 
 export function registerEditCommands(context: vscode.ExtensionContext, getVimState: () => VimState): void {
     context.subscriptions.push(
-        vscode.commands.registerCommand('waltz.visualDelete', () => visualDelete(getVimState())),
         vscode.commands.registerCommand('waltz.visualChange', () => visualChange(getVimState())),
-        vscode.commands.registerCommand('waltz.visualYank', () => visualYank(getVimState())),
         vscode.commands.registerCommand('waltz.changeToEndOfLine', () => changeToEndOfLine(getVimState())),
         vscode.commands.registerCommand('waltz.deleteChar', () => deleteChar(getVimState())),
         vscode.commands.registerCommand('waltz.substituteChar', () => substituteChar(getVimState())),

@@ -101,16 +101,8 @@
                 "title": "Waltz: Enter Visual Line Mode (V)"
             },
             {
-                "command": "waltz.visualDelete",
-                "title": "Waltz: Delete Selection"
-            },
-            {
                 "command": "waltz.visualChange",
                 "title": "Waltz: Change Selection"
-            },
-            {
-                "command": "waltz.visualYank",
-                "title": "Waltz: Yank Selection"
             },
             {
                 "command": "waltz.changeToEndOfLine",
@@ -1914,12 +1906,12 @@
             },
             {
                 "key": "d",
-                "command": "waltz.visualDelete",
+                "command": "editor.action.clipboardCutAction",
                 "when": "editorTextFocus && waltz.mode == 'visual'"
             },
             {
                 "key": "x",
-                "command": "waltz.visualDelete",
+                "command": "editor.action.clipboardCutAction",
                 "when": "editorTextFocus && waltz.mode == 'visual'"
             },
             {
@@ -1934,7 +1926,12 @@
             },
             {
                 "key": "y",
-                "command": "waltz.visualYank",
+                "command": "editor.action.clipboardCopyAction",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "p",
+                "command": "editor.action.clipboardPasteAction",
                 "when": "editorTextFocus && waltz.mode == 'visual'"
             },
             {

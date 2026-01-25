@@ -185,12 +185,13 @@ const editCommands = [
     { key: 'shift+p', command: 'editor.action.clipboardPasteAction', when: NORMAL },
     { key: 'u', command: 'undo', when: NORMAL },
     { key: 'ctrl+r', command: 'redo', when: NORMAL },
-    // Visual mode edits
-    { key: 'd', command: 'waltz.visualDelete', when: VISUAL },
-    { key: 'x', command: 'waltz.visualDelete', when: VISUAL },
+    // Visual mode edits (use native commands - mode change handled by selection event)
+    { key: 'd', command: 'editor.action.clipboardCutAction', when: VISUAL },
+    { key: 'x', command: 'editor.action.clipboardCutAction', when: VISUAL },
     { key: 'c', command: 'waltz.visualChange', when: VISUAL },
     { key: 's', command: 'waltz.visualChange', when: VISUAL },
-    { key: 'y', command: 'waltz.visualYank', when: VISUAL },
+    { key: 'y', command: 'editor.action.clipboardCopyAction', when: VISUAL },
+    { key: 'p', command: 'editor.action.clipboardPasteAction', when: VISUAL },
 ];
 
 // ============================================================

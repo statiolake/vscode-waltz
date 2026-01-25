@@ -54,50 +54,6 @@ suite('Native Commands Tests', () => {
     });
 
     suite('Visual mode operations', () => {
-        test('waltz.visualDelete should delete selection and return to normal mode', async () => {
-            const doc = await vscode.workspace.openTextDocument({ content: 'hello world' });
-            const editor = await vscode.window.showTextDocument(doc);
-
-            // Select 'hello'
-            editor.selection = new Selection(new Position(0, 0), new Position(0, 5));
-
-            const vimState = await getVimState();
-            // Force visual mode
-            await vscode.commands.executeCommand('waltz.enterVisual');
-            await wait(50);
-
-            // Delete selection
-            await vscode.commands.executeCommand('waltz.visualDelete');
-            await wait(50);
-
-            assert.strictEqual(doc.getText(), ' world', 'Should delete selected text');
-            assert.strictEqual(vimState.mode, 'normal', 'Should return to normal mode');
-        });
-
-        test('waltz.visualYank should copy selection and return to normal mode', async () => {
-            const doc = await vscode.workspace.openTextDocument({ content: 'hello world' });
-            const editor = await vscode.window.showTextDocument(doc);
-
-            // Select 'hello'
-            editor.selection = new Selection(new Position(0, 0), new Position(0, 5));
-
-            const vimState = await getVimState();
-            await vscode.commands.executeCommand('waltz.enterVisual');
-            await wait(50);
-
-            // Yank selection
-            await vscode.commands.executeCommand('waltz.visualYank');
-            await wait(50);
-
-            // Text should be unchanged
-            assert.strictEqual(doc.getText(), 'hello world', 'Text should not be modified');
-            assert.strictEqual(vimState.mode, 'normal', 'Should return to normal mode');
-
-            // Check clipboard
-            const clipboard = await vscode.env.clipboard.readText();
-            assert.strictEqual(clipboard, 'hello', 'Clipboard should contain yanked text');
-        });
-
         test('waltz.visualChange should delete selection and enter insert mode', async () => {
             const doc = await vscode.workspace.openTextDocument({ content: 'hello world' });
             const editor = await vscode.window.showTextDocument(doc);
