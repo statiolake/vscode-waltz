@@ -177,6 +177,7 @@ const editCommands = [
     // Normal mode edits
     { key: 'x', command: 'waltz.deleteChar', when: NORMAL },
     { key: 's', command: 'waltz.substituteChar', when: NORMAL },
+    { key: 'shift+s', command: 'waltz.change', args: { line: true }, when: NORMAL },  // S = cc
     { key: 'shift+d', command: 'waltz.deleteToEnd', when: NORMAL },
     { key: 'shift+c', command: 'waltz.changeToEndOfLine', when: NORMAL },
     { key: 'shift+j', command: 'editor.action.joinLines', when: NORMAL },
@@ -295,7 +296,11 @@ function generateKeybindings(): Keybinding[] {
 
     // Edit commands
     for (const cmd of editCommands) {
-        keybindings.push({ key: cmd.key, command: cmd.command, when: cmd.when });
+        if ('args' in cmd && cmd.args) {
+            keybindings.push({ key: cmd.key, command: cmd.command, args: cmd.args, when: cmd.when });
+        } else {
+            keybindings.push({ key: cmd.key, command: cmd.command, when: cmd.when });
+        }
     }
 
     // Find commands

@@ -1882,6 +1882,14 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
+                "key": "shift+s",
+                "command": "waltz.change",
+                "args": {
+                    "line": true
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
                 "key": "shift+d",
                 "command": "waltz.deleteToEnd",
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
