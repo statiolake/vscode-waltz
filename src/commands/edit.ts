@@ -46,10 +46,7 @@ async function deleteChar(_vimState: VimState): Promise<void> {
             if (selection.isEmpty) {
                 const line = editor.document.lineAt(selection.active.line);
                 if (selection.active.character < line.text.length) {
-                    const charRange = new vscode.Range(
-                        selection.active,
-                        selection.active.translate(0, 1),
-                    );
+                    const charRange = new vscode.Range(selection.active, selection.active.translate(0, 1));
                     editBuilder.delete(charRange);
                 }
             } else {

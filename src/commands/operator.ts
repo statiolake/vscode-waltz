@@ -17,7 +17,11 @@ interface OperatorArgs {
 /**
  * Get range for a text object
  */
-export function getTextObjectRange(document: vscode.TextDocument, position: Position, textObject: string): Range | null {
+export function getTextObjectRange(
+    document: vscode.TextDocument,
+    position: Position,
+    textObject: string,
+): Range | null {
     const inner = textObject.startsWith('i');
     const type = textObject.slice(1);
 

@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { Position, Range } from 'vscode';
+import { type Position, Range } from 'vscode';
 import { enterMode } from '../modes';
 import type { VimState } from '../vimState';
 import { findPairRange, findQuoteRange, getTextObjectRange } from './operator';
@@ -378,12 +378,9 @@ async function visualSurround(vimState: VimState, args: { surroundWith: string }
 
 export function registerSurroundCommands(context: vscode.ExtensionContext, getVimState: () => VimState): void {
     context.subscriptions.push(
-        vscode.commands.registerCommand(
-            'waltz.surround',
-            (args: { textObject: string; surroundWith: string }) => {
-                if (args?.textObject && args?.surroundWith) surroundTextObject(args);
-            },
-        ),
+        vscode.commands.registerCommand('waltz.surround', (args: { textObject: string; surroundWith: string }) => {
+            if (args?.textObject && args?.surroundWith) surroundTextObject(args);
+        }),
         vscode.commands.registerCommand('waltz.changeSurround', (args: { from: string; to: string }) => {
             if (args?.from && args?.to) changeSurround(args);
         }),

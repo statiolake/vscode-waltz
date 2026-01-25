@@ -212,33 +212,27 @@ const findCommands = [
 // ============================================================
 
 const surroundTargets = [
-    // Parentheses
-    { keys: '(', id: '(' },
-    { keys: 'shift+8', id: '(' },  // JIS keyboard
-    { keys: ')', id: ')' },
-    { keys: 'shift+9', id: ')' },  // JIS keyboard
-    { keys: 'b', id: 'b' },  // Vim alias for ()
+    // Parentheses (shift+9 on US, shift+8 on JIS)
+    { keys: 'shift+9', id: '(' },  // ( on US keyboard
+    { keys: 'shift+8', id: '(' },  // ( on JIS keyboard
+    { keys: 'shift+0', id: ')' },  // ) on US keyboard
+    { keys: 'shift+9', id: ')' },  // ) on JIS keyboard - Note: same as ( on US
+    { keys: 'b', id: 'b' },        // Vim alias for ()
     // Braces
-    { keys: '{', id: '{' },
-    { keys: 'shift+[', id: '{' },  // JIS keyboard
-    { keys: '}', id: '}' },
-    { keys: 'shift+]', id: '}' },  // JIS keyboard
+    { keys: 'shift+[', id: '{' },
+    { keys: 'shift+]', id: '}' },
     { keys: 'shift+b', id: 'B' },  // Vim alias for {}
     // Brackets
     { keys: '[', id: '[' },
     { keys: ']', id: ']' },
     // Angle brackets
-    { keys: '<', id: '<' },
-    { keys: 'shift+,', id: '<' },  // JIS keyboard
-    { keys: '>', id: '>' },
-    { keys: 'shift+.', id: '>' },  // JIS keyboard
+    { keys: 'shift+,', id: '<' },
+    { keys: 'shift+.', id: '>' },
     // Quotes
-    { keys: "'", id: "'" },
-    { keys: 'shift+7', id: "'" },  // JIS keyboard
-    { keys: 'shift+\'', id: '"' },  // " on US keyboard
-    { keys: 'shift+2', id: '"' },  // " on JIS keyboard
-    { keys: '`', id: '`' },
-    { keys: '[BracketLeft]', id: '`' },  // JIS keyboard
+    { keys: 'shift+7', id: "'" },       // ' on JIS keyboard
+    { keys: 'shift+\'', id: '"' },      // " on US keyboard
+    { keys: 'shift+2', id: '"' },       // " on JIS keyboard
+    { keys: '[BracketLeft]', id: '`' }, // ` on JIS keyboard
     // Tag
     { keys: 't', id: 't' },
 ];
