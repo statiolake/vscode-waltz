@@ -10,16 +10,10 @@ import type { VimState } from './vimState';
  */
 export function createVimState(statusBarItem?: StatusBarItem): VimState {
     return {
-        statusBarItem: statusBarItem ?? createDummyStatusBarItem(),
         mode: 'insert',
-        keysPressed: [],
-        register: {
-            contents: [],
-            lastClipboardText: '',
-        },
-        keptColumn: null,
+        statusBarItem: statusBarItem ?? createDummyStatusBarItem(),
         lastFt: undefined,
-        typeCommandDisposable: null, // insert モードで開始するので null
+        typeCommandDisposable: null,
     };
 }
 
@@ -33,7 +27,6 @@ export function createCommentConfigProvider(): CommentConfigProvider {
 
 /**
  * Create a dummy StatusBarItem for testing
- * This creates a minimal StatusBarItem that satisfies the interface but doesn't actually display anything
  */
 function createDummyStatusBarItem(): StatusBarItem {
     return {

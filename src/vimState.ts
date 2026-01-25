@@ -2,35 +2,22 @@ import type { Disposable, StatusBarItem } from 'vscode';
 import type { Mode } from './modesTypes';
 
 /**
- * Vimの状態 (mutableに変更される)
+ * Waltz state (mutated during operation)
  */
 export type VimState = {
+    mode: Mode;
     statusBarItem: StatusBarItem;
 
-    mode: Mode;
-    keysPressed: string[];
-    register: {
-        contents: Array<RegisterContent>;
-        lastClipboardText: string;
+    /** Last f/t/F/T command for repeat with ; and , */
+    lastFt?: {
+        character: string;
+        distance: 'nearer' | 'further';
+        direction: 'before' | 'after';
     };
 
-    keptColumn: number | null;
-    lastFt:
-        | {
-              character: string;
-              distance: 'nearer' | 'further';
-              direction: 'before' | 'after';
-          }
-        | undefined;
-
     /**
-     * type コマンドの Disposable。
-     * insert モードでは null にして VSCode ネイティブの入力処理に任せる。
+     * type command Disposable.
+     * Set to null in insert mode to allow VS Code native input handling.
      */
     typeCommandDisposable: Disposable | null;
-};
-
-export type RegisterContent = {
-    text: string;
-    isLinewise: boolean;
 };

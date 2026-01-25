@@ -18,10 +18,6 @@ import type { VimState } from './vimState';
 export let globalCommentConfigProvider: CommentConfigProvider;
 
 async function onDidChangeTextEditorSelection(vimState: VimState, e: TextEditorSelectionChangeEvent): Promise<void> {
-    // マウスで吹っ飛んだ後適当に入力したらキーコンビネーションとして認識されたとかはうれしくないので、選択範囲が変更さ
-    // れたら入力されたキーはリセットする。
-    vimState.keysPressed = [];
-
     const allEmpty = e.selections.every((selection) => selection.isEmpty);
     if (allEmpty && e.kind === vscode.TextEditorSelectionChangeKind.Mouse) {
         // マウスによる選択解除の場合はノーマルモードに戻る
@@ -61,8 +57,6 @@ async function onDidChangeActiveTextEditor(vimState: VimState, editor: TextEdito
     } else {
         await enterMode(vimState, editor, 'visual');
     }
-
-    vimState.keysPressed = [];
 }
 
 function onDidChangeConfiguration(vimState: VimState, e: ConfigurationChangeEvent): void {

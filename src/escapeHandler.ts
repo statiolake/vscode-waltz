@@ -12,7 +12,6 @@ export async function escapeHandler(vimState: VimState): Promise<void> {
         if (vimState.mode !== 'normal') {
             await enterMode(vimState, undefined, 'normal');
         }
-        vimState.keysPressed = [];
         return;
     }
 
@@ -34,6 +33,4 @@ export async function escapeHandler(vimState: VimState): Promise<void> {
             break;
         }
     }
-
-    vimState.keysPressed = [];
 }
