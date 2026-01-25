@@ -64,6 +64,45 @@ Following VS Code naming conventions:
 - Do NOT implement custom keybindings feature
 - Keybindings are defined in `package.json` (generated via `scripts/generateKeybindings.ts`)
 
+### Architecture
+
+```
+src/
+├── extension.ts          # Entry point, event handling
+├── vimState.ts           # State type (mode, lastFt, statusBar, typeCommand)
+├── modes.ts              # Mode switching & UI updates
+├── modesTypes.ts         # Mode type definition
+├── escapeHandler.ts      # Escape key handling
+├── contextInitializers.ts # State initialization
+├── commands/
+│   ├── index.ts          # Registration hub
+│   ├── operator.ts       # d/c/y with text objects/motions
+│   ├── edit.ts           # x/s/D/C/p/P, visual d/c/y, paragraph
+│   ├── find.ts           # f/t/F/T/;/,
+│   ├── mode.ts           # i/a/I/A/o/O/v/V
+│   ├── motion.ts         # W/B/E/gE (WORD movement)
+│   └── viewport.ts       # zz/zt/zb
+├── utils/
+│   ├── modeDisplay.ts    # Status bar text
+│   ├── cursorStyle.ts    # Cursor style per mode
+│   └── comment.ts        # Language comment config
+scripts/
+└── generateKeybindings.ts # Keybinding generator
+```
+
+### VimState
+
+Minimal state with only necessary fields:
+
+```typescript
+type VimState = {
+    mode: Mode;
+    statusBarItem: StatusBarItem;
+    lastFt?: { character, distance, direction };  // for ; and ,
+    typeCommandDisposable: Disposable | null;
+};
+```
+
 ### Build Commands
 
 ```bash
