@@ -160,7 +160,7 @@ const gPrefixCommands = [
 const modeSwitching = [
     { key: 'Escape', command: 'waltz.escapeKey', when: ALL_MODES },
     { key: 'i', command: 'waltz.enterInsert', when: NORMAL },
-    { key: 'a', command: 'waltz.enterInsertAfter', when: NORMAL },
+    { key: 'a', command: 'waltz.enterInsert', when: NORMAL },  // Same as i (I-beam model)
     { key: 'shift+i', command: 'waltz.enterInsertLineStart', when: NORMAL },
     { key: 'shift+a', command: 'waltz.enterInsertLineEnd', when: NORMAL },
     { key: 'o', command: 'waltz.enterInsertNewLineBelow', when: NORMAL },
@@ -181,8 +181,8 @@ const editCommands = [
     { key: 'shift+d', command: 'waltz.deleteToEnd', when: NORMAL },
     { key: 'shift+c', command: 'waltz.changeToEndOfLine', when: NORMAL },
     { key: 'shift+j', command: 'editor.action.joinLines', when: NORMAL },
-    { key: 'p', command: 'waltz.pasteAfter', when: NORMAL },
-    { key: 'shift+p', command: 'waltz.pasteBefore', when: NORMAL },
+    { key: 'p', command: 'editor.action.clipboardPasteAction', when: NORMAL },
+    { key: 'shift+p', command: 'editor.action.clipboardPasteAction', when: NORMAL },
     { key: 'u', command: 'undo', when: NORMAL },
     { key: 'ctrl+r', command: 'redo', when: NORMAL },
     // Visual mode edits

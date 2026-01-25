@@ -57,24 +57,6 @@ async function visualYank(vimState: VimState): Promise<void> {
     enterMode(vimState, editor, 'normal');
 }
 
-async function pasteAfter(_vimState: VimState): Promise<void> {
-    const editor = vscode.window.activeTextEditor;
-    if (!editor) return;
-
-    // Move cursor right first (paste after cursor)
-    if (editor.selection.isEmpty) {
-        await vscode.commands.executeCommand('cursorRight');
-    }
-
-    // Paste
-    await vscode.commands.executeCommand('editor.action.clipboardPasteAction');
-}
-
-async function pasteBefore(_vimState: VimState): Promise<void> {
-    // Just paste at cursor position
-    await vscode.commands.executeCommand('editor.action.clipboardPasteAction');
-}
-
 async function changeToEndOfLine(vimState: VimState): Promise<void> {
     const editor = vscode.window.activeTextEditor;
     if (!editor) return;
@@ -171,8 +153,6 @@ export function registerEditCommands(context: vscode.ExtensionContext, getVimSta
         vscode.commands.registerCommand('waltz.visualDelete', () => visualDelete(getVimState())),
         vscode.commands.registerCommand('waltz.visualChange', () => visualChange(getVimState())),
         vscode.commands.registerCommand('waltz.visualYank', () => visualYank(getVimState())),
-        vscode.commands.registerCommand('waltz.pasteAfter', () => pasteAfter(getVimState())),
-        vscode.commands.registerCommand('waltz.pasteBefore', () => pasteBefore(getVimState())),
         vscode.commands.registerCommand('waltz.changeToEndOfLine', () => changeToEndOfLine(getVimState())),
         vscode.commands.registerCommand('waltz.deleteChar', () => deleteChar(getVimState())),
         vscode.commands.registerCommand('waltz.substituteChar', () => substituteChar(getVimState())),

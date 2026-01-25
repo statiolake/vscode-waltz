@@ -77,10 +77,6 @@
                 "title": "Waltz: Enter Insert Mode (i)"
             },
             {
-                "command": "waltz.enterInsertAfter",
-                "title": "Waltz: Enter Insert Mode After Cursor (a)"
-            },
-            {
                 "command": "waltz.enterInsertLineStart",
                 "title": "Waltz: Enter Insert Mode at Line Start (I)"
             },
@@ -115,14 +111,6 @@
             {
                 "command": "waltz.visualYank",
                 "title": "Waltz: Yank Selection"
-            },
-            {
-                "command": "waltz.pasteAfter",
-                "title": "Waltz: Paste After (p)"
-            },
-            {
-                "command": "waltz.pasteBefore",
-                "title": "Waltz: Paste Before (P)"
             },
             {
                 "command": "waltz.changeToEndOfLine",
@@ -1838,7 +1826,7 @@
             },
             {
                 "key": "a",
-                "command": "waltz.enterInsertAfter",
+                "command": "waltz.enterInsert",
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
@@ -1906,12 +1894,12 @@
             },
             {
                 "key": "p",
-                "command": "waltz.pasteAfter",
+                "command": "editor.action.clipboardPasteAction",
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
                 "key": "shift+p",
-                "command": "waltz.pasteBefore",
+                "command": "editor.action.clipboardPasteAction",
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {

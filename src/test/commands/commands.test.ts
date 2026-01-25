@@ -37,23 +37,6 @@ suite('Native Commands Tests', () => {
             assert.strictEqual(vimState.mode, 'insert', 'Should be in insert mode');
         });
 
-        test('waltz.enterInsertAfter should move cursor right and switch to insert mode', async () => {
-            const doc = await vscode.workspace.openTextDocument({ content: 'hello world' });
-            const editor = await vscode.window.showTextDocument(doc);
-            editor.selection = new Selection(new Position(0, 0), new Position(0, 0));
-
-            const vimState = await getVimState();
-            await vscode.commands.executeCommand('waltz.escapeKey');
-            await wait(50);
-
-            // Enter insert mode after cursor (a)
-            await vscode.commands.executeCommand('waltz.enterInsertAfter');
-            await wait(50);
-            assert.strictEqual(vimState.mode, 'insert', 'Should be in insert mode');
-            // Cursor should have moved right
-            assert.strictEqual(editor.selection.active.character, 1, 'Cursor should be at position 1');
-        });
-
         test('waltz.enterVisual should switch to visual mode', async () => {
             const doc = await vscode.workspace.openTextDocument({ content: 'hello world' });
             const editor = await vscode.window.showTextDocument(doc);
@@ -178,23 +161,6 @@ suite('Native Commands Tests', () => {
     });
 
     suite('Edit commands', () => {
-        test('waltz.pasteAfter should paste clipboard content', async () => {
-            const doc = await vscode.workspace.openTextDocument({ content: 'hello' });
-            const editor = await vscode.window.showTextDocument(doc);
-            editor.selection = new Selection(new Position(0, 0), new Position(0, 0));
-
-            // Set clipboard
-            await vscode.env.clipboard.writeText('world');
-
-            await vscode.commands.executeCommand('waltz.escapeKey');
-            await wait(50);
-
-            await vscode.commands.executeCommand('waltz.pasteAfter');
-            await wait(50);
-
-            assert.ok(doc.getText().includes('world'), 'Should paste clipboard content');
-        });
-
         test('waltz.changeToEndOfLine should delete to end and enter insert mode', async () => {
             const doc = await vscode.workspace.openTextDocument({ content: 'hello world' });
             const editor = await vscode.window.showTextDocument(doc);
