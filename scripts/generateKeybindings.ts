@@ -208,6 +208,27 @@ const findCommands = [
 ];
 
 // ============================================================
+// Surround commands (ys, cs, ds, visual S)
+// ============================================================
+
+const surroundTargets = [
+    { keys: '(', id: '(' },
+    { keys: ')', id: ')' },
+    { keys: 'b', id: 'b' },
+    { keys: '{', id: '{' },
+    { keys: '}', id: '}' },
+    { keys: 'shift+b', id: 'B' },
+    { keys: '[', id: '[' },
+    { keys: ']', id: ']' },
+    { keys: '<', id: '<' },
+    { keys: '>', id: '>' },
+    { keys: "'", id: "'" },
+    { keys: 'shift+\'', id: '"' },  // " on US keyboard
+    { keys: '`', id: '`' },
+    { keys: 't', id: 't' },  // tag
+];
+
+// ============================================================
 // Viewport / scroll commands
 // ============================================================
 
@@ -272,6 +293,50 @@ function generateKeybindings(): Keybinding[] {
             key: obj.keys,
             command: 'waltz.selectTextObject',
             args: { textObject: obj.id },
+            when: VISUAL,
+        });
+    }
+
+    // Surround: ys{textObject}{surroundWith}
+    for (const obj of textObjects) {
+        for (const surround of surroundTargets) {
+            keybindings.push({
+                key: `y s ${obj.keys} ${surround.keys}`,
+                command: 'waltz.surround',
+                args: { textObject: obj.id, surroundWith: surround.id },
+                when: NORMAL,
+            });
+        }
+    }
+
+    // Surround: cs{from}{to}
+    for (const from of surroundTargets) {
+        for (const to of surroundTargets) {
+            keybindings.push({
+                key: `c s ${from.keys} ${to.keys}`,
+                command: 'waltz.changeSurround',
+                args: { from: from.id, to: to.id },
+                when: NORMAL,
+            });
+        }
+    }
+
+    // Surround: ds{target}
+    for (const target of surroundTargets) {
+        keybindings.push({
+            key: `d s ${target.keys}`,
+            command: 'waltz.deleteSurround',
+            args: { target: target.id },
+            when: NORMAL,
+        });
+    }
+
+    // Surround: S{surroundWith} in visual mode
+    for (const surround of surroundTargets) {
+        keybindings.push({
+            key: `shift+s ${surround.keys}`,
+            command: 'waltz.visualSurround',
+            args: { surroundWith: surround.id },
             when: VISUAL,
         });
     }

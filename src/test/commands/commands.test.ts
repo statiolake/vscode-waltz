@@ -191,3 +191,272 @@ suite('Find Character Commands Tests', () => {
         assert.ok(editor.selection.active.character < 5, 'Should move backward');
     });
 });
+
+suite('Surround Commands Tests', () => {
+    suite('waltz.surround (ys)', () => {
+        test('surround command should be registered', async () => {
+            const commands = await vscode.commands.getCommands(true);
+            assert.ok(commands.includes('waltz.surround'), 'waltz.surround should be registered');
+        });
+
+        test('surround with quotes should wrap word in quotes', async () => {
+            const doc = await vscode.workspace.openTextDocument({ content: 'hello world' });
+            const editor = await vscode.window.showTextDocument(doc);
+            editor.selection = new Selection(new Position(0, 2), new Position(0, 2));
+
+            await vscode.commands.executeCommand('waltz.escapeKey');
+            await new Promise((resolve) => setTimeout(resolve, 50));
+
+            await vscode.commands.executeCommand('waltz.surround', { textObject: 'iw', surroundWith: '"' });
+            await new Promise((resolve) => setTimeout(resolve, 50));
+
+            assert.strictEqual(doc.getText(), '"hello" world', 'Should wrap word in quotes');
+        });
+
+        test('surround with parentheses should wrap word in parens', async () => {
+            const doc = await vscode.workspace.openTextDocument({ content: 'hello world' });
+            const editor = await vscode.window.showTextDocument(doc);
+            editor.selection = new Selection(new Position(0, 2), new Position(0, 2));
+
+            await vscode.commands.executeCommand('waltz.escapeKey');
+            await new Promise((resolve) => setTimeout(resolve, 50));
+
+            await vscode.commands.executeCommand('waltz.surround', { textObject: 'iw', surroundWith: '(' });
+            await new Promise((resolve) => setTimeout(resolve, 50));
+
+            assert.strictEqual(doc.getText(), '(hello) world', 'Should wrap word in parentheses');
+        });
+
+        test('surround with braces should wrap word in braces', async () => {
+            const doc = await vscode.workspace.openTextDocument({ content: 'hello world' });
+            const editor = await vscode.window.showTextDocument(doc);
+            editor.selection = new Selection(new Position(0, 2), new Position(0, 2));
+
+            await vscode.commands.executeCommand('waltz.escapeKey');
+            await new Promise((resolve) => setTimeout(resolve, 50));
+
+            await vscode.commands.executeCommand('waltz.surround', { textObject: 'iw', surroundWith: '{' });
+            await new Promise((resolve) => setTimeout(resolve, 50));
+
+            assert.strictEqual(doc.getText(), '{hello} world', 'Should wrap word in braces');
+        });
+    });
+
+    suite('waltz.changeSurround (cs)', () => {
+        test('changeSurround command should be registered', async () => {
+            const commands = await vscode.commands.getCommands(true);
+            assert.ok(commands.includes('waltz.changeSurround'), 'waltz.changeSurround should be registered');
+        });
+
+        test('changeSurround should change quotes to single quotes', async () => {
+            const doc = await vscode.workspace.openTextDocument({ content: '"hello"' });
+            const editor = await vscode.window.showTextDocument(doc);
+            editor.selection = new Selection(new Position(0, 3), new Position(0, 3));
+
+            await vscode.commands.executeCommand('waltz.escapeKey');
+            await new Promise((resolve) => setTimeout(resolve, 50));
+
+            await vscode.commands.executeCommand('waltz.changeSurround', { from: '"', to: "'" });
+            await new Promise((resolve) => setTimeout(resolve, 50));
+
+            assert.strictEqual(doc.getText(), "'hello'", 'Should change double quotes to single quotes');
+        });
+
+        test('changeSurround should change parens to brackets', async () => {
+            const doc = await vscode.workspace.openTextDocument({ content: '(hello)' });
+            const editor = await vscode.window.showTextDocument(doc);
+            editor.selection = new Selection(new Position(0, 3), new Position(0, 3));
+
+            await vscode.commands.executeCommand('waltz.escapeKey');
+            await new Promise((resolve) => setTimeout(resolve, 50));
+
+            await vscode.commands.executeCommand('waltz.changeSurround', { from: '(', to: '[' });
+            await new Promise((resolve) => setTimeout(resolve, 50));
+
+            assert.strictEqual(doc.getText(), '[hello]', 'Should change parentheses to brackets');
+        });
+
+        test('changeSurround should change braces to parens', async () => {
+            const doc = await vscode.workspace.openTextDocument({ content: '{hello}' });
+            const editor = await vscode.window.showTextDocument(doc);
+            editor.selection = new Selection(new Position(0, 3), new Position(0, 3));
+
+            await vscode.commands.executeCommand('waltz.escapeKey');
+            await new Promise((resolve) => setTimeout(resolve, 50));
+
+            await vscode.commands.executeCommand('waltz.changeSurround', { from: '{', to: '(' });
+            await new Promise((resolve) => setTimeout(resolve, 50));
+
+            assert.strictEqual(doc.getText(), '(hello)', 'Should change braces to parentheses');
+        });
+    });
+
+    suite('waltz.deleteSurround (ds)', () => {
+        test('deleteSurround command should be registered', async () => {
+            const commands = await vscode.commands.getCommands(true);
+            assert.ok(commands.includes('waltz.deleteSurround'), 'waltz.deleteSurround should be registered');
+        });
+
+        test('deleteSurround with quotes should remove surrounding quotes', async () => {
+            const doc = await vscode.workspace.openTextDocument({ content: '"hello"' });
+            const editor = await vscode.window.showTextDocument(doc);
+            editor.selection = new Selection(new Position(0, 3), new Position(0, 3));
+
+            await vscode.commands.executeCommand('waltz.escapeKey');
+            await new Promise((resolve) => setTimeout(resolve, 50));
+
+            await vscode.commands.executeCommand('waltz.deleteSurround', { target: '"' });
+            await new Promise((resolve) => setTimeout(resolve, 50));
+
+            assert.strictEqual(doc.getText(), 'hello', 'Should remove surrounding quotes');
+        });
+
+        test('deleteSurround with parentheses should remove surrounding parens', async () => {
+            const doc = await vscode.workspace.openTextDocument({ content: '(hello)' });
+            const editor = await vscode.window.showTextDocument(doc);
+            editor.selection = new Selection(new Position(0, 3), new Position(0, 3));
+
+            await vscode.commands.executeCommand('waltz.escapeKey');
+            await new Promise((resolve) => setTimeout(resolve, 50));
+
+            await vscode.commands.executeCommand('waltz.deleteSurround', { target: '(' });
+            await new Promise((resolve) => setTimeout(resolve, 50));
+
+            assert.strictEqual(doc.getText(), 'hello', 'Should remove surrounding parentheses');
+        });
+
+        test('deleteSurround with braces should remove surrounding braces', async () => {
+            const doc = await vscode.workspace.openTextDocument({ content: '{hello}' });
+            const editor = await vscode.window.showTextDocument(doc);
+            editor.selection = new Selection(new Position(0, 3), new Position(0, 3));
+
+            await vscode.commands.executeCommand('waltz.escapeKey');
+            await new Promise((resolve) => setTimeout(resolve, 50));
+
+            await vscode.commands.executeCommand('waltz.deleteSurround', { target: '{' });
+            await new Promise((resolve) => setTimeout(resolve, 50));
+
+            assert.strictEqual(doc.getText(), 'hello', 'Should remove surrounding braces');
+        });
+
+        test('deleteSurround with brackets should remove surrounding brackets', async () => {
+            const doc = await vscode.workspace.openTextDocument({ content: '[hello]' });
+            const editor = await vscode.window.showTextDocument(doc);
+            editor.selection = new Selection(new Position(0, 3), new Position(0, 3));
+
+            await vscode.commands.executeCommand('waltz.escapeKey');
+            await new Promise((resolve) => setTimeout(resolve, 50));
+
+            await vscode.commands.executeCommand('waltz.deleteSurround', { target: '[' });
+            await new Promise((resolve) => setTimeout(resolve, 50));
+
+            assert.strictEqual(doc.getText(), 'hello', 'Should remove surrounding brackets');
+        });
+
+        test('deleteSurround with nested pairs should remove innermost', async () => {
+            const doc = await vscode.workspace.openTextDocument({ content: '((hello))' });
+            const editor = await vscode.window.showTextDocument(doc);
+            editor.selection = new Selection(new Position(0, 4), new Position(0, 4));
+
+            await vscode.commands.executeCommand('waltz.escapeKey');
+            await new Promise((resolve) => setTimeout(resolve, 50));
+
+            await vscode.commands.executeCommand('waltz.deleteSurround', { target: '(' });
+            await new Promise((resolve) => setTimeout(resolve, 50));
+
+            assert.strictEqual(doc.getText(), '(hello)', 'Should remove innermost parentheses');
+        });
+
+        test('deleteSurround with tag should remove HTML tags', async () => {
+            const doc = await vscode.workspace.openTextDocument({ content: '<div>hello</div>' });
+            const editor = await vscode.window.showTextDocument(doc);
+            editor.selection = new Selection(new Position(0, 7), new Position(0, 7));
+
+            await vscode.commands.executeCommand('waltz.escapeKey');
+            await new Promise((resolve) => setTimeout(resolve, 50));
+
+            await vscode.commands.executeCommand('waltz.deleteSurround', { target: 't' });
+            await new Promise((resolve) => setTimeout(resolve, 50));
+
+            assert.strictEqual(doc.getText(), 'hello', 'Should remove HTML tags');
+        });
+    });
+
+    suite('waltz.visualSurround (S)', () => {
+        test('visualSurround command should be registered', async () => {
+            const commands = await vscode.commands.getCommands(true);
+            assert.ok(commands.includes('waltz.visualSurround'), 'waltz.visualSurround should be registered');
+        });
+
+        test('visualSurround should wrap selection in quotes', async () => {
+            const doc = await vscode.workspace.openTextDocument({ content: 'hello world' });
+            const editor = await vscode.window.showTextDocument(doc);
+
+            // Select 'hello'
+            editor.selection = new Selection(new Position(0, 0), new Position(0, 5));
+
+            await vscode.commands.executeCommand('waltz.enterVisual');
+            await new Promise((resolve) => setTimeout(resolve, 50));
+
+            await vscode.commands.executeCommand('waltz.visualSurround', { surroundWith: '"' });
+            await new Promise((resolve) => setTimeout(resolve, 50));
+
+            assert.strictEqual(doc.getText(), '"hello" world', 'Should wrap selection in quotes');
+        });
+
+        test('visualSurround should wrap selection in parentheses', async () => {
+            const doc = await vscode.workspace.openTextDocument({ content: 'hello world' });
+            const editor = await vscode.window.showTextDocument(doc);
+
+            // Select 'hello'
+            editor.selection = new Selection(new Position(0, 0), new Position(0, 5));
+
+            await vscode.commands.executeCommand('waltz.enterVisual');
+            await new Promise((resolve) => setTimeout(resolve, 50));
+
+            await vscode.commands.executeCommand('waltz.visualSurround', { surroundWith: '(' });
+            await new Promise((resolve) => setTimeout(resolve, 50));
+
+            assert.strictEqual(doc.getText(), '(hello) world', 'Should wrap selection in parentheses');
+        });
+
+        test('visualSurround should return to normal mode after operation', async () => {
+            const doc = await vscode.workspace.openTextDocument({ content: 'hello world' });
+            const editor = await vscode.window.showTextDocument(doc);
+
+            // Select 'hello'
+            editor.selection = new Selection(new Position(0, 0), new Position(0, 5));
+
+            const vimState = await getVimState();
+            await vscode.commands.executeCommand('waltz.enterVisual');
+            await new Promise((resolve) => setTimeout(resolve, 50));
+            assert.strictEqual(vimState.mode, 'visual', 'Should be in visual mode');
+
+            await vscode.commands.executeCommand('waltz.visualSurround', { surroundWith: '{' });
+            await new Promise((resolve) => setTimeout(resolve, 50));
+
+            assert.strictEqual(vimState.mode, 'normal', 'Should return to normal mode');
+        });
+    });
+
+    suite('Multi-cursor support', () => {
+        test('deleteSurround should work with multiple cursors', async () => {
+            const doc = await vscode.workspace.openTextDocument({ content: '"hello" "world"' });
+            const editor = await vscode.window.showTextDocument(doc);
+
+            // Set multiple cursors inside each quoted word
+            editor.selections = [
+                new Selection(new Position(0, 3), new Position(0, 3)),
+                new Selection(new Position(0, 11), new Position(0, 11)),
+            ];
+
+            await vscode.commands.executeCommand('waltz.escapeKey');
+            await new Promise((resolve) => setTimeout(resolve, 50));
+
+            await vscode.commands.executeCommand('waltz.deleteSurround', { target: '"' });
+            await new Promise((resolve) => setTimeout(resolve, 50));
+
+            assert.strictEqual(doc.getText(), 'hello world', 'Should remove quotes from both words');
+        });
+    });
+});

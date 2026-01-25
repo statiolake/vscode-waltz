@@ -17,7 +17,7 @@ interface OperatorArgs {
 /**
  * Get range for a text object
  */
-function getTextObjectRange(document: vscode.TextDocument, position: Position, textObject: string): Range | null {
+export function getTextObjectRange(document: vscode.TextDocument, position: Position, textObject: string): Range | null {
     const inner = textObject.startsWith('i');
     const type = textObject.slice(1);
 
@@ -70,7 +70,7 @@ function getTextObjectRange(document: vscode.TextDocument, position: Position, t
 /**
  * Find matching pair range (parentheses, braces, brackets)
  */
-function findPairRange(
+export function findPairRange(
     document: vscode.TextDocument,
     position: Position,
     open: string,
@@ -120,7 +120,7 @@ function findPairRange(
 /**
  * Find quote range
  */
-function findQuoteRange(
+export function findQuoteRange(
     document: vscode.TextDocument,
     position: Position,
     quote: string,

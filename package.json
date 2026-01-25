@@ -143,6 +143,22 @@
             {
                 "command": "waltz.deleteToEnd",
                 "title": "Waltz: Delete to End of Line (D)"
+            },
+            {
+                "command": "waltz.surround",
+                "title": "Waltz: Surround (ys)"
+            },
+            {
+                "command": "waltz.changeSurround",
+                "title": "Waltz: Change Surround (cs)"
+            },
+            {
+                "command": "waltz.deleteSurround",
+                "title": "Waltz: Delete Surround (ds)"
+            },
+            {
+                "command": "waltz.visualSurround",
+                "title": "Waltz: Visual Surround (S)"
             }
         ],
         "keybindings": [
@@ -1359,6 +1375,5270 @@
                 "command": "waltz.selectTextObject",
                 "args": {
                     "textObject": "a`"
+                },
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "y s i w (",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "iw",
+                    "surroundWith": "("
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i w )",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "iw",
+                    "surroundWith": ")"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i w b",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "iw",
+                    "surroundWith": "b"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i w {",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "iw",
+                    "surroundWith": "{"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i w }",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "iw",
+                    "surroundWith": "}"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i w shift+b",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "iw",
+                    "surroundWith": "B"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i w [",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "iw",
+                    "surroundWith": "["
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i w ]",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "iw",
+                    "surroundWith": "]"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i w <",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "iw",
+                    "surroundWith": "<"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i w >",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "iw",
+                    "surroundWith": ">"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i w '",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "iw",
+                    "surroundWith": "'"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i w shift+'",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "iw",
+                    "surroundWith": "\""
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i w `",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "iw",
+                    "surroundWith": "`"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i w t",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "iw",
+                    "surroundWith": "t"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a w (",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "aw",
+                    "surroundWith": "("
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a w )",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "aw",
+                    "surroundWith": ")"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a w b",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "aw",
+                    "surroundWith": "b"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a w {",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "aw",
+                    "surroundWith": "{"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a w }",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "aw",
+                    "surroundWith": "}"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a w shift+b",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "aw",
+                    "surroundWith": "B"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a w [",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "aw",
+                    "surroundWith": "["
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a w ]",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "aw",
+                    "surroundWith": "]"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a w <",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "aw",
+                    "surroundWith": "<"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a w >",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "aw",
+                    "surroundWith": ">"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a w '",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "aw",
+                    "surroundWith": "'"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a w shift+'",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "aw",
+                    "surroundWith": "\""
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a w `",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "aw",
+                    "surroundWith": "`"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a w t",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "aw",
+                    "surroundWith": "t"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i W (",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "iW",
+                    "surroundWith": "("
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i W )",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "iW",
+                    "surroundWith": ")"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i W b",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "iW",
+                    "surroundWith": "b"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i W {",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "iW",
+                    "surroundWith": "{"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i W }",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "iW",
+                    "surroundWith": "}"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i W shift+b",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "iW",
+                    "surroundWith": "B"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i W [",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "iW",
+                    "surroundWith": "["
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i W ]",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "iW",
+                    "surroundWith": "]"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i W <",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "iW",
+                    "surroundWith": "<"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i W >",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "iW",
+                    "surroundWith": ">"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i W '",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "iW",
+                    "surroundWith": "'"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i W shift+'",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "iW",
+                    "surroundWith": "\""
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i W `",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "iW",
+                    "surroundWith": "`"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i W t",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "iW",
+                    "surroundWith": "t"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a W (",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "aW",
+                    "surroundWith": "("
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a W )",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "aW",
+                    "surroundWith": ")"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a W b",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "aW",
+                    "surroundWith": "b"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a W {",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "aW",
+                    "surroundWith": "{"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a W }",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "aW",
+                    "surroundWith": "}"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a W shift+b",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "aW",
+                    "surroundWith": "B"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a W [",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "aW",
+                    "surroundWith": "["
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a W ]",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "aW",
+                    "surroundWith": "]"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a W <",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "aW",
+                    "surroundWith": "<"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a W >",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "aW",
+                    "surroundWith": ">"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a W '",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "aW",
+                    "surroundWith": "'"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a W shift+'",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "aW",
+                    "surroundWith": "\""
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a W `",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "aW",
+                    "surroundWith": "`"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a W t",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "aW",
+                    "surroundWith": "t"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i ( (",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i(",
+                    "surroundWith": "("
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i ( )",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i(",
+                    "surroundWith": ")"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i ( b",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i(",
+                    "surroundWith": "b"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i ( {",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i(",
+                    "surroundWith": "{"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i ( }",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i(",
+                    "surroundWith": "}"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i ( shift+b",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i(",
+                    "surroundWith": "B"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i ( [",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i(",
+                    "surroundWith": "["
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i ( ]",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i(",
+                    "surroundWith": "]"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i ( <",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i(",
+                    "surroundWith": "<"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i ( >",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i(",
+                    "surroundWith": ">"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i ( '",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i(",
+                    "surroundWith": "'"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i ( shift+'",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i(",
+                    "surroundWith": "\""
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i ( `",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i(",
+                    "surroundWith": "`"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i ( t",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i(",
+                    "surroundWith": "t"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a ( (",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a(",
+                    "surroundWith": "("
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a ( )",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a(",
+                    "surroundWith": ")"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a ( b",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a(",
+                    "surroundWith": "b"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a ( {",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a(",
+                    "surroundWith": "{"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a ( }",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a(",
+                    "surroundWith": "}"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a ( shift+b",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a(",
+                    "surroundWith": "B"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a ( [",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a(",
+                    "surroundWith": "["
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a ( ]",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a(",
+                    "surroundWith": "]"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a ( <",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a(",
+                    "surroundWith": "<"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a ( >",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a(",
+                    "surroundWith": ">"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a ( '",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a(",
+                    "surroundWith": "'"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a ( shift+'",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a(",
+                    "surroundWith": "\""
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a ( `",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a(",
+                    "surroundWith": "`"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a ( t",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a(",
+                    "surroundWith": "t"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i ) (",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i)",
+                    "surroundWith": "("
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i ) )",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i)",
+                    "surroundWith": ")"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i ) b",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i)",
+                    "surroundWith": "b"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i ) {",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i)",
+                    "surroundWith": "{"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i ) }",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i)",
+                    "surroundWith": "}"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i ) shift+b",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i)",
+                    "surroundWith": "B"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i ) [",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i)",
+                    "surroundWith": "["
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i ) ]",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i)",
+                    "surroundWith": "]"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i ) <",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i)",
+                    "surroundWith": "<"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i ) >",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i)",
+                    "surroundWith": ">"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i ) '",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i)",
+                    "surroundWith": "'"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i ) shift+'",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i)",
+                    "surroundWith": "\""
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i ) `",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i)",
+                    "surroundWith": "`"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i ) t",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i)",
+                    "surroundWith": "t"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a ) (",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a)",
+                    "surroundWith": "("
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a ) )",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a)",
+                    "surroundWith": ")"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a ) b",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a)",
+                    "surroundWith": "b"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a ) {",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a)",
+                    "surroundWith": "{"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a ) }",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a)",
+                    "surroundWith": "}"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a ) shift+b",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a)",
+                    "surroundWith": "B"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a ) [",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a)",
+                    "surroundWith": "["
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a ) ]",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a)",
+                    "surroundWith": "]"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a ) <",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a)",
+                    "surroundWith": "<"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a ) >",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a)",
+                    "surroundWith": ">"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a ) '",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a)",
+                    "surroundWith": "'"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a ) shift+'",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a)",
+                    "surroundWith": "\""
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a ) `",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a)",
+                    "surroundWith": "`"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a ) t",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a)",
+                    "surroundWith": "t"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i { (",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i{",
+                    "surroundWith": "("
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i { )",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i{",
+                    "surroundWith": ")"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i { b",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i{",
+                    "surroundWith": "b"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i { {",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i{",
+                    "surroundWith": "{"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i { }",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i{",
+                    "surroundWith": "}"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i { shift+b",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i{",
+                    "surroundWith": "B"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i { [",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i{",
+                    "surroundWith": "["
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i { ]",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i{",
+                    "surroundWith": "]"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i { <",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i{",
+                    "surroundWith": "<"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i { >",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i{",
+                    "surroundWith": ">"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i { '",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i{",
+                    "surroundWith": "'"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i { shift+'",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i{",
+                    "surroundWith": "\""
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i { `",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i{",
+                    "surroundWith": "`"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i { t",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i{",
+                    "surroundWith": "t"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a { (",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a{",
+                    "surroundWith": "("
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a { )",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a{",
+                    "surroundWith": ")"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a { b",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a{",
+                    "surroundWith": "b"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a { {",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a{",
+                    "surroundWith": "{"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a { }",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a{",
+                    "surroundWith": "}"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a { shift+b",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a{",
+                    "surroundWith": "B"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a { [",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a{",
+                    "surroundWith": "["
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a { ]",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a{",
+                    "surroundWith": "]"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a { <",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a{",
+                    "surroundWith": "<"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a { >",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a{",
+                    "surroundWith": ">"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a { '",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a{",
+                    "surroundWith": "'"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a { shift+'",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a{",
+                    "surroundWith": "\""
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a { `",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a{",
+                    "surroundWith": "`"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a { t",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a{",
+                    "surroundWith": "t"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i } (",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i}",
+                    "surroundWith": "("
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i } )",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i}",
+                    "surroundWith": ")"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i } b",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i}",
+                    "surroundWith": "b"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i } {",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i}",
+                    "surroundWith": "{"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i } }",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i}",
+                    "surroundWith": "}"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i } shift+b",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i}",
+                    "surroundWith": "B"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i } [",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i}",
+                    "surroundWith": "["
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i } ]",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i}",
+                    "surroundWith": "]"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i } <",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i}",
+                    "surroundWith": "<"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i } >",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i}",
+                    "surroundWith": ">"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i } '",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i}",
+                    "surroundWith": "'"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i } shift+'",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i}",
+                    "surroundWith": "\""
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i } `",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i}",
+                    "surroundWith": "`"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i } t",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i}",
+                    "surroundWith": "t"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a } (",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a}",
+                    "surroundWith": "("
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a } )",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a}",
+                    "surroundWith": ")"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a } b",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a}",
+                    "surroundWith": "b"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a } {",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a}",
+                    "surroundWith": "{"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a } }",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a}",
+                    "surroundWith": "}"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a } shift+b",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a}",
+                    "surroundWith": "B"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a } [",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a}",
+                    "surroundWith": "["
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a } ]",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a}",
+                    "surroundWith": "]"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a } <",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a}",
+                    "surroundWith": "<"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a } >",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a}",
+                    "surroundWith": ">"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a } '",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a}",
+                    "surroundWith": "'"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a } shift+'",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a}",
+                    "surroundWith": "\""
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a } `",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a}",
+                    "surroundWith": "`"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a } t",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a}",
+                    "surroundWith": "t"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i [ (",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i[",
+                    "surroundWith": "("
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i [ )",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i[",
+                    "surroundWith": ")"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i [ b",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i[",
+                    "surroundWith": "b"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i [ {",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i[",
+                    "surroundWith": "{"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i [ }",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i[",
+                    "surroundWith": "}"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i [ shift+b",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i[",
+                    "surroundWith": "B"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i [ [",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i[",
+                    "surroundWith": "["
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i [ ]",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i[",
+                    "surroundWith": "]"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i [ <",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i[",
+                    "surroundWith": "<"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i [ >",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i[",
+                    "surroundWith": ">"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i [ '",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i[",
+                    "surroundWith": "'"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i [ shift+'",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i[",
+                    "surroundWith": "\""
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i [ `",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i[",
+                    "surroundWith": "`"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i [ t",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i[",
+                    "surroundWith": "t"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a [ (",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a[",
+                    "surroundWith": "("
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a [ )",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a[",
+                    "surroundWith": ")"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a [ b",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a[",
+                    "surroundWith": "b"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a [ {",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a[",
+                    "surroundWith": "{"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a [ }",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a[",
+                    "surroundWith": "}"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a [ shift+b",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a[",
+                    "surroundWith": "B"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a [ [",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a[",
+                    "surroundWith": "["
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a [ ]",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a[",
+                    "surroundWith": "]"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a [ <",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a[",
+                    "surroundWith": "<"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a [ >",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a[",
+                    "surroundWith": ">"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a [ '",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a[",
+                    "surroundWith": "'"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a [ shift+'",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a[",
+                    "surroundWith": "\""
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a [ `",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a[",
+                    "surroundWith": "`"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a [ t",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a[",
+                    "surroundWith": "t"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i ] (",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i]",
+                    "surroundWith": "("
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i ] )",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i]",
+                    "surroundWith": ")"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i ] b",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i]",
+                    "surroundWith": "b"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i ] {",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i]",
+                    "surroundWith": "{"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i ] }",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i]",
+                    "surroundWith": "}"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i ] shift+b",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i]",
+                    "surroundWith": "B"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i ] [",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i]",
+                    "surroundWith": "["
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i ] ]",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i]",
+                    "surroundWith": "]"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i ] <",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i]",
+                    "surroundWith": "<"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i ] >",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i]",
+                    "surroundWith": ">"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i ] '",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i]",
+                    "surroundWith": "'"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i ] shift+'",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i]",
+                    "surroundWith": "\""
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i ] `",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i]",
+                    "surroundWith": "`"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i ] t",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i]",
+                    "surroundWith": "t"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a ] (",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a]",
+                    "surroundWith": "("
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a ] )",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a]",
+                    "surroundWith": ")"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a ] b",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a]",
+                    "surroundWith": "b"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a ] {",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a]",
+                    "surroundWith": "{"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a ] }",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a]",
+                    "surroundWith": "}"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a ] shift+b",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a]",
+                    "surroundWith": "B"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a ] [",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a]",
+                    "surroundWith": "["
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a ] ]",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a]",
+                    "surroundWith": "]"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a ] <",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a]",
+                    "surroundWith": "<"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a ] >",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a]",
+                    "surroundWith": ">"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a ] '",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a]",
+                    "surroundWith": "'"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a ] shift+'",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a]",
+                    "surroundWith": "\""
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a ] `",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a]",
+                    "surroundWith": "`"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a ] t",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a]",
+                    "surroundWith": "t"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i < (",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i<",
+                    "surroundWith": "("
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i < )",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i<",
+                    "surroundWith": ")"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i < b",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i<",
+                    "surroundWith": "b"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i < {",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i<",
+                    "surroundWith": "{"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i < }",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i<",
+                    "surroundWith": "}"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i < shift+b",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i<",
+                    "surroundWith": "B"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i < [",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i<",
+                    "surroundWith": "["
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i < ]",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i<",
+                    "surroundWith": "]"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i < <",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i<",
+                    "surroundWith": "<"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i < >",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i<",
+                    "surroundWith": ">"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i < '",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i<",
+                    "surroundWith": "'"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i < shift+'",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i<",
+                    "surroundWith": "\""
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i < `",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i<",
+                    "surroundWith": "`"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i < t",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i<",
+                    "surroundWith": "t"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a < (",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a<",
+                    "surroundWith": "("
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a < )",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a<",
+                    "surroundWith": ")"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a < b",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a<",
+                    "surroundWith": "b"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a < {",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a<",
+                    "surroundWith": "{"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a < }",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a<",
+                    "surroundWith": "}"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a < shift+b",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a<",
+                    "surroundWith": "B"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a < [",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a<",
+                    "surroundWith": "["
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a < ]",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a<",
+                    "surroundWith": "]"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a < <",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a<",
+                    "surroundWith": "<"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a < >",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a<",
+                    "surroundWith": ">"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a < '",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a<",
+                    "surroundWith": "'"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a < shift+'",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a<",
+                    "surroundWith": "\""
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a < `",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a<",
+                    "surroundWith": "`"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a < t",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a<",
+                    "surroundWith": "t"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i > (",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i>",
+                    "surroundWith": "("
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i > )",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i>",
+                    "surroundWith": ")"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i > b",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i>",
+                    "surroundWith": "b"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i > {",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i>",
+                    "surroundWith": "{"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i > }",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i>",
+                    "surroundWith": "}"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i > shift+b",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i>",
+                    "surroundWith": "B"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i > [",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i>",
+                    "surroundWith": "["
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i > ]",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i>",
+                    "surroundWith": "]"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i > <",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i>",
+                    "surroundWith": "<"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i > >",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i>",
+                    "surroundWith": ">"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i > '",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i>",
+                    "surroundWith": "'"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i > shift+'",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i>",
+                    "surroundWith": "\""
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i > `",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i>",
+                    "surroundWith": "`"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i > t",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i>",
+                    "surroundWith": "t"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a > (",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a>",
+                    "surroundWith": "("
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a > )",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a>",
+                    "surroundWith": ")"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a > b",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a>",
+                    "surroundWith": "b"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a > {",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a>",
+                    "surroundWith": "{"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a > }",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a>",
+                    "surroundWith": "}"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a > shift+b",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a>",
+                    "surroundWith": "B"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a > [",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a>",
+                    "surroundWith": "["
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a > ]",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a>",
+                    "surroundWith": "]"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a > <",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a>",
+                    "surroundWith": "<"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a > >",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a>",
+                    "surroundWith": ">"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a > '",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a>",
+                    "surroundWith": "'"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a > shift+'",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a>",
+                    "surroundWith": "\""
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a > `",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a>",
+                    "surroundWith": "`"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a > t",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a>",
+                    "surroundWith": "t"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i ' (",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i'",
+                    "surroundWith": "("
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i ' )",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i'",
+                    "surroundWith": ")"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i ' b",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i'",
+                    "surroundWith": "b"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i ' {",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i'",
+                    "surroundWith": "{"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i ' }",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i'",
+                    "surroundWith": "}"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i ' shift+b",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i'",
+                    "surroundWith": "B"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i ' [",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i'",
+                    "surroundWith": "["
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i ' ]",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i'",
+                    "surroundWith": "]"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i ' <",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i'",
+                    "surroundWith": "<"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i ' >",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i'",
+                    "surroundWith": ">"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i ' '",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i'",
+                    "surroundWith": "'"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i ' shift+'",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i'",
+                    "surroundWith": "\""
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i ' `",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i'",
+                    "surroundWith": "`"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i ' t",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i'",
+                    "surroundWith": "t"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a ' (",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a'",
+                    "surroundWith": "("
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a ' )",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a'",
+                    "surroundWith": ")"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a ' b",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a'",
+                    "surroundWith": "b"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a ' {",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a'",
+                    "surroundWith": "{"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a ' }",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a'",
+                    "surroundWith": "}"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a ' shift+b",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a'",
+                    "surroundWith": "B"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a ' [",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a'",
+                    "surroundWith": "["
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a ' ]",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a'",
+                    "surroundWith": "]"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a ' <",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a'",
+                    "surroundWith": "<"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a ' >",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a'",
+                    "surroundWith": ">"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a ' '",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a'",
+                    "surroundWith": "'"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a ' shift+'",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a'",
+                    "surroundWith": "\""
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a ' `",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a'",
+                    "surroundWith": "`"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a ' t",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a'",
+                    "surroundWith": "t"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i \" (",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i\"",
+                    "surroundWith": "("
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i \" )",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i\"",
+                    "surroundWith": ")"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i \" b",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i\"",
+                    "surroundWith": "b"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i \" {",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i\"",
+                    "surroundWith": "{"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i \" }",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i\"",
+                    "surroundWith": "}"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i \" shift+b",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i\"",
+                    "surroundWith": "B"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i \" [",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i\"",
+                    "surroundWith": "["
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i \" ]",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i\"",
+                    "surroundWith": "]"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i \" <",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i\"",
+                    "surroundWith": "<"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i \" >",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i\"",
+                    "surroundWith": ">"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i \" '",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i\"",
+                    "surroundWith": "'"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i \" shift+'",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i\"",
+                    "surroundWith": "\""
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i \" `",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i\"",
+                    "surroundWith": "`"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i \" t",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i\"",
+                    "surroundWith": "t"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a \" (",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a\"",
+                    "surroundWith": "("
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a \" )",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a\"",
+                    "surroundWith": ")"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a \" b",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a\"",
+                    "surroundWith": "b"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a \" {",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a\"",
+                    "surroundWith": "{"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a \" }",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a\"",
+                    "surroundWith": "}"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a \" shift+b",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a\"",
+                    "surroundWith": "B"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a \" [",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a\"",
+                    "surroundWith": "["
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a \" ]",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a\"",
+                    "surroundWith": "]"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a \" <",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a\"",
+                    "surroundWith": "<"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a \" >",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a\"",
+                    "surroundWith": ">"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a \" '",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a\"",
+                    "surroundWith": "'"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a \" shift+'",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a\"",
+                    "surroundWith": "\""
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a \" `",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a\"",
+                    "surroundWith": "`"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a \" t",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a\"",
+                    "surroundWith": "t"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i ` (",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i`",
+                    "surroundWith": "("
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i ` )",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i`",
+                    "surroundWith": ")"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i ` b",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i`",
+                    "surroundWith": "b"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i ` {",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i`",
+                    "surroundWith": "{"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i ` }",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i`",
+                    "surroundWith": "}"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i ` shift+b",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i`",
+                    "surroundWith": "B"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i ` [",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i`",
+                    "surroundWith": "["
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i ` ]",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i`",
+                    "surroundWith": "]"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i ` <",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i`",
+                    "surroundWith": "<"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i ` >",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i`",
+                    "surroundWith": ">"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i ` '",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i`",
+                    "surroundWith": "'"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i ` shift+'",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i`",
+                    "surroundWith": "\""
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i ` `",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i`",
+                    "surroundWith": "`"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s i ` t",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "i`",
+                    "surroundWith": "t"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a ` (",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a`",
+                    "surroundWith": "("
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a ` )",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a`",
+                    "surroundWith": ")"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a ` b",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a`",
+                    "surroundWith": "b"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a ` {",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a`",
+                    "surroundWith": "{"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a ` }",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a`",
+                    "surroundWith": "}"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a ` shift+b",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a`",
+                    "surroundWith": "B"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a ` [",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a`",
+                    "surroundWith": "["
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a ` ]",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a`",
+                    "surroundWith": "]"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a ` <",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a`",
+                    "surroundWith": "<"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a ` >",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a`",
+                    "surroundWith": ">"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a ` '",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a`",
+                    "surroundWith": "'"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a ` shift+'",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a`",
+                    "surroundWith": "\""
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a ` `",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a`",
+                    "surroundWith": "`"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "y s a ` t",
+                "command": "waltz.surround",
+                "args": {
+                    "textObject": "a`",
+                    "surroundWith": "t"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s ( (",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "(",
+                    "to": "("
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s ( )",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "(",
+                    "to": ")"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s ( b",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "(",
+                    "to": "b"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s ( {",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "(",
+                    "to": "{"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s ( }",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "(",
+                    "to": "}"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s ( shift+b",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "(",
+                    "to": "B"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s ( [",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "(",
+                    "to": "["
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s ( ]",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "(",
+                    "to": "]"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s ( <",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "(",
+                    "to": "<"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s ( >",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "(",
+                    "to": ">"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s ( '",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "(",
+                    "to": "'"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s ( shift+'",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "(",
+                    "to": "\""
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s ( `",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "(",
+                    "to": "`"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s ( t",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "(",
+                    "to": "t"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s ) (",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": ")",
+                    "to": "("
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s ) )",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": ")",
+                    "to": ")"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s ) b",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": ")",
+                    "to": "b"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s ) {",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": ")",
+                    "to": "{"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s ) }",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": ")",
+                    "to": "}"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s ) shift+b",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": ")",
+                    "to": "B"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s ) [",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": ")",
+                    "to": "["
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s ) ]",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": ")",
+                    "to": "]"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s ) <",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": ")",
+                    "to": "<"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s ) >",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": ")",
+                    "to": ">"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s ) '",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": ")",
+                    "to": "'"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s ) shift+'",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": ")",
+                    "to": "\""
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s ) `",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": ")",
+                    "to": "`"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s ) t",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": ")",
+                    "to": "t"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s b (",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "b",
+                    "to": "("
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s b )",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "b",
+                    "to": ")"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s b b",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "b",
+                    "to": "b"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s b {",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "b",
+                    "to": "{"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s b }",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "b",
+                    "to": "}"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s b shift+b",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "b",
+                    "to": "B"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s b [",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "b",
+                    "to": "["
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s b ]",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "b",
+                    "to": "]"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s b <",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "b",
+                    "to": "<"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s b >",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "b",
+                    "to": ">"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s b '",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "b",
+                    "to": "'"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s b shift+'",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "b",
+                    "to": "\""
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s b `",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "b",
+                    "to": "`"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s b t",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "b",
+                    "to": "t"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s { (",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "{",
+                    "to": "("
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s { )",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "{",
+                    "to": ")"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s { b",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "{",
+                    "to": "b"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s { {",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "{",
+                    "to": "{"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s { }",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "{",
+                    "to": "}"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s { shift+b",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "{",
+                    "to": "B"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s { [",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "{",
+                    "to": "["
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s { ]",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "{",
+                    "to": "]"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s { <",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "{",
+                    "to": "<"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s { >",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "{",
+                    "to": ">"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s { '",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "{",
+                    "to": "'"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s { shift+'",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "{",
+                    "to": "\""
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s { `",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "{",
+                    "to": "`"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s { t",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "{",
+                    "to": "t"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s } (",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "}",
+                    "to": "("
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s } )",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "}",
+                    "to": ")"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s } b",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "}",
+                    "to": "b"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s } {",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "}",
+                    "to": "{"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s } }",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "}",
+                    "to": "}"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s } shift+b",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "}",
+                    "to": "B"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s } [",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "}",
+                    "to": "["
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s } ]",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "}",
+                    "to": "]"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s } <",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "}",
+                    "to": "<"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s } >",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "}",
+                    "to": ">"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s } '",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "}",
+                    "to": "'"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s } shift+'",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "}",
+                    "to": "\""
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s } `",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "}",
+                    "to": "`"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s } t",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "}",
+                    "to": "t"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s shift+b (",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "B",
+                    "to": "("
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s shift+b )",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "B",
+                    "to": ")"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s shift+b b",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "B",
+                    "to": "b"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s shift+b {",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "B",
+                    "to": "{"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s shift+b }",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "B",
+                    "to": "}"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s shift+b shift+b",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "B",
+                    "to": "B"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s shift+b [",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "B",
+                    "to": "["
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s shift+b ]",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "B",
+                    "to": "]"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s shift+b <",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "B",
+                    "to": "<"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s shift+b >",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "B",
+                    "to": ">"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s shift+b '",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "B",
+                    "to": "'"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s shift+b shift+'",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "B",
+                    "to": "\""
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s shift+b `",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "B",
+                    "to": "`"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s shift+b t",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "B",
+                    "to": "t"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s [ (",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "[",
+                    "to": "("
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s [ )",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "[",
+                    "to": ")"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s [ b",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "[",
+                    "to": "b"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s [ {",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "[",
+                    "to": "{"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s [ }",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "[",
+                    "to": "}"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s [ shift+b",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "[",
+                    "to": "B"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s [ [",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "[",
+                    "to": "["
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s [ ]",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "[",
+                    "to": "]"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s [ <",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "[",
+                    "to": "<"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s [ >",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "[",
+                    "to": ">"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s [ '",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "[",
+                    "to": "'"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s [ shift+'",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "[",
+                    "to": "\""
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s [ `",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "[",
+                    "to": "`"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s [ t",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "[",
+                    "to": "t"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s ] (",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "]",
+                    "to": "("
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s ] )",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "]",
+                    "to": ")"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s ] b",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "]",
+                    "to": "b"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s ] {",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "]",
+                    "to": "{"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s ] }",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "]",
+                    "to": "}"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s ] shift+b",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "]",
+                    "to": "B"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s ] [",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "]",
+                    "to": "["
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s ] ]",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "]",
+                    "to": "]"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s ] <",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "]",
+                    "to": "<"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s ] >",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "]",
+                    "to": ">"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s ] '",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "]",
+                    "to": "'"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s ] shift+'",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "]",
+                    "to": "\""
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s ] `",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "]",
+                    "to": "`"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s ] t",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "]",
+                    "to": "t"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s < (",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "<",
+                    "to": "("
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s < )",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "<",
+                    "to": ")"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s < b",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "<",
+                    "to": "b"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s < {",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "<",
+                    "to": "{"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s < }",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "<",
+                    "to": "}"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s < shift+b",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "<",
+                    "to": "B"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s < [",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "<",
+                    "to": "["
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s < ]",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "<",
+                    "to": "]"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s < <",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "<",
+                    "to": "<"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s < >",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "<",
+                    "to": ">"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s < '",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "<",
+                    "to": "'"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s < shift+'",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "<",
+                    "to": "\""
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s < `",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "<",
+                    "to": "`"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s < t",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "<",
+                    "to": "t"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s > (",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": ">",
+                    "to": "("
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s > )",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": ">",
+                    "to": ")"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s > b",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": ">",
+                    "to": "b"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s > {",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": ">",
+                    "to": "{"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s > }",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": ">",
+                    "to": "}"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s > shift+b",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": ">",
+                    "to": "B"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s > [",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": ">",
+                    "to": "["
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s > ]",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": ">",
+                    "to": "]"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s > <",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": ">",
+                    "to": "<"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s > >",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": ">",
+                    "to": ">"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s > '",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": ">",
+                    "to": "'"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s > shift+'",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": ">",
+                    "to": "\""
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s > `",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": ">",
+                    "to": "`"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s > t",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": ">",
+                    "to": "t"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s ' (",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "'",
+                    "to": "("
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s ' )",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "'",
+                    "to": ")"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s ' b",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "'",
+                    "to": "b"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s ' {",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "'",
+                    "to": "{"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s ' }",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "'",
+                    "to": "}"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s ' shift+b",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "'",
+                    "to": "B"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s ' [",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "'",
+                    "to": "["
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s ' ]",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "'",
+                    "to": "]"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s ' <",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "'",
+                    "to": "<"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s ' >",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "'",
+                    "to": ">"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s ' '",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "'",
+                    "to": "'"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s ' shift+'",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "'",
+                    "to": "\""
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s ' `",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "'",
+                    "to": "`"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s ' t",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "'",
+                    "to": "t"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s shift+' (",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "\"",
+                    "to": "("
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s shift+' )",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "\"",
+                    "to": ")"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s shift+' b",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "\"",
+                    "to": "b"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s shift+' {",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "\"",
+                    "to": "{"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s shift+' }",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "\"",
+                    "to": "}"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s shift+' shift+b",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "\"",
+                    "to": "B"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s shift+' [",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "\"",
+                    "to": "["
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s shift+' ]",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "\"",
+                    "to": "]"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s shift+' <",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "\"",
+                    "to": "<"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s shift+' >",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "\"",
+                    "to": ">"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s shift+' '",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "\"",
+                    "to": "'"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s shift+' shift+'",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "\"",
+                    "to": "\""
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s shift+' `",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "\"",
+                    "to": "`"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s shift+' t",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "\"",
+                    "to": "t"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s ` (",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "`",
+                    "to": "("
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s ` )",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "`",
+                    "to": ")"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s ` b",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "`",
+                    "to": "b"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s ` {",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "`",
+                    "to": "{"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s ` }",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "`",
+                    "to": "}"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s ` shift+b",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "`",
+                    "to": "B"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s ` [",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "`",
+                    "to": "["
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s ` ]",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "`",
+                    "to": "]"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s ` <",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "`",
+                    "to": "<"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s ` >",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "`",
+                    "to": ">"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s ` '",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "`",
+                    "to": "'"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s ` shift+'",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "`",
+                    "to": "\""
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s ` `",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "`",
+                    "to": "`"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s ` t",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "`",
+                    "to": "t"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s t (",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "t",
+                    "to": "("
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s t )",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "t",
+                    "to": ")"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s t b",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "t",
+                    "to": "b"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s t {",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "t",
+                    "to": "{"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s t }",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "t",
+                    "to": "}"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s t shift+b",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "t",
+                    "to": "B"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s t [",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "t",
+                    "to": "["
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s t ]",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "t",
+                    "to": "]"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s t <",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "t",
+                    "to": "<"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s t >",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "t",
+                    "to": ">"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s t '",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "t",
+                    "to": "'"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s t shift+'",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "t",
+                    "to": "\""
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s t `",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "t",
+                    "to": "`"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "c s t t",
+                "command": "waltz.changeSurround",
+                "args": {
+                    "from": "t",
+                    "to": "t"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "d s (",
+                "command": "waltz.deleteSurround",
+                "args": {
+                    "target": "("
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "d s )",
+                "command": "waltz.deleteSurround",
+                "args": {
+                    "target": ")"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "d s b",
+                "command": "waltz.deleteSurround",
+                "args": {
+                    "target": "b"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "d s {",
+                "command": "waltz.deleteSurround",
+                "args": {
+                    "target": "{"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "d s }",
+                "command": "waltz.deleteSurround",
+                "args": {
+                    "target": "}"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "d s shift+b",
+                "command": "waltz.deleteSurround",
+                "args": {
+                    "target": "B"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "d s [",
+                "command": "waltz.deleteSurround",
+                "args": {
+                    "target": "["
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "d s ]",
+                "command": "waltz.deleteSurround",
+                "args": {
+                    "target": "]"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "d s <",
+                "command": "waltz.deleteSurround",
+                "args": {
+                    "target": "<"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "d s >",
+                "command": "waltz.deleteSurround",
+                "args": {
+                    "target": ">"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "d s '",
+                "command": "waltz.deleteSurround",
+                "args": {
+                    "target": "'"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "d s shift+'",
+                "command": "waltz.deleteSurround",
+                "args": {
+                    "target": "\""
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "d s `",
+                "command": "waltz.deleteSurround",
+                "args": {
+                    "target": "`"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "d s t",
+                "command": "waltz.deleteSurround",
+                "args": {
+                    "target": "t"
+                },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "shift+s (",
+                "command": "waltz.visualSurround",
+                "args": {
+                    "surroundWith": "("
+                },
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "shift+s )",
+                "command": "waltz.visualSurround",
+                "args": {
+                    "surroundWith": ")"
+                },
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "shift+s b",
+                "command": "waltz.visualSurround",
+                "args": {
+                    "surroundWith": "b"
+                },
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "shift+s {",
+                "command": "waltz.visualSurround",
+                "args": {
+                    "surroundWith": "{"
+                },
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "shift+s }",
+                "command": "waltz.visualSurround",
+                "args": {
+                    "surroundWith": "}"
+                },
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "shift+s shift+b",
+                "command": "waltz.visualSurround",
+                "args": {
+                    "surroundWith": "B"
+                },
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "shift+s [",
+                "command": "waltz.visualSurround",
+                "args": {
+                    "surroundWith": "["
+                },
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "shift+s ]",
+                "command": "waltz.visualSurround",
+                "args": {
+                    "surroundWith": "]"
+                },
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "shift+s <",
+                "command": "waltz.visualSurround",
+                "args": {
+                    "surroundWith": "<"
+                },
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "shift+s >",
+                "command": "waltz.visualSurround",
+                "args": {
+                    "surroundWith": ">"
+                },
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "shift+s '",
+                "command": "waltz.visualSurround",
+                "args": {
+                    "surroundWith": "'"
+                },
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "shift+s shift+'",
+                "command": "waltz.visualSurround",
+                "args": {
+                    "surroundWith": "\""
+                },
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "shift+s `",
+                "command": "waltz.visualSurround",
+                "args": {
+                    "surroundWith": "`"
+                },
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "shift+s t",
+                "command": "waltz.visualSurround",
+                "args": {
+                    "surroundWith": "t"
                 },
                 "when": "editorTextFocus && waltz.mode == 'visual'"
             },
