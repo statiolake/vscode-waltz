@@ -18,7 +18,7 @@ interface Keybinding {
 const NORMAL = "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'";
 const VISUAL = "editorTextFocus && waltz.mode == 'visual'";
 const NOT_INSERT = "editorTextFocus && waltz.mode != 'insert'";
-const ALL_MODES = "editorTextFocus";
+const ALL_MODES = 'editorTextFocus';
 
 // ============================================================
 // Operators (d, c, y) with motions and text objects
@@ -96,9 +96,10 @@ const basicMovement = [
     { key: 'shift+b', normal: 'waltz.cursorWhitespaceWordStartLeft', visual: 'waltz.cursorWhitespaceWordStartLeftSelect' },  // B
     { key: 'shift+e', normal: 'waltz.cursorWhitespaceWordEndRight', visual: 'waltz.cursorWhitespaceWordEndRightSelect' },  // E
     // Line movement
-    { key: '0', normal: 'cursorHome', visual: 'cursorHomeSelect' },
+    { key: '0', normal: 'cursorLineStart', visual: 'cursorLineStartSelect' },  // Absolute beginning
     { key: 'shift+4', normal: 'cursorEnd', visual: 'cursorEndSelect' },  // $
-    { key: 'shift+6', normal: 'cursorHome', visual: 'cursorHomeSelect' },  // ^ (simplified)
+    { key: 'shift+6', normal: 'cursorHome', visual: 'cursorHomeSelect' },  // ^ on US keyboard
+    { key: '[Equal]', normal: 'cursorHome', visual: 'cursorHomeSelect' },  // ^ on JIS keyboard
     // Document movement
     { key: 'shift+g', normal: 'cursorBottom', visual: 'cursorBottomSelect' },  // G
     // Arrow keys

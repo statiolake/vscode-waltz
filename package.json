@@ -1488,12 +1488,12 @@
             },
             {
                 "key": "0",
-                "command": "cursorHome",
+                "command": "cursorLineStart",
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
                 "key": "0",
-                "command": "cursorHomeSelect",
+                "command": "cursorLineStartSelect",
                 "when": "editorTextFocus && waltz.mode == 'visual'"
             },
             {
@@ -1513,6 +1513,16 @@
             },
             {
                 "key": "shift+6",
+                "command": "cursorHomeSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "[Equal]",
+                "command": "cursorHome",
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "[Equal]",
                 "command": "cursorHomeSelect",
                 "when": "editorTextFocus && waltz.mode == 'visual'"
             },
