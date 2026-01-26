@@ -142,10 +142,10 @@ function findTagRange(
 }
 
 /**
- * Surround text object (ys command)
- * Args: { textObject: string, surroundWith: string }
+ * Surround target (ys command)
+ * Args: { target: string, surroundWith: string }
  */
-async function surroundTextObject(args: { textObject: string; surroundWith: string }): Promise<void> {
+async function surround(args: { target: string; surroundWith: string }): Promise<void> {
     const editor = vscode.window.activeTextEditor;
     if (!editor) return;
 
@@ -156,7 +156,7 @@ async function surroundTextObject(args: { textObject: string; surroundWith: stri
     const edits: { range: Range; newText: string }[] = [];
 
     for (const selection of editor.selections) {
-        const range = getTextObjectRange(document, selection.active, args.textObject);
+        const range = getTextObjectRange(document, selection.active, args.target);
         if (range) {
             const text = document.getText(range);
             edits.push({
@@ -378,8 +378,8 @@ async function visualSurround(vimState: VimState, args: { surroundWith: string }
 
 export function registerSurroundCommands(context: vscode.ExtensionContext, getVimState: () => VimState): void {
     context.subscriptions.push(
-        vscode.commands.registerCommand('waltz.surround', (args: { textObject: string; surroundWith: string }) => {
-            if (args?.textObject && args?.surroundWith) surroundTextObject(args);
+        vscode.commands.registerCommand('waltz.surround', (args: { target: string; surroundWith: string }) => {
+            if (args?.target && args?.surroundWith) surround(args);
         }),
         vscode.commands.registerCommand('waltz.changeSurround', (args: { from: string; to: string }) => {
             if (args?.from && args?.to) changeSurround(args);

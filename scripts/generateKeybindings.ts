@@ -21,7 +21,7 @@ const NOT_INSERT = "editorTextFocus && waltz.mode != 'insert'";
 const ALL_MODES = 'editorTextFocus';
 
 // ============================================================
-// Operators (d, c, y) with motions and text objects
+// Operators (d, c, y) with text objects
 // ============================================================
 
 const operators = [
@@ -30,7 +30,9 @@ const operators = [
     { key: 'y', command: 'waltz.yank' },
 ];
 
+// All text objects (unified: includes what was previously called "motions")
 const textObjects = [
+    // Traditional text objects (inner/around)
     { keys: 'i w', id: 'iw' },
     { keys: 'a w', id: 'aw' },
     { keys: 'i W', id: 'iW' },
@@ -57,9 +59,7 @@ const textObjects = [
     { keys: 'a "', id: 'a"' },
     { keys: 'i `', id: 'i`' },
     { keys: 'a `', id: 'a`' },
-];
-
-const operatorMotions = [
+    // Positional text objects (cursor to target)
     { keys: 'w', id: 'w' },
     { keys: 'W', id: 'W' },
     { keys: 'b', id: 'b' },
@@ -266,23 +266,13 @@ const ignoredKeys = [
 function generateKeybindings(): Keybinding[] {
     const keybindings: Keybinding[] = [];
 
-    // Operator + textObject combinations
+    // Operator + textObject combinations (d, c, y with all text objects)
     for (const op of operators) {
         for (const obj of textObjects) {
             keybindings.push({
                 key: `${op.key} ${obj.keys}`,
                 command: op.command,
-                args: { textObject: obj.id },
-                when: NORMAL,
-            });
-        }
-
-        // Operator + motion combinations
-        for (const motion of operatorMotions) {
-            keybindings.push({
-                key: `${op.key} ${motion.keys}`,
-                command: op.command,
-                args: { motion: motion.id },
+                args: { target: obj.id },
                 when: NORMAL,
             });
         }
@@ -301,7 +291,7 @@ function generateKeybindings(): Keybinding[] {
         keybindings.push({
             key: obj.keys,
             command: 'waltz.selectTextObject',
-            args: { textObject: obj.id },
+            args: { target: obj.id },
             when: VISUAL,
         });
     }
@@ -312,7 +302,7 @@ function generateKeybindings(): Keybinding[] {
             keybindings.push({
                 key: `y s ${obj.keys} ${surround.keys}`,
                 command: 'waltz.surround',
-                args: { textObject: obj.id, surroundWith: surround.id },
+                args: { target: obj.id, surroundWith: surround.id },
                 when: NORMAL,
             });
         }
