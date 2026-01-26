@@ -9355,6 +9355,16 @@
                 "when": "editorTextFocus && waltz.mode == 'visual'"
             },
             {
+                "key": "g e",
+                "command": "cursorWordEndLeft",
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "g e",
+                "command": "cursorWordEndLeftSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
                 "key": "shift+w",
                 "command": "waltz.cursorWhitespaceWordStartRight",
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
@@ -9385,6 +9395,16 @@
                 "when": "editorTextFocus && waltz.mode == 'visual'"
             },
             {
+                "key": "g shift+e",
+                "command": "waltz.cursorWhitespaceWordEndLeft",
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "g shift+e",
+                "command": "waltz.cursorWhitespaceWordEndLeftSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
                 "key": "0",
                 "command": "cursorLineStart",
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
@@ -9405,23 +9425,33 @@
                 "when": "editorTextFocus && waltz.mode == 'visual'"
             },
             {
-                "key": "shift+6",
+                "key": "[Equal]",
                 "command": "cursorHome",
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "shift+6",
+                "key": "[Equal]",
                 "command": "cursorHomeSelect",
                 "when": "editorTextFocus && waltz.mode == 'visual'"
             },
             {
-                "key": "[Equal]",
-                "command": "cursorHome",
+                "key": "g 0",
+                "command": "cursorLineStart",
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "[Equal]",
-                "command": "cursorHomeSelect",
+                "key": "g 0",
+                "command": "cursorLineStartSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "g shift+4",
+                "command": "cursorLineEnd",
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "g shift+4",
+                "command": "cursorLineEndSelect",
                 "when": "editorTextFocus && waltz.mode == 'visual'"
             },
             {
@@ -9432,6 +9462,16 @@
             {
                 "key": "shift+g",
                 "command": "cursorBottomSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "g g",
+                "command": "cursorTop",
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "g g",
+                "command": "cursorTopSelect",
                 "when": "editorTextFocus && waltz.mode == 'visual'"
             },
             {
@@ -9605,78 +9645,13 @@
                 "when": "editorTextFocus && waltz.mode == 'visual'"
             },
             {
-                "key": "g g",
-                "command": "cursorTop",
+                "key": "g o",
+                "command": "editor.action.revealDefinition",
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
-            },
-            {
-                "key": "g g",
-                "command": "cursorTopSelect",
-                "when": "editorTextFocus && waltz.mode == 'visual'"
-            },
-            {
-                "key": "g e",
-                "command": "cursorWordEndLeft",
-                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
-            },
-            {
-                "key": "g e",
-                "command": "cursorWordEndLeftSelect",
-                "when": "editorTextFocus && waltz.mode == 'visual'"
-            },
-            {
-                "key": "g shift+e",
-                "command": "waltz.cursorWhitespaceWordEndLeft",
-                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
-            },
-            {
-                "key": "g shift+e",
-                "command": "waltz.cursorWhitespaceWordEndLeftSelect",
-                "when": "editorTextFocus && waltz.mode == 'visual'"
-            },
-            {
-                "key": "g j",
-                "command": "cursorDisplayDown",
-                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
-            },
-            {
-                "key": "g j",
-                "command": "cursorDisplayDownSelect",
-                "when": "editorTextFocus && waltz.mode == 'visual'"
-            },
-            {
-                "key": "g k",
-                "command": "cursorDisplayUp",
-                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
-            },
-            {
-                "key": "g k",
-                "command": "cursorDisplayUpSelect",
-                "when": "editorTextFocus && waltz.mode == 'visual'"
-            },
-            {
-                "key": "g 0",
-                "command": "cursorLineStart",
-                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
-            },
-            {
-                "key": "g 0",
-                "command": "cursorLineStartSelect",
-                "when": "editorTextFocus && waltz.mode == 'visual'"
-            },
-            {
-                "key": "g shift+4",
-                "command": "cursorLineEnd",
-                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
-            },
-            {
-                "key": "g shift+4",
-                "command": "cursorLineEndSelect",
-                "when": "editorTextFocus && waltz.mode == 'visual'"
             },
             {
                 "key": "g d",
-                "command": "editor.action.revealDefinition",
+                "command": "editor.action.showHover",
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
@@ -9813,16 +9788,6 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "u",
-                "command": "undo",
-                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
-            },
-            {
-                "key": "ctrl+r",
-                "command": "redo",
-                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
-            },
-            {
                 "key": "d",
                 "command": "editor.action.clipboardCutAction",
                 "when": "editorTextFocus && waltz.mode == 'visual'"
@@ -9880,24 +9845,6 @@
             {
                 "key": ",",
                 "command": "waltz.repeatFindCharReverse",
-                "when": "editorTextFocus && waltz.mode != 'insert'"
-            },
-            {
-                "key": "ctrl+d",
-                "command": "editorScroll",
-                "args": {
-                    "to": "down",
-                    "by": "halfPage"
-                },
-                "when": "editorTextFocus && waltz.mode != 'insert'"
-            },
-            {
-                "key": "ctrl+u",
-                "command": "editorScroll",
-                "args": {
-                    "to": "up",
-                    "by": "halfPage"
-                },
                 "when": "editorTextFocus && waltz.mode != 'insert'"
             },
             {

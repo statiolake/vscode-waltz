@@ -102,17 +102,21 @@ const basicMovement = [
     { key: 'w', normal: 'cursorWordStartRight', visual: 'cursorWordStartRightSelect' },
     { key: 'b', normal: 'cursorWordStartLeft', visual: 'cursorWordStartLeftSelect' },
     { key: 'e', normal: 'cursorWordEndRight', visual: 'cursorWordEndRightSelect' },
+    { key: 'g e', normal: 'cursorWordEndLeft', visual: 'cursorWordEndLeftSelect' },
     // WORD movement (whitespace-delimited)
     { key: 'shift+w', normal: 'waltz.cursorWhitespaceWordStartRight', visual: 'waltz.cursorWhitespaceWordStartRightSelect' },  // W
     { key: 'shift+b', normal: 'waltz.cursorWhitespaceWordStartLeft', visual: 'waltz.cursorWhitespaceWordStartLeftSelect' },  // B
     { key: 'shift+e', normal: 'waltz.cursorWhitespaceWordEndRight', visual: 'waltz.cursorWhitespaceWordEndRightSelect' },  // E
+    { key: 'g shift+e', normal: 'waltz.cursorWhitespaceWordEndLeft', visual: 'waltz.cursorWhitespaceWordEndLeftSelect' },  // gE
     // Line movement
     { key: '0', normal: 'cursorLineStart', visual: 'cursorLineStartSelect' },  // Absolute beginning
     { key: 'shift+4', normal: 'cursorEnd', visual: 'cursorEndSelect' },  // $
-    { key: 'shift+6', normal: 'cursorHome', visual: 'cursorHomeSelect' },  // ^ on US keyboard
     { key: '[Equal]', normal: 'cursorHome', visual: 'cursorHomeSelect' },  // ^ on JIS keyboard
+    { key: 'g 0', normal: 'cursorLineStart', visual: 'cursorLineStartSelect' },
+    { key: 'g shift+4', normal: 'cursorLineEnd', visual: 'cursorLineEndSelect' },
     // Document movement
     { key: 'shift+g', normal: 'cursorBottom', visual: 'cursorBottomSelect' },  // G
+    { key: 'g g', normal: 'cursorTop', visual: 'cursorTopSelect' },
     // Arrow keys
     { key: 'up', normal: 'cursorUp', visual: 'cursorUpSelect' },
     { key: 'down', normal: 'cursorDown', visual: 'cursorDownSelect' },
@@ -140,19 +144,12 @@ const basicMovement = [
 ];
 
 // ============================================================
-// g-prefix commands
+// LSP keybindings
 // ============================================================
 
-const gPrefixCommands = [
-    { key: 'g g', normal: 'cursorTop', visual: 'cursorTopSelect' },
-    { key: 'g e', normal: 'cursorWordEndLeft', visual: 'cursorWordEndLeftSelect' },
-    { key: 'g shift+e', normal: 'waltz.cursorWhitespaceWordEndLeft', visual: 'waltz.cursorWhitespaceWordEndLeftSelect' },  // gE
-    { key: 'g j', normal: 'cursorDisplayDown', visual: 'cursorDisplayDownSelect' },
-    { key: 'g k', normal: 'cursorDisplayUp', visual: 'cursorDisplayUpSelect' },
-    { key: 'g 0', normal: 'cursorLineStart', visual: 'cursorLineStartSelect' },
-    { key: 'g shift+4', normal: 'cursorLineEnd', visual: 'cursorLineEndSelect' },
-    // LSP / IDE (no visual variant)
-    { key: 'g d', normal: 'editor.action.revealDefinition', visual: null },
+const lspCommands = [
+    { key: 'g o', normal: 'editor.action.revealDefinition', visual: null },
+    { key: 'g d', normal: 'editor.action.showHover', visual: null },
     { key: 'g shift+d', normal: 'editor.action.revealDeclaration', visual: null },
     { key: 'g y', normal: 'editor.action.goToTypeDefinition', visual: null },
     { key: 'g shift+i', normal: 'editor.action.goToImplementation', visual: null },
@@ -194,8 +191,6 @@ const editCommands = [
     { key: 'shift+j', command: 'editor.action.joinLines', when: NORMAL },
     { key: 'p', command: 'editor.action.clipboardPasteAction', when: NORMAL },
     { key: 'shift+p', command: 'editor.action.clipboardPasteAction', when: NORMAL },
-    { key: 'u', command: 'undo', when: NORMAL },
-    { key: 'ctrl+r', command: 'redo', when: NORMAL },
     // Visual mode edits (use native commands - mode change handled by selection event)
     { key: 'd', command: 'editor.action.clipboardCutAction', when: VISUAL },
     { key: 'x', command: 'editor.action.clipboardCutAction', when: VISUAL },
@@ -251,8 +246,6 @@ const surroundTargets = [
 // ============================================================
 
 const viewportCommands = [
-    { key: 'ctrl+d', command: 'editorScroll', args: { to: 'down', by: 'halfPage' }, when: NOT_INSERT },
-    { key: 'ctrl+u', command: 'editorScroll', args: { to: 'up', by: 'halfPage' }, when: NOT_INSERT },
     { key: 'z z', command: 'waltz.revealCursorLine', args: { at: 'center' }, when: NOT_INSERT },
     { key: 'z t', command: 'waltz.revealCursorLine', args: { at: 'top' }, when: NOT_INSERT },
     { key: 'z b', command: 'waltz.revealCursorLine', args: { at: 'bottom' }, when: NOT_INSERT },
@@ -356,7 +349,7 @@ function generateKeybindings(): Keybinding[] {
     }
 
     // g-prefix commands
-    for (const cmd of gPrefixCommands) {
+    for (const cmd of lspCommands) {
         keybindings.push({ key: cmd.key, command: cmd.normal, when: NORMAL });
         if (cmd.visual) {
             keybindings.push({ key: cmd.key, command: cmd.visual, when: VISUAL });
