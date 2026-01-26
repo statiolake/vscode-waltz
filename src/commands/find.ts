@@ -5,7 +5,7 @@ import type { VimState } from '../vimState';
 /**
  * 文字を検索してカーソルを移動する
  */
-function findCharInLine(
+export function findCharInLine(
     document: vscode.TextDocument,
     position: Position,
     char: string,

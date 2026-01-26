@@ -75,6 +75,11 @@ const textObjects = [
     { keys: 'l', id: 'l' },
     { keys: 'g g', id: 'gg' },
     { keys: 'shift+g', id: 'G' },
+    // Find character (f/t/F/T) - prompts for character via QuickPick
+    { keys: 'f', id: 'f' },
+    { keys: 't', id: 't' },
+    { keys: 'shift+f', id: 'F' },
+    { keys: 'shift+t', id: 'T' },
 ];
 
 // ============================================================

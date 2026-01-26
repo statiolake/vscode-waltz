@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import { Position, Range, Selection } from 'vscode';
 import { enterMode } from '../modes';
 import type { VimState } from '../vimState';
+import { findCharInLine } from './find';
 
 /**
  * Operator commands with args support
@@ -9,8 +10,68 @@ import type { VimState } from '../vimState';
  */
 
 interface OperatorArgs {
-    target?: string; // "iw", "aw", "w", "b", "$", etc. - all are text objects
+    target?: string; // "iw", "aw", "w", "b", "$", "f", "t", etc. - all are text objects
     line?: boolean; // true for dd, cc, yy
+}
+
+/**
+ * Get a character via QuickPick (for f/t/F/T)
+ */
+async function getCharViaQuickPick(prompt: string): Promise<string | null> {
+    const quickPick = vscode.window.createQuickPick();
+    quickPick.placeholder = prompt;
+    quickPick.items = [];
+
+    const char = await new Promise<string>((resolve) => {
+        quickPick.onDidChangeValue((value) => {
+            if (value.length > 0) {
+                quickPick.hide();
+                resolve(value[0]);
+            }
+        });
+
+        quickPick.onDidHide(() => {
+            resolve('');
+            quickPick.dispose();
+        });
+
+        quickPick.show();
+    });
+
+    return char || null;
+}
+
+/**
+ * Get range for f/t/F/T text object with a specific character
+ */
+function getFindCharRange(
+    document: vscode.TextDocument,
+    position: Position,
+    textObject: string,
+    char: string,
+): Range | null {
+    const direction = textObject === 'f' || textObject === 't' ? 'forward' : 'backward';
+    const stopBefore = textObject === 't' || textObject === 'T';
+
+    const targetPos = findCharInLine(document, position, char, direction, stopBefore);
+    if (!targetPos) return null;
+
+    // For operators, we want the range from cursor to target
+    if (direction === 'forward') {
+        // Include the target character for 'f', exclude for 't'
+        const endPos = stopBefore ? targetPos : targetPos.translate(0, 1);
+        return new Range(position, endPos);
+    } else {
+        // For backward, range is from target to cursor
+        return new Range(targetPos, position);
+    }
+}
+
+/**
+ * Check if a text object requires character input (f/t/F/T)
+ */
+function isFindCharTextObject(textObject: string): boolean {
+    return textObject === 'f' || textObject === 't' || textObject === 'F' || textObject === 'T';
 }
 
 /**
@@ -320,8 +381,21 @@ async function executeDelete(editor: vscode.TextEditor, args: OperatorArgs): Pro
             ranges.push(line.rangeIncludingLineBreak);
         }
     } else if (args.target) {
+        // For f/t/F/T, get the character once before processing selections
+        let findChar: string | null = null;
+        if (isFindCharTextObject(args.target)) {
+            const direction = args.target === 'f' || args.target === 't' ? 'forward' : 'backward';
+            const stopBefore = args.target === 't' || args.target === 'T';
+            findChar = await getCharViaQuickPick(
+                `Type a character to find ${direction}${stopBefore ? ' (before)' : ''}...`,
+            );
+            if (!findChar) return;
+        }
+
         for (const selection of editor.selections) {
-            const range = getTextObjectRange(document, selection.active, args.target);
+            const range = findChar
+                ? getFindCharRange(document, selection.active, args.target, findChar)
+                : getTextObjectRange(document, selection.active, args.target);
             if (range) ranges.push(range);
         }
     }
@@ -354,8 +428,21 @@ async function executeChange(editor: vscode.TextEditor, args: OperatorArgs, vimS
             ranges.push(new Range(new Position(selection.active.line, firstNonWhitespace), line.range.end));
         }
     } else if (args.target) {
+        // For f/t/F/T, get the character once before processing selections
+        let findChar: string | null = null;
+        if (isFindCharTextObject(args.target)) {
+            const direction = args.target === 'f' || args.target === 't' ? 'forward' : 'backward';
+            const stopBefore = args.target === 't' || args.target === 'T';
+            findChar = await getCharViaQuickPick(
+                `Type a character to find ${direction}${stopBefore ? ' (before)' : ''}...`,
+            );
+            if (!findChar) return;
+        }
+
         for (const selection of editor.selections) {
-            const range = getTextObjectRange(document, selection.active, args.target);
+            const range = findChar
+                ? getFindCharRange(document, selection.active, args.target, findChar)
+                : getTextObjectRange(document, selection.active, args.target);
             if (range) ranges.push(range);
         }
     }
@@ -389,8 +476,21 @@ async function executeYank(editor: vscode.TextEditor, args: OperatorArgs): Promi
             ranges.push(line.rangeIncludingLineBreak);
         }
     } else if (args.target) {
+        // For f/t/F/T, get the character once before processing selections
+        let findChar: string | null = null;
+        if (isFindCharTextObject(args.target)) {
+            const direction = args.target === 'f' || args.target === 't' ? 'forward' : 'backward';
+            const stopBefore = args.target === 't' || args.target === 'T';
+            findChar = await getCharViaQuickPick(
+                `Type a character to find ${direction}${stopBefore ? ' (before)' : ''}...`,
+            );
+            if (!findChar) return;
+        }
+
         for (const selection of editor.selections) {
-            const range = getTextObjectRange(document, selection.active, args.target);
+            const range = findChar
+                ? getFindCharRange(document, selection.active, args.target, findChar)
+                : getTextObjectRange(document, selection.active, args.target);
             if (range) ranges.push(range);
         }
     }
@@ -412,12 +512,25 @@ async function executeYank(editor: vscode.TextEditor, args: OperatorArgs): Promi
 /**
  * Execute select text object operation (for visual mode)
  */
-function executeSelectTextObject(editor: vscode.TextEditor, args: { target: string }): void {
+async function executeSelectTextObject(editor: vscode.TextEditor, args: { target: string }): Promise<void> {
     const document = editor.document;
     const newSelections: Selection[] = [];
 
+    // For f/t/F/T, get the character once before processing selections
+    let findChar: string | null = null;
+    if (isFindCharTextObject(args.target)) {
+        const direction = args.target === 'f' || args.target === 't' ? 'forward' : 'backward';
+        const stopBefore = args.target === 't' || args.target === 'T';
+        findChar = await getCharViaQuickPick(
+            `Type a character to find ${direction}${stopBefore ? ' (before)' : ''}...`,
+        );
+        if (!findChar) return;
+    }
+
     for (const selection of editor.selections) {
-        const range = getTextObjectRange(document, selection.active, args.target);
+        const range = findChar
+            ? getFindCharRange(document, selection.active, args.target, findChar)
+            : getTextObjectRange(document, selection.active, args.target);
         if (range) {
             // Extend selection to include the text object range
             const newStart = selection.anchor.isBefore(range.start) ? selection.anchor : range.start;
