@@ -31,34 +31,40 @@ const operators = [
 ];
 
 // All text objects (unified: includes what was previously called "motions")
+// JIS keyboard layout
 const textObjects = [
     // Traditional text objects (inner/around)
     { keys: 'i w', id: 'iw' },
     { keys: 'a w', id: 'aw' },
     { keys: 'i shift+w', id: 'iW' },
     { keys: 'a shift+w', id: 'aW' },
-    { keys: 'i (', id: 'i(' },
-    { keys: 'a (', id: 'a(' },
-    { keys: 'i )', id: 'i)' },
-    { keys: 'a )', id: 'a)' },
-    { keys: 'i {', id: 'i{' },
-    { keys: 'a {', id: 'a{' },
-    { keys: 'i }', id: 'i}' },
-    { keys: 'a }', id: 'a}' },
+    // Parentheses: shift+8 and shift+9 on JIS
+    { keys: 'i shift+8', id: 'i(' },
+    { keys: 'a shift+8', id: 'a(' },
+    { keys: 'i shift+9', id: 'i)' },
+    { keys: 'a shift+9', id: 'a)' },
+    // Braces: shift+[ and shift+]
+    { keys: 'i shift+[', id: 'i{' },
+    { keys: 'a shift+[', id: 'a{' },
+    { keys: 'i shift+]', id: 'i}' },
+    { keys: 'a shift+]', id: 'a}' },
+    // Brackets: [ and ]
     { keys: 'i [', id: 'i[' },
     { keys: 'a [', id: 'a[' },
     { keys: 'i ]', id: 'i]' },
     { keys: 'a ]', id: 'a]' },
-    { keys: 'i <', id: 'i<' },
-    { keys: 'a <', id: 'a<' },
-    { keys: 'i >', id: 'i>' },
-    { keys: 'a >', id: 'a>' },
-    { keys: "i '", id: "i'" },
-    { keys: "a '", id: "a'" },
-    { keys: 'i "', id: 'i"' },
-    { keys: 'a "', id: 'a"' },
-    { keys: 'i `', id: 'i`' },
-    { keys: 'a `', id: 'a`' },
+    // Angle brackets: shift+, and shift+.
+    { keys: 'i shift+,', id: 'i<' },
+    { keys: 'a shift+,', id: 'a<' },
+    { keys: 'i shift+.', id: 'i>' },
+    { keys: 'a shift+.', id: 'a>' },
+    // Quotes: shift+7 for ', shift+2 for "
+    { keys: 'i shift+7', id: "i'" },
+    { keys: 'a shift+7', id: "a'" },
+    { keys: 'i shift+2', id: 'i"' },
+    { keys: 'a shift+2', id: 'a"' },
+    { keys: 'i shift+[BracketLeft]', id: 'i`' },
+    { keys: 'a shift+[BracketLeft]', id: 'a`' },
     // Positional text objects (cursor to target)
     { keys: 'w', id: 'w' },
     { keys: 'shift+w', id: 'W' },
@@ -216,28 +222,26 @@ const findCommands = [
 // Surround commands (ys, cs, ds, visual S)
 // ============================================================
 
+// Surround targets (JIS keyboard layout)
 const surroundTargets = [
-    // Parentheses (shift+9 on US, shift+8 on JIS)
-    { keys: 'shift+9', id: '(' },  // ( on US keyboard
-    { keys: 'shift+8', id: '(' },  // ( on JIS keyboard
-    { keys: 'shift+0', id: ')' },  // ) on US keyboard
-    { keys: 'shift+9', id: ')' },  // ) on JIS keyboard - Note: same as ( on US
+    // Parentheses: shift+8 for (, shift+9 for )
+    { keys: 'shift+8', id: '(' },
+    { keys: 'shift+9', id: ')' },
     { keys: 'b', id: 'b' },        // Vim alias for ()
-    // Braces
+    // Braces: shift+[ for {, shift+] for }
     { keys: 'shift+[', id: '{' },
     { keys: 'shift+]', id: '}' },
     { keys: 'shift+b', id: 'B' },  // Vim alias for {}
     // Brackets
     { keys: '[', id: '[' },
     { keys: ']', id: ']' },
-    // Angle brackets
+    // Angle brackets: shift+, for <, shift+. for >
     { keys: 'shift+,', id: '<' },
     { keys: 'shift+.', id: '>' },
-    // Quotes
-    { keys: 'shift+7', id: "'" },       // ' on JIS keyboard
-    { keys: 'shift+\'', id: '"' },      // " on US keyboard
-    { keys: 'shift+2', id: '"' },       // " on JIS keyboard
-    { keys: 'shift+[BracketLeft]', id: '`' }, // ` on JIS keyboard
+    // Quotes: shift+7 for ', shift+2 for "
+    { keys: 'shift+7', id: "'" },
+    { keys: 'shift+2', id: '"' },
+    { keys: 'shift+[BracketLeft]', id: '`' },
     // Tag
     { keys: 't', id: 't' },
 ];

@@ -63,6 +63,7 @@ Following VS Code naming conventions:
 - Do NOT implement Visual Line mode (use VS Code's native line selection)
 - Do NOT implement custom keybindings feature
 - Keybindings are defined in `package.json` (generated via `scripts/generateKeybindings.ts`)
+- **JIS keyboard layout only**: To avoid combinatorial explosion of keybindings, only JIS keyboard layout is supported
 
 ### Architecture
 
