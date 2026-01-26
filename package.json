@@ -179,7 +179,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "d i W",
+                "key": "d i shift+w",
                 "command": "waltz.delete",
                 "args": {
                     "target": "iW"
@@ -187,7 +187,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "d a W",
+                "key": "d a shift+w",
                 "command": "waltz.delete",
                 "args": {
                     "target": "aW"
@@ -379,7 +379,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "d W",
+                "key": "d shift+w",
                 "command": "waltz.delete",
                 "args": {
                     "target": "W"
@@ -395,7 +395,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "d B",
+                "key": "d shift+b",
                 "command": "waltz.delete",
                 "args": {
                     "target": "B"
@@ -411,7 +411,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "d E",
+                "key": "d shift+e",
                 "command": "waltz.delete",
                 "args": {
                     "target": "E"
@@ -515,7 +515,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "c i W",
+                "key": "c i shift+w",
                 "command": "waltz.change",
                 "args": {
                     "target": "iW"
@@ -523,7 +523,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "c a W",
+                "key": "c a shift+w",
                 "command": "waltz.change",
                 "args": {
                     "target": "aW"
@@ -715,7 +715,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "c W",
+                "key": "c shift+w",
                 "command": "waltz.change",
                 "args": {
                     "target": "W"
@@ -731,7 +731,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "c B",
+                "key": "c shift+b",
                 "command": "waltz.change",
                 "args": {
                     "target": "B"
@@ -747,7 +747,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "c E",
+                "key": "c shift+e",
                 "command": "waltz.change",
                 "args": {
                     "target": "E"
@@ -851,7 +851,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y i W",
+                "key": "y i shift+w",
                 "command": "waltz.yank",
                 "args": {
                     "target": "iW"
@@ -859,7 +859,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y a W",
+                "key": "y a shift+w",
                 "command": "waltz.yank",
                 "args": {
                     "target": "aW"
@@ -1051,7 +1051,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y W",
+                "key": "y shift+w",
                 "command": "waltz.yank",
                 "args": {
                     "target": "W"
@@ -1067,7 +1067,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y B",
+                "key": "y shift+b",
                 "command": "waltz.yank",
                 "args": {
                     "target": "B"
@@ -1083,7 +1083,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y E",
+                "key": "y shift+e",
                 "command": "waltz.yank",
                 "args": {
                     "target": "E"
@@ -1187,7 +1187,7 @@
                 "when": "editorTextFocus && waltz.mode == 'visual'"
             },
             {
-                "key": "i W",
+                "key": "i shift+w",
                 "command": "waltz.selectTextObject",
                 "args": {
                     "target": "iW"
@@ -1195,7 +1195,7 @@
                 "when": "editorTextFocus && waltz.mode == 'visual'"
             },
             {
-                "key": "a W",
+                "key": "a shift+w",
                 "command": "waltz.selectTextObject",
                 "args": {
                     "target": "aW"
@@ -1387,7 +1387,7 @@
                 "when": "editorTextFocus && waltz.mode == 'visual'"
             },
             {
-                "key": "W",
+                "key": "shift+w",
                 "command": "waltz.selectTextObject",
                 "args": {
                     "target": "W"
@@ -1403,7 +1403,7 @@
                 "when": "editorTextFocus && waltz.mode == 'visual'"
             },
             {
-                "key": "B",
+                "key": "shift+b",
                 "command": "waltz.selectTextObject",
                 "args": {
                     "target": "B"
@@ -1419,7 +1419,7 @@
                 "when": "editorTextFocus && waltz.mode == 'visual'"
             },
             {
-                "key": "E",
+                "key": "shift+e",
                 "command": "waltz.selectTextObject",
                 "args": {
                     "target": "E"
@@ -1805,7 +1805,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s i W shift+9",
+                "key": "y s i shift+w shift+9",
                 "command": "waltz.surround",
                 "args": {
                     "target": "iW",
@@ -1814,7 +1814,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s i W shift+8",
+                "key": "y s i shift+w shift+8",
                 "command": "waltz.surround",
                 "args": {
                     "target": "iW",
@@ -1823,7 +1823,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s i W shift+0",
+                "key": "y s i shift+w shift+0",
                 "command": "waltz.surround",
                 "args": {
                     "target": "iW",
@@ -1832,7 +1832,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s i W shift+9",
+                "key": "y s i shift+w shift+9",
                 "command": "waltz.surround",
                 "args": {
                     "target": "iW",
@@ -1841,7 +1841,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s i W b",
+                "key": "y s i shift+w b",
                 "command": "waltz.surround",
                 "args": {
                     "target": "iW",
@@ -1850,7 +1850,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s i W shift+[",
+                "key": "y s i shift+w shift+[",
                 "command": "waltz.surround",
                 "args": {
                     "target": "iW",
@@ -1859,7 +1859,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s i W shift+]",
+                "key": "y s i shift+w shift+]",
                 "command": "waltz.surround",
                 "args": {
                     "target": "iW",
@@ -1868,7 +1868,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s i W shift+b",
+                "key": "y s i shift+w shift+b",
                 "command": "waltz.surround",
                 "args": {
                     "target": "iW",
@@ -1877,7 +1877,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s i W [",
+                "key": "y s i shift+w [",
                 "command": "waltz.surround",
                 "args": {
                     "target": "iW",
@@ -1886,7 +1886,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s i W ]",
+                "key": "y s i shift+w ]",
                 "command": "waltz.surround",
                 "args": {
                     "target": "iW",
@@ -1895,7 +1895,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s i W shift+,",
+                "key": "y s i shift+w shift+,",
                 "command": "waltz.surround",
                 "args": {
                     "target": "iW",
@@ -1904,7 +1904,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s i W shift+.",
+                "key": "y s i shift+w shift+.",
                 "command": "waltz.surround",
                 "args": {
                     "target": "iW",
@@ -1913,7 +1913,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s i W shift+7",
+                "key": "y s i shift+w shift+7",
                 "command": "waltz.surround",
                 "args": {
                     "target": "iW",
@@ -1922,7 +1922,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s i W shift+'",
+                "key": "y s i shift+w shift+'",
                 "command": "waltz.surround",
                 "args": {
                     "target": "iW",
@@ -1931,7 +1931,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s i W shift+2",
+                "key": "y s i shift+w shift+2",
                 "command": "waltz.surround",
                 "args": {
                     "target": "iW",
@@ -1940,7 +1940,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s i W [BracketLeft]",
+                "key": "y s i shift+w [BracketLeft]",
                 "command": "waltz.surround",
                 "args": {
                     "target": "iW",
@@ -1949,7 +1949,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s i W t",
+                "key": "y s i shift+w t",
                 "command": "waltz.surround",
                 "args": {
                     "target": "iW",
@@ -1958,7 +1958,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s a W shift+9",
+                "key": "y s a shift+w shift+9",
                 "command": "waltz.surround",
                 "args": {
                     "target": "aW",
@@ -1967,7 +1967,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s a W shift+8",
+                "key": "y s a shift+w shift+8",
                 "command": "waltz.surround",
                 "args": {
                     "target": "aW",
@@ -1976,7 +1976,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s a W shift+0",
+                "key": "y s a shift+w shift+0",
                 "command": "waltz.surround",
                 "args": {
                     "target": "aW",
@@ -1985,7 +1985,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s a W shift+9",
+                "key": "y s a shift+w shift+9",
                 "command": "waltz.surround",
                 "args": {
                     "target": "aW",
@@ -1994,7 +1994,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s a W b",
+                "key": "y s a shift+w b",
                 "command": "waltz.surround",
                 "args": {
                     "target": "aW",
@@ -2003,7 +2003,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s a W shift+[",
+                "key": "y s a shift+w shift+[",
                 "command": "waltz.surround",
                 "args": {
                     "target": "aW",
@@ -2012,7 +2012,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s a W shift+]",
+                "key": "y s a shift+w shift+]",
                 "command": "waltz.surround",
                 "args": {
                     "target": "aW",
@@ -2021,7 +2021,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s a W shift+b",
+                "key": "y s a shift+w shift+b",
                 "command": "waltz.surround",
                 "args": {
                     "target": "aW",
@@ -2030,7 +2030,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s a W [",
+                "key": "y s a shift+w [",
                 "command": "waltz.surround",
                 "args": {
                     "target": "aW",
@@ -2039,7 +2039,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s a W ]",
+                "key": "y s a shift+w ]",
                 "command": "waltz.surround",
                 "args": {
                     "target": "aW",
@@ -2048,7 +2048,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s a W shift+,",
+                "key": "y s a shift+w shift+,",
                 "command": "waltz.surround",
                 "args": {
                     "target": "aW",
@@ -2057,7 +2057,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s a W shift+.",
+                "key": "y s a shift+w shift+.",
                 "command": "waltz.surround",
                 "args": {
                     "target": "aW",
@@ -2066,7 +2066,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s a W shift+7",
+                "key": "y s a shift+w shift+7",
                 "command": "waltz.surround",
                 "args": {
                     "target": "aW",
@@ -2075,7 +2075,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s a W shift+'",
+                "key": "y s a shift+w shift+'",
                 "command": "waltz.surround",
                 "args": {
                     "target": "aW",
@@ -2084,7 +2084,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s a W shift+2",
+                "key": "y s a shift+w shift+2",
                 "command": "waltz.surround",
                 "args": {
                     "target": "aW",
@@ -2093,7 +2093,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s a W [BracketLeft]",
+                "key": "y s a shift+w [BracketLeft]",
                 "command": "waltz.surround",
                 "args": {
                     "target": "aW",
@@ -2102,7 +2102,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s a W t",
+                "key": "y s a shift+w t",
                 "command": "waltz.surround",
                 "args": {
                     "target": "aW",
@@ -5630,7 +5630,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s W shift+9",
+                "key": "y s shift+w shift+9",
                 "command": "waltz.surround",
                 "args": {
                     "target": "W",
@@ -5639,7 +5639,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s W shift+8",
+                "key": "y s shift+w shift+8",
                 "command": "waltz.surround",
                 "args": {
                     "target": "W",
@@ -5648,7 +5648,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s W shift+0",
+                "key": "y s shift+w shift+0",
                 "command": "waltz.surround",
                 "args": {
                     "target": "W",
@@ -5657,7 +5657,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s W shift+9",
+                "key": "y s shift+w shift+9",
                 "command": "waltz.surround",
                 "args": {
                     "target": "W",
@@ -5666,7 +5666,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s W b",
+                "key": "y s shift+w b",
                 "command": "waltz.surround",
                 "args": {
                     "target": "W",
@@ -5675,7 +5675,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s W shift+[",
+                "key": "y s shift+w shift+[",
                 "command": "waltz.surround",
                 "args": {
                     "target": "W",
@@ -5684,7 +5684,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s W shift+]",
+                "key": "y s shift+w shift+]",
                 "command": "waltz.surround",
                 "args": {
                     "target": "W",
@@ -5693,7 +5693,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s W shift+b",
+                "key": "y s shift+w shift+b",
                 "command": "waltz.surround",
                 "args": {
                     "target": "W",
@@ -5702,7 +5702,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s W [",
+                "key": "y s shift+w [",
                 "command": "waltz.surround",
                 "args": {
                     "target": "W",
@@ -5711,7 +5711,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s W ]",
+                "key": "y s shift+w ]",
                 "command": "waltz.surround",
                 "args": {
                     "target": "W",
@@ -5720,7 +5720,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s W shift+,",
+                "key": "y s shift+w shift+,",
                 "command": "waltz.surround",
                 "args": {
                     "target": "W",
@@ -5729,7 +5729,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s W shift+.",
+                "key": "y s shift+w shift+.",
                 "command": "waltz.surround",
                 "args": {
                     "target": "W",
@@ -5738,7 +5738,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s W shift+7",
+                "key": "y s shift+w shift+7",
                 "command": "waltz.surround",
                 "args": {
                     "target": "W",
@@ -5747,7 +5747,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s W shift+'",
+                "key": "y s shift+w shift+'",
                 "command": "waltz.surround",
                 "args": {
                     "target": "W",
@@ -5756,7 +5756,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s W shift+2",
+                "key": "y s shift+w shift+2",
                 "command": "waltz.surround",
                 "args": {
                     "target": "W",
@@ -5765,7 +5765,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s W [BracketLeft]",
+                "key": "y s shift+w [BracketLeft]",
                 "command": "waltz.surround",
                 "args": {
                     "target": "W",
@@ -5774,7 +5774,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s W t",
+                "key": "y s shift+w t",
                 "command": "waltz.surround",
                 "args": {
                     "target": "W",
@@ -5936,7 +5936,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s B shift+9",
+                "key": "y s shift+b shift+9",
                 "command": "waltz.surround",
                 "args": {
                     "target": "B",
@@ -5945,7 +5945,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s B shift+8",
+                "key": "y s shift+b shift+8",
                 "command": "waltz.surround",
                 "args": {
                     "target": "B",
@@ -5954,7 +5954,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s B shift+0",
+                "key": "y s shift+b shift+0",
                 "command": "waltz.surround",
                 "args": {
                     "target": "B",
@@ -5963,7 +5963,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s B shift+9",
+                "key": "y s shift+b shift+9",
                 "command": "waltz.surround",
                 "args": {
                     "target": "B",
@@ -5972,7 +5972,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s B b",
+                "key": "y s shift+b b",
                 "command": "waltz.surround",
                 "args": {
                     "target": "B",
@@ -5981,7 +5981,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s B shift+[",
+                "key": "y s shift+b shift+[",
                 "command": "waltz.surround",
                 "args": {
                     "target": "B",
@@ -5990,7 +5990,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s B shift+]",
+                "key": "y s shift+b shift+]",
                 "command": "waltz.surround",
                 "args": {
                     "target": "B",
@@ -5999,7 +5999,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s B shift+b",
+                "key": "y s shift+b shift+b",
                 "command": "waltz.surround",
                 "args": {
                     "target": "B",
@@ -6008,7 +6008,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s B [",
+                "key": "y s shift+b [",
                 "command": "waltz.surround",
                 "args": {
                     "target": "B",
@@ -6017,7 +6017,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s B ]",
+                "key": "y s shift+b ]",
                 "command": "waltz.surround",
                 "args": {
                     "target": "B",
@@ -6026,7 +6026,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s B shift+,",
+                "key": "y s shift+b shift+,",
                 "command": "waltz.surround",
                 "args": {
                     "target": "B",
@@ -6035,7 +6035,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s B shift+.",
+                "key": "y s shift+b shift+.",
                 "command": "waltz.surround",
                 "args": {
                     "target": "B",
@@ -6044,7 +6044,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s B shift+7",
+                "key": "y s shift+b shift+7",
                 "command": "waltz.surround",
                 "args": {
                     "target": "B",
@@ -6053,7 +6053,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s B shift+'",
+                "key": "y s shift+b shift+'",
                 "command": "waltz.surround",
                 "args": {
                     "target": "B",
@@ -6062,7 +6062,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s B shift+2",
+                "key": "y s shift+b shift+2",
                 "command": "waltz.surround",
                 "args": {
                     "target": "B",
@@ -6071,7 +6071,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s B [BracketLeft]",
+                "key": "y s shift+b [BracketLeft]",
                 "command": "waltz.surround",
                 "args": {
                     "target": "B",
@@ -6080,7 +6080,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s B t",
+                "key": "y s shift+b t",
                 "command": "waltz.surround",
                 "args": {
                     "target": "B",
@@ -6242,7 +6242,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s E shift+9",
+                "key": "y s shift+e shift+9",
                 "command": "waltz.surround",
                 "args": {
                     "target": "E",
@@ -6251,7 +6251,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s E shift+8",
+                "key": "y s shift+e shift+8",
                 "command": "waltz.surround",
                 "args": {
                     "target": "E",
@@ -6260,7 +6260,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s E shift+0",
+                "key": "y s shift+e shift+0",
                 "command": "waltz.surround",
                 "args": {
                     "target": "E",
@@ -6269,7 +6269,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s E shift+9",
+                "key": "y s shift+e shift+9",
                 "command": "waltz.surround",
                 "args": {
                     "target": "E",
@@ -6278,7 +6278,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s E b",
+                "key": "y s shift+e b",
                 "command": "waltz.surround",
                 "args": {
                     "target": "E",
@@ -6287,7 +6287,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s E shift+[",
+                "key": "y s shift+e shift+[",
                 "command": "waltz.surround",
                 "args": {
                     "target": "E",
@@ -6296,7 +6296,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s E shift+]",
+                "key": "y s shift+e shift+]",
                 "command": "waltz.surround",
                 "args": {
                     "target": "E",
@@ -6305,7 +6305,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s E shift+b",
+                "key": "y s shift+e shift+b",
                 "command": "waltz.surround",
                 "args": {
                     "target": "E",
@@ -6314,7 +6314,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s E [",
+                "key": "y s shift+e [",
                 "command": "waltz.surround",
                 "args": {
                     "target": "E",
@@ -6323,7 +6323,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s E ]",
+                "key": "y s shift+e ]",
                 "command": "waltz.surround",
                 "args": {
                     "target": "E",
@@ -6332,7 +6332,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s E shift+,",
+                "key": "y s shift+e shift+,",
                 "command": "waltz.surround",
                 "args": {
                     "target": "E",
@@ -6341,7 +6341,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s E shift+.",
+                "key": "y s shift+e shift+.",
                 "command": "waltz.surround",
                 "args": {
                     "target": "E",
@@ -6350,7 +6350,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s E shift+7",
+                "key": "y s shift+e shift+7",
                 "command": "waltz.surround",
                 "args": {
                     "target": "E",
@@ -6359,7 +6359,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s E shift+'",
+                "key": "y s shift+e shift+'",
                 "command": "waltz.surround",
                 "args": {
                     "target": "E",
@@ -6368,7 +6368,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s E shift+2",
+                "key": "y s shift+e shift+2",
                 "command": "waltz.surround",
                 "args": {
                     "target": "E",
@@ -6377,7 +6377,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s E [BracketLeft]",
+                "key": "y s shift+e [BracketLeft]",
                 "command": "waltz.surround",
                 "args": {
                     "target": "E",
@@ -6386,7 +6386,7 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
-                "key": "y s E t",
+                "key": "y s shift+e t",
                 "command": "waltz.surround",
                 "args": {
                     "target": "E",

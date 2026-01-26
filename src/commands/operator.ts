@@ -29,8 +29,7 @@ export function getTextObjectRange(
         const type = textObject.slice(1);
 
         switch (type) {
-            case 'w':
-            case 'W': {
+            case 'w': {
                 const wordRange = document.getWordRangeAtPosition(position);
                 if (wordRange) {
                     if (inner) {
@@ -45,6 +44,29 @@ export function getTextObjectRange(
                     return new Range(wordRange.start, new Position(position.line, end));
                 }
                 return null;
+            }
+            case 'W': {
+                // WORD: whitespace-delimited (any non-whitespace sequence)
+                const line = document.lineAt(position.line).text;
+                const col = position.character;
+                // Find start of WORD
+                let start = col;
+                while (start > 0 && !/\s/.test(line[start - 1])) {
+                    start--;
+                }
+                // Find end of WORD
+                let end = col;
+                while (end < line.length && !/\s/.test(line[end])) {
+                    end++;
+                }
+                if (start === end) return null;
+                if (!inner) {
+                    // "around" includes trailing whitespace
+                    while (end < line.length && /\s/.test(line[end])) {
+                        end++;
+                    }
+                }
+                return new Range(new Position(position.line, start), new Position(position.line, end));
             }
             case '(':
             case ')':
@@ -76,29 +98,65 @@ export function getTextObjectRange(
 
     // Single-character or multi-character text objects (formerly "motions")
     switch (textObject) {
-        case 'w':
+        case 'w': {
+            const wordRange = document.getWordRangeAtPosition(position);
+            if (wordRange) {
+                return new Range(position, wordRange.end);
+            }
+            return new Range(position, position.translate(0, 1));
+        }
         case 'W': {
+            // WORD: cursor to end of WORD (whitespace-delimited)
+            const line = document.lineAt(position.line).text;
+            const col = position.character;
+            let end = col;
+            while (end < line.length && !/\s/.test(line[end])) {
+                end++;
+            }
+            if (end === col) {
+                return new Range(position, position.translate(0, 1));
+            }
+            return new Range(position, new Position(position.line, end));
+        }
+        case 'e': {
             const wordRange = document.getWordRangeAtPosition(position);
             if (wordRange) {
                 return new Range(position, wordRange.end);
             }
             return new Range(position, position.translate(0, 1));
         }
-        case 'e':
         case 'E': {
-            const wordRange = document.getWordRangeAtPosition(position);
-            if (wordRange) {
-                return new Range(position, wordRange.end);
+            // WORD end: cursor to end of WORD (whitespace-delimited)
+            const line = document.lineAt(position.line).text;
+            const col = position.character;
+            let end = col;
+            while (end < line.length && !/\s/.test(line[end])) {
+                end++;
             }
-            return new Range(position, position.translate(0, 1));
+            if (end === col) {
+                return new Range(position, position.translate(0, 1));
+            }
+            return new Range(position, new Position(position.line, end));
         }
-        case 'b':
-        case 'B': {
+        case 'b': {
             const wordRange = document.getWordRangeAtPosition(position);
             if (wordRange) {
                 return new Range(wordRange.start, position);
             }
             return new Range(position.translate(0, -1), position);
+        }
+        case 'B': {
+            // WORD backward: start of WORD to cursor (whitespace-delimited)
+            const line = document.lineAt(position.line).text;
+            const col = position.character;
+            let start = col;
+            while (start > 0 && !/\s/.test(line[start - 1])) {
+                start--;
+            }
+            if (start === col) {
+                return new Range(position.translate(0, -1), position);
+            }
+            return new Range(new Position(position.line, start), position);
         }
         case '$': {
             const lineEnd = document.lineAt(position.line).range.end;
