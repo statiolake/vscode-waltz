@@ -16,6 +16,7 @@ interface OperatorArgs {
 
 /**
  * Get range for f/t/F/T text object with a specific character
+ * VS Code philosophy: f=t (forward to left of char), F=T (backward to right of char)
  */
 function getFindCharRange(
     document: vscode.TextDocument,
@@ -24,18 +25,16 @@ function getFindCharRange(
     char: string,
 ): Range | null {
     const direction = textObject === 'f' || textObject === 't' ? 'forward' : 'backward';
-    const stopBefore = textObject === 't' || textObject === 'T';
 
-    const targetPos = findCharInLine(document, position, char, direction, stopBefore);
+    const targetPos = findCharInLine(document, position, char, direction);
     if (!targetPos) return null;
 
     // For operators, we want the range from cursor to target
+    // forward: cursor to left side of char
+    // backward: right side of char to cursor
     if (direction === 'forward') {
-        // Include the target character for 'f', exclude for 't'
-        const endPos = stopBefore ? targetPos : targetPos.translate(0, 1);
-        return new Range(position, endPos);
+        return new Range(position, targetPos);
     } else {
-        // For backward, range is from target to cursor
         return new Range(targetPos, position);
     }
 }
@@ -59,10 +58,7 @@ async function getRangesForTarget(editor: vscode.TextEditor, target: string): Pr
     let findChar: string | null = null;
     if (isFindCharTextObject(target)) {
         const direction = target === 'f' || target === 't' ? 'forward' : 'backward';
-        const stopBefore = target === 't' || target === 'T';
-        findChar = await getCharViaQuickPick(
-            `Type a character to find ${direction}${stopBefore ? ' (before)' : ''}...`,
-        );
+        findChar = await getCharViaQuickPick(`Type a character to find ${direction}...`);
         if (!findChar) return null; // User cancelled
     }
 
