@@ -32,19 +32,11 @@ export function findCharInLine(
 }
 
 /**
- * f/t/F/T コマンド
- * QuickPick で文字入力を待ち、即時発火
+ * Get a character via QuickPick
  */
-async function findCharCommand(
-    vimState: VimState,
-    direction: 'forward' | 'backward',
-    stopBefore: boolean,
-): Promise<void> {
-    const editor = vscode.window.activeTextEditor;
-    if (!editor) return;
-
+export async function getCharViaQuickPick(prompt: string): Promise<string | null> {
     const quickPick = vscode.window.createQuickPick();
-    quickPick.placeholder = `Type a character to find ${direction}${stopBefore ? ' (before)' : ''}...`;
+    quickPick.placeholder = prompt;
     quickPick.items = [];
 
     const char = await new Promise<string>((resolve) => {
@@ -63,6 +55,22 @@ async function findCharCommand(
         quickPick.show();
     });
 
+    return char || null;
+}
+
+/**
+ * f/t/F/T コマンド
+ * QuickPick で文字入力を待ち、即時発火
+ */
+async function findCharCommand(
+    vimState: VimState,
+    direction: 'forward' | 'backward',
+    stopBefore: boolean,
+): Promise<void> {
+    const editor = vscode.window.activeTextEditor;
+    if (!editor) return;
+
+    const char = await getCharViaQuickPick(`Type a character to find ${direction}${stopBefore ? ' (before)' : ''}...`);
     if (!char) return;
 
     // Record last f/t for ; and , repeat
