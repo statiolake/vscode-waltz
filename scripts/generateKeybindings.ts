@@ -232,7 +232,7 @@ const surroundTargets = [
     { keys: 'shift+7', id: "'" },       // ' on JIS keyboard
     { keys: 'shift+\'', id: '"' },      // " on US keyboard
     { keys: 'shift+2', id: '"' },       // " on JIS keyboard
-    { keys: '[BracketLeft]', id: '`' }, // ` on JIS keyboard
+    { keys: 'shift+[BracketLeft]', id: '`' }, // ` on JIS keyboard
     // Tag
     { keys: 't', id: 't' },
 ];
