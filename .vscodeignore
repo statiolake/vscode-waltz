@@ -1,8 +1,34 @@
+# Source files (bundled by esbuild)
+src/**
+scripts/**
+
+# Build artifacts
+out/**/*.map
+out/test/**
+
+# Development files
 .vscode/**
 .vscode-test/**
-out/test/**
-out/**/*.map
-src/**
+.devcontainer/**
+.github/**
+.husky/**
+.mypy_cache/**
+.pahcer-ui/**
+.claude/**
+
+# Config files
 .gitignore
+.vscode-test.mjs
 tsconfig.json
 tslint.json
+eslint.config.mjs
+biome.json
+esbuild.js
+CLAUDE.md
+
+# Package manager
+node_modules/**
+package-lock.json
+
+# Old VSIX files
+*.vsix

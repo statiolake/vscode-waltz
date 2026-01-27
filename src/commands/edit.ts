@@ -136,7 +136,7 @@ function findParagraphBoundary(document: vscode.TextDocument, startLine: number,
     return line;
 }
 
-function paragraphMove(vimState: VimState, direction: 'up' | 'down', select: boolean): void {
+function paragraphMove(_vimState: VimState, direction: 'up' | 'down', select: boolean): void {
     const editor = vscode.window.activeTextEditor;
     if (!editor) return;
 

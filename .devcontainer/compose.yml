@@ -5,5 +5,9 @@ services:
       dockerfile: .devcontainer/Dockerfile
     volumes:
       - ..:/workspace:cached
+      - node_modules:/workspace/node_modules
     working_dir: /workspace
     command: sleep infinity
+
+volumes:
+  node_modules:

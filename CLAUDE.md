@@ -107,7 +107,9 @@ type VimState = {
 ### Build Commands
 
 ```bash
-npm run compile      # TypeScript compilation
+npm run compile      # Build with esbuild (type-check + bundle)
+npm run watch        # Watch mode (parallel esbuild + tsc)
+npm run package      # Build VSIX package
 npm run lint         # ESLint + Biome
 npm run format       # Auto-fix lint issues
 npm run generate-keybindings  # Regenerate package.json keybindings
