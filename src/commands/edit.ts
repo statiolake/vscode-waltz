@@ -75,24 +75,65 @@ async function deleteToEnd(_vimState: VimState): Promise<void> {
     await vscode.commands.executeCommand('deleteAllRight');
 }
 
+/**
+ * Find paragraph boundary (first or last non-empty line of current paragraph)
+ * - 'up': find first non-empty line of current paragraph (or previous paragraph if already at start)
+ * - 'down': find last non-empty line of current paragraph (or next paragraph if already at end)
+ */
 function findParagraphBoundary(document: vscode.TextDocument, startLine: number, direction: 'up' | 'down'): number {
     const lineCount = document.lineCount;
     let line = startLine;
 
-    // Skip current paragraph (non-empty lines)
-    while (line >= 0 && line < lineCount) {
-        if (document.lineAt(line).isEmptyOrWhitespace) break;
-        line += direction === 'up' ? -1 : 1;
+    // If on empty line, first find a paragraph in the given direction
+    if (document.lineAt(line).isEmptyOrWhitespace) {
+        while (line >= 0 && line < lineCount) {
+            if (!document.lineAt(line).isEmptyOrWhitespace) break;
+            line += direction === 'up' ? -1 : 1;
+        }
+        // If we went out of bounds, clamp
+        if (line < 0 || line >= lineCount) {
+            return Math.max(0, Math.min(lineCount - 1, line));
+        }
     }
 
-    // Skip empty lines
-    while (line >= 0 && line < lineCount) {
-        if (!document.lineAt(line).isEmptyOrWhitespace) break;
-        line += direction === 'up' ? -1 : 1;
+    // Now we're on a non-empty line, find the boundary of this paragraph
+    if (direction === 'up') {
+        // Find first non-empty line of paragraph (go up until empty or start)
+        while (line > 0 && !document.lineAt(line - 1).isEmptyOrWhitespace) {
+            line--;
+        }
+        // If we're already at the start and haven't moved, go to previous paragraph
+        if (line === startLine && line > 0) {
+            line--;
+            // Skip empty lines
+            while (line > 0 && document.lineAt(line).isEmptyOrWhitespace) {
+                line--;
+            }
+            // Find start of that paragraph
+            while (line > 0 && !document.lineAt(line - 1).isEmptyOrWhitespace) {
+                line--;
+            }
+        }
+    } else {
+        // Find last non-empty line of paragraph (go down until empty or end)
+        while (line < lineCount - 1 && !document.lineAt(line + 1).isEmptyOrWhitespace) {
+            line++;
+        }
+        // If we're already at the end and haven't moved, go to next paragraph
+        if (line === startLine && line < lineCount - 1) {
+            line++;
+            // Skip empty lines
+            while (line < lineCount - 1 && document.lineAt(line).isEmptyOrWhitespace) {
+                line++;
+            }
+            // Find end of that paragraph
+            while (line < lineCount - 1 && !document.lineAt(line + 1).isEmptyOrWhitespace) {
+                line++;
+            }
+        }
     }
 
-    // Clamp to valid range
-    return Math.max(0, Math.min(lineCount - 1, line));
+    return line;
 }
 
 function paragraphMove(vimState: VimState, direction: 'up' | 'down', select: boolean): void {
