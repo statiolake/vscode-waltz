@@ -386,9 +386,10 @@ async function executeDelete(editor: vscode.TextEditor, args: OperatorArgs): Pro
 
     if (ranges.length === 0) return;
 
-    // Copy to clipboard
-    const text = ranges.map((r) => document.getText(r)).join('\n');
-    await vscode.env.clipboard.writeText(text);
+    const originalSelections = editor.selections;
+    editor.selections = ranges.map((r) => new Selection(r.start, r.end));
+    await vscode.commands.executeCommand('editor.action.clipboardCopyAction');
+    editor.selections = originalSelections;
 
     // Delete
     await editor.edit((editBuilder) => {
@@ -453,16 +454,11 @@ async function executeYank(editor: vscode.TextEditor, args: OperatorArgs): Promi
 
     if (ranges.length === 0) return;
 
-    // Copy to clipboard
-    const text = ranges.map((r) => document.getText(r)).join('\n');
-    await vscode.env.clipboard.writeText(text);
-
-    // Flash selection briefly to indicate yank
+    // Copy to clipboard using VS Code's native copy command
     const originalSelections = editor.selections;
     editor.selections = ranges.map((r) => new Selection(r.start, r.end));
-    setTimeout(() => {
-        editor.selections = originalSelections;
-    }, 150);
+    await vscode.commands.executeCommand('editor.action.clipboardCopyAction');
+    editor.selections = originalSelections;
 }
 
 /**
