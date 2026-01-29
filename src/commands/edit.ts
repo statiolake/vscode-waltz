@@ -4,6 +4,33 @@ import { enterMode } from '../modes';
 import type { VimState } from '../vimState';
 
 /**
+ * Get a character via QuickPick
+ */
+async function getCharViaQuickPick(prompt: string): Promise<string | null> {
+    const quickPick = vscode.window.createQuickPick();
+    quickPick.placeholder = prompt;
+    quickPick.items = [];
+
+    const char = await new Promise<string>((resolve) => {
+        quickPick.onDidChangeValue((value) => {
+            if (value.length > 0) {
+                quickPick.hide();
+                resolve(value[0]);
+            }
+        });
+
+        quickPick.onDidHide(() => {
+            resolve('');
+            quickPick.dispose();
+        });
+
+        quickPick.show();
+    });
+
+    return char || null;
+}
+
+/**
  * 編集コマンド (Visual モード c、ペースト、段落移動など)
  */
 
@@ -65,6 +92,35 @@ async function substituteChar(vimState: VimState): Promise<void> {
 
     // Enter insert mode
     enterMode(vimState, editor, 'insert');
+}
+
+/**
+ * r コマンド：単一文字置換
+ * カーソル位置の文字を指定した文字で置換する（ノーマルモードのまま）
+ */
+async function replaceChar(_vimState: VimState): Promise<void> {
+    const editor = vscode.window.activeTextEditor;
+    if (!editor) return;
+
+    // QuickPickで置換文字を入力待ち
+    const char = await getCharViaQuickPick('Type a character to replace with...');
+    if (!char) return;
+
+    // カーソル位置の文字を置換
+    await editor.edit((editBuilder) => {
+        for (const selection of editor.selections) {
+            if (selection.isEmpty) {
+                const line = editor.document.lineAt(selection.active.line);
+                if (selection.active.character < line.text.length) {
+                    const charRange = new vscode.Range(selection.active, selection.active.translate(0, 1));
+                    editBuilder.replace(charRange, char);
+                }
+            } else {
+                // 選択範囲がある場合は削除して置換
+                editBuilder.replace(selection, char);
+            }
+        }
+    });
 }
 
 async function deleteToEnd(_vimState: VimState): Promise<void> {
@@ -160,6 +216,7 @@ export function registerEditCommands(context: vscode.ExtensionContext, getVimSta
         vscode.commands.registerCommand('waltz.changeToEndOfLine', () => changeToEndOfLine(getVimState())),
         vscode.commands.registerCommand('waltz.deleteChar', () => deleteChar(getVimState())),
         vscode.commands.registerCommand('waltz.substituteChar', () => substituteChar(getVimState())),
+        vscode.commands.registerCommand('waltz.replaceChar', () => replaceChar(getVimState())),
         vscode.commands.registerCommand('waltz.deleteToEnd', () => deleteToEnd(getVimState())),
         vscode.commands.registerCommand('waltz.paragraphUp', () => paragraphMove(getVimState(), 'up', false)),
         vscode.commands.registerCommand('waltz.paragraphDown', () => paragraphMove(getVimState(), 'down', false)),

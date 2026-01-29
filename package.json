@@ -141,6 +141,10 @@
                 "title": "Waltz: Substitute Character (s)"
             },
             {
+                "command": "waltz.replaceChar",
+                "title": "Waltz: Replace Character (r)"
+            },
+            {
                 "command": "waltz.deleteToEnd",
                 "title": "Waltz: Delete to End of Line (D)"
             },
@@ -528,6 +532,11 @@
                 "args": {
                     "line": true
                 },
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "r",
+                "command": "waltz.replaceChar",
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
