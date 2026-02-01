@@ -281,9 +281,10 @@ export function findPairRange(
     const offset = document.offsetAt(position);
 
     // Search backward for opening
+    // Start from offset - 1 to avoid treating the closing char at cursor position as opening
     let depth = 0;
     let openPos = -1;
-    for (let i = offset; i >= 0; i--) {
+    for (let i = offset - 1; i >= 0; i--) {
         if (text[i] === close) depth++;
         if (text[i] === open) {
             if (depth === 0) {
