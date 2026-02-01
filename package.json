@@ -9960,6 +9960,7 @@
     "scripts": {
         "vscode:prepublish": "npm run package-extension",
         "compile": "npm run check-types && node esbuild.js",
+        "compile-tests": "tsc -p . --outDir out",
         "watch": "npm-run-all -p watch:*",
         "watch:esbuild": "node esbuild.js --watch",
         "watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
@@ -9970,7 +9971,7 @@
         "prepare": "husky",
         "package": "vsce package",
         "publish": "vsce publish",
-        "pretest": "npm run compile && npm run lint",
+        "pretest": "npm run compile-tests && npm run compile && npm run lint",
         "test": "vscode-test",
         "generate-keybindings": "ts-node scripts/generateKeybindings.ts"
     },
