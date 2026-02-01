@@ -330,8 +330,9 @@ export function findQuoteRange(
     const col = position.character;
 
     // Find opening quote (search backward)
+    // Start from col - 1 to avoid treating the closing quote at cursor position as opening
     let openPos = -1;
-    for (let i = col; i >= 0; i--) {
+    for (let i = col - 1; i >= 0; i--) {
         if (line[i] === quote) {
             openPos = i;
             break;
