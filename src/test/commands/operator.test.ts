@@ -83,6 +83,21 @@ suite('Text Object Range Calculation Tests', () => {
                 assert.strictEqual(range2.end.character, 14, 'Second range end');
             });
 
+            test('multiple quoted strings with inner=false should include quotes', async () => {
+                const doc = await createDocument('"hello" "world"');
+                // Cursor at position 3 (inside "hello")
+                const range1 = findQuoteRange(doc, new Position(0, 3), '"', false);
+                assert.ok(range1, 'Should find first range');
+                assert.strictEqual(range1.start.character, 0, 'First range start (include opening quote)');
+                assert.strictEqual(range1.end.character, 7, 'First range end (include closing quote)');
+
+                // Cursor at position 11 (inside "world")
+                const range2 = findQuoteRange(doc, new Position(0, 11), '"', false);
+                assert.ok(range2, 'Should find second range');
+                assert.strictEqual(range2.start.character, 8, 'Second range start (include opening quote)');
+                assert.strictEqual(range2.end.character, 15, 'Second range end (include closing quote)');
+            });
+
             test('cursor before first quote should find first quote', async () => {
                 const doc = await createDocument('"Hello"');
                 const range = findQuoteRange(doc, new Position(0, 0), '"', true);

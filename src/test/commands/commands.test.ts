@@ -75,7 +75,7 @@ suite('Native Commands Tests', () => {
     });
 
     suite('Paragraph movement', () => {
-        test('waltz.paragraphDown should move to next paragraph', async () => {
+        test('waltz.paragraphDown should move to end of current paragraph', async () => {
             const doc = await vscode.workspace.openTextDocument({
                 content: 'line1\nline2\n\nline4\nline5',
             });
@@ -88,14 +88,15 @@ suite('Native Commands Tests', () => {
             await vscode.commands.executeCommand('waltz.paragraphDown');
             await wait(50);
 
-            // Should be at line 3 (empty line) or line 4
-            assert.ok(
-                editor.selection.active.line >= 2,
-                `Should have moved down, got line ${editor.selection.active.line}`,
+            // Should be at line 1 (end of current paragraph: line1, line2)
+            assert.strictEqual(
+                editor.selection.active.line,
+                1,
+                `Should be at end of current paragraph, got line ${editor.selection.active.line}`,
             );
         });
 
-        test('waltz.paragraphUp should move to previous paragraph', async () => {
+        test('waltz.paragraphUp should move to start of current paragraph', async () => {
             const doc = await vscode.workspace.openTextDocument({
                 content: 'line1\nline2\n\nline4\nline5',
             });
@@ -108,10 +109,11 @@ suite('Native Commands Tests', () => {
             await vscode.commands.executeCommand('waltz.paragraphUp');
             await wait(50);
 
-            // Should have moved up
-            assert.ok(
-                editor.selection.active.line < 4,
-                `Should have moved up, got line ${editor.selection.active.line}`,
+            // Should be at line 3 (start of current paragraph: line4, line5)
+            assert.strictEqual(
+                editor.selection.active.line,
+                3,
+                `Should be at start of current paragraph, got line ${editor.selection.active.line}`,
             );
         });
     });
@@ -444,14 +446,14 @@ suite('Surround Commands Tests', () => {
             const doc = await vscode.workspace.openTextDocument({ content: '"hello" "world"' });
             const editor = await vscode.window.showTextDocument(doc);
 
-            // Set multiple cursors inside each quoted word
+            await vscode.commands.executeCommand('waltz.escapeKey');
+            await new Promise((resolve) => setTimeout(resolve, 50));
+
+            // Set multiple cursors inside each quoted word (after escapeKey since it resets selections)
             editor.selections = [
                 new Selection(new Position(0, 3), new Position(0, 3)),
                 new Selection(new Position(0, 11), new Position(0, 11)),
             ];
-
-            await vscode.commands.executeCommand('waltz.escapeKey');
-            await new Promise((resolve) => setTimeout(resolve, 50));
 
             await vscode.commands.executeCommand('waltz.deleteSurround', { target: '"' });
             await new Promise((resolve) => setTimeout(resolve, 50));
