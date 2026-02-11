@@ -20,4 +20,10 @@ export type VimState = {
      * Set to null in insert mode to allow VS Code native input handling.
      */
     typeCommandDisposable: Disposable | null;
+
+    /**
+     * Timestamp (Date.now()) when Visual mode was entered.
+     * Used to detect transient selections (e.g., from undo) that should auto-exit.
+     */
+    visualModeEnteredAt?: number;
 };

@@ -19,22 +19,24 @@ export let globalCommentConfigProvider: CommentConfigProvider;
 
 async function onDidChangeTextEditorSelection(vimState: VimState, e: TextEditorSelectionChangeEvent): Promise<void> {
     const allEmpty = e.selections.every((selection) => selection.isEmpty);
-    if (allEmpty && e.kind === vscode.TextEditorSelectionChangeKind.Mouse) {
-        // マウスによる選択解除の場合はノーマルモードに戻る
+
+    // 選択が空になった場合、Visual モード入室後 10ms 以内であれば Normal モードに戻す
+    // (Undo などで一時的に選択状態になり、すぐに戻った場合の自動復帰用)
+    if (
+        allEmpty &&
+        vimState.mode === 'visual' &&
+        vimState.visualModeEnteredAt !== undefined &&
+        Date.now() - vimState.visualModeEnteredAt < 10
+    ) {
         await enterMode(vimState, e.textEditor, 'normal');
-    } else if (allEmpty && vimState.mode !== 'insert') {
-        // 選択範囲が無になった場合は、ノーマルモードに戻る。この条件だと visual モードにいて移動したあと逆方向に動かし
-        // て選択範囲が無になったときもノーマルモードに戻ってしまうが、まあ良しとする。というのは、undo などの VS Code
-        // 組み込みコマンドが一時的に非空の選択範囲を作成することがあるのだ。最終的には空になるものの、途中で非空の選択
-        // 範囲が作られた瞬間 visual モードに移行してしまうので、最後の空になった瞬間にノーマルモードに戻れるようにしな
-        // いと、undo 後に勝手に visual モードになっているなどの不便が生じる。ただ当然ながら、そのようなケースと `vlh`
-        // は区別がつかないので、`vlh` の方が若干違和感を生じるのは避けられなかった。
-        await enterMode(vimState, e.textEditor, 'normal');
-    } else if (!allEmpty && vimState.mode !== 'visual') {
-        // 選択状態になった場合は Visual モードへ移行する
-        // (すでに Visual モードの場合はそのまま維持)
+    }
+    // 選択範囲が非空になった場合、Visual モードでなければ Visual モードに入る
+    // (v コマンド後に選択を広げる場合、マウスダブルクリック、Shift+矢印など)
+    else if (!allEmpty && vimState.mode !== 'visual') {
         await enterMode(vimState, e.textEditor, 'visual');
     }
+    // それ以外（選択が空になった場合、すでに Visual モードで選択範囲が変化）は
+    // 自動的にモードを変更しない
 
     if (e.kind !== vscode.TextEditorSelectionChangeKind.Mouse) {
         // マウスでない場合は選択範囲の先頭が表示されるようにスクロールする
@@ -89,19 +91,6 @@ export async function activate(context: ExtensionContext): Promise<{ getVimState
         // 保存する前にはノーマルモードに戻る - 本当は別に保存に限る必要はないが、「保存」という操作がある一定の処理の完
         // 了を意味するため。
         vscode.workspace.onWillSaveTextDocument(() => {
-            const editor = vscode.window.activeTextEditor;
-            if (editor) {
-                enterMode(vimState, editor, 'normal');
-            }
-        }),
-        vscode.workspace.onDidChangeTextDocument((e) => {
-            // ドキュメントが Undo, Redo によって変更された場合、ノーマルモードへ戻る
-            if (
-                e.reason !== vscode.TextDocumentChangeReason.Undo &&
-                e.reason !== vscode.TextDocumentChangeReason.Redo
-            ) {
-                return;
-            }
             const editor = vscode.window.activeTextEditor;
             if (editor) {
                 enterMode(vimState, editor, 'normal');

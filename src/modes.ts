@@ -10,6 +10,13 @@ export async function enterMode(vimState: VimState, editor: TextEditor | undefin
     const oldMode = vimState.mode;
     vimState.mode = mode;
 
+    // Visual モードに入るときは入室時刻を記録
+    if (mode === 'visual' && oldMode !== 'visual') {
+        vimState.visualModeEnteredAt = Date.now();
+    } else if (mode !== 'visual') {
+        vimState.visualModeEnteredAt = undefined;
+    }
+
     // insert モードに入るときは type コマンドを解除し、出るときは登録する
     if (mode === 'insert' && oldMode !== 'insert') {
         unregisterTypeCommand(vimState);
