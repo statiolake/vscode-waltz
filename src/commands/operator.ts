@@ -11,7 +11,6 @@ import type { VimState } from '../vimState';
 
 interface OperatorArgs {
     selectCommand?: string; // command to create selection, e.g. cursorWordStartRightSelect
-    selectArgs?: Record<string, unknown>; // optional args for selectCommand
     line?: boolean; // true for dd, cc, yy
 }
 
@@ -19,19 +18,51 @@ type OperatorAction = 'delete' | 'change' | 'yank';
 
 interface SelectionCommandSpec {
     command: string;
-    args?: Record<string, unknown>;
+}
+
+interface TextObjectSelectBinding {
+    command: string;
+    target: string;
 }
 
 function resolveSelectionCommandSpec(args: OperatorArgs): SelectionCommandSpec | null {
     if (args.selectCommand) {
         return {
             command: args.selectCommand,
-            args: args.selectArgs,
         };
     }
 
     return null;
 }
+
+const TEXT_OBJECT_SELECT_BINDINGS: readonly TextObjectSelectBinding[] = [
+    { command: 'waltz.innerWordSelect', target: 'iw' },
+    { command: 'waltz.aroundWordSelect', target: 'aw' },
+    { command: 'waltz.innerBigWordSelect', target: 'iW' },
+    { command: 'waltz.aroundBigWordSelect', target: 'aW' },
+    { command: 'waltz.innerParenSelect', target: 'i(' },
+    { command: 'waltz.aroundParenSelect', target: 'a(' },
+    { command: 'waltz.innerParenRightSelect', target: 'i)' },
+    { command: 'waltz.aroundParenRightSelect', target: 'a)' },
+    { command: 'waltz.innerBraceSelect', target: 'i{' },
+    { command: 'waltz.aroundBraceSelect', target: 'a{' },
+    { command: 'waltz.innerBraceRightSelect', target: 'i}' },
+    { command: 'waltz.aroundBraceRightSelect', target: 'a}' },
+    { command: 'waltz.innerBracketSelect', target: 'i[' },
+    { command: 'waltz.aroundBracketSelect', target: 'a[' },
+    { command: 'waltz.innerBracketRightSelect', target: 'i]' },
+    { command: 'waltz.aroundBracketRightSelect', target: 'a]' },
+    { command: 'waltz.innerAngleSelect', target: 'i<' },
+    { command: 'waltz.aroundAngleSelect', target: 'a<' },
+    { command: 'waltz.innerAngleRightSelect', target: 'i>' },
+    { command: 'waltz.aroundAngleRightSelect', target: 'a>' },
+    { command: 'waltz.innerSingleQuoteSelect', target: "i'" },
+    { command: 'waltz.aroundSingleQuoteSelect', target: "a'" },
+    { command: 'waltz.innerDoubleQuoteSelect', target: 'i"' },
+    { command: 'waltz.aroundDoubleQuoteSelect', target: 'a"' },
+    { command: 'waltz.innerBacktickSelect', target: 'i`' },
+    { command: 'waltz.aroundBacktickSelect', target: 'a`' },
+];
 
 /**
  * Select range through command, then run copy/cut on that selection.
@@ -47,11 +78,7 @@ async function executeOperatorWithSelectionCommand(
     try {
         // Start from a collapsed selection before applying selection command.
         await vscode.commands.executeCommand('cancelSelection');
-        if (selectionSpec.args) {
-            await vscode.commands.executeCommand(selectionSpec.command, selectionSpec.args);
-        } else {
-            await vscode.commands.executeCommand(selectionSpec.command);
-        }
+        await vscode.commands.executeCommand(selectionSpec.command);
     } catch {
         return false;
     }
@@ -453,10 +480,10 @@ async function executeYank(editor: vscode.TextEditor, args: OperatorArgs): Promi
 /**
  * Execute select text object operation (for visual mode)
  */
-async function executeSelectTextObject(editor: vscode.TextEditor, args: { target: string }): Promise<void> {
+async function executeSelectTextObject(editor: vscode.TextEditor, target: string): Promise<void> {
     const ranges: Array<Range | null> = [];
     for (const selection of editor.selections) {
-        const range = getTextObjectRange(editor.document, selection.active, args.target);
+        const range = getTextObjectRange(editor.document, selection.active, target);
         ranges.push(range);
     }
     const newSelections: Selection[] = [];
@@ -487,6 +514,13 @@ async function executeSelectTextObject(editor: vscode.TextEditor, args: { target
 }
 
 export function registerOperatorCommands(context: vscode.ExtensionContext, getVimState: () => VimState): void {
+    const textObjectSelectCommands = TEXT_OBJECT_SELECT_BINDINGS.map(({ command, target }) =>
+        vscode.commands.registerCommand(command, () => {
+            const editor = vscode.window.activeTextEditor;
+            if (editor) executeSelectTextObject(editor, target);
+        }),
+    );
+
     context.subscriptions.push(
         vscode.commands.registerCommand('waltz.delete', (args: OperatorArgs) => {
             const editor = vscode.window.activeTextEditor;
@@ -500,9 +534,6 @@ export function registerOperatorCommands(context: vscode.ExtensionContext, getVi
             const editor = vscode.window.activeTextEditor;
             if (editor) executeYank(editor, args || {});
         }),
-        vscode.commands.registerCommand('waltz.selectTextObject', (args: { target: string }) => {
-            const editor = vscode.window.activeTextEditor;
-            if (editor && args?.target) executeSelectTextObject(editor, args);
-        }),
+        ...textObjectSelectCommands,
     );
 }

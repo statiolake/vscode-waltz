@@ -17,7 +17,6 @@ interface Keybinding {
 interface SelectionBinding {
     keys: string;
     selectCommand: string;
-    selectArgs?: Record<string, unknown>;
 }
 
 // When clauses
@@ -36,76 +35,45 @@ const operators = [
     { key: 'y', command: 'waltz.yank' },
 ];
 
-const explicitTextObjects = [
+const textObjectSelections = [
     // Traditional text objects (inner/around)
-    { keys: 'i w', id: 'iw' },
-    { keys: 'a w', id: 'aw' },
-    { keys: 'i shift+w', id: 'iW' },
-    { keys: 'a shift+w', id: 'aW' },
+    { keys: 'i w', selectCommand: 'waltz.innerWordSelect' },
+    { keys: 'a w', selectCommand: 'waltz.aroundWordSelect' },
+    { keys: 'i shift+w', selectCommand: 'waltz.innerBigWordSelect' },
+    { keys: 'a shift+w', selectCommand: 'waltz.aroundBigWordSelect' },
     // Parentheses: shift+8 and shift+9 on JIS
-    { keys: 'i shift+8', id: 'i(' },
-    { keys: 'a shift+8', id: 'a(' },
-    { keys: 'i shift+9', id: 'i)' },
-    { keys: 'a shift+9', id: 'a)' },
+    { keys: 'i shift+8', selectCommand: 'waltz.innerParenSelect' },
+    { keys: 'a shift+8', selectCommand: 'waltz.aroundParenSelect' },
+    { keys: 'i shift+9', selectCommand: 'waltz.innerParenRightSelect' },
+    { keys: 'a shift+9', selectCommand: 'waltz.aroundParenRightSelect' },
     // Braces: shift+[ and shift+]
-    { keys: 'i shift+[', id: 'i{' },
-    { keys: 'a shift+[', id: 'a{' },
-    { keys: 'i shift+]', id: 'i}' },
-    { keys: 'a shift+]', id: 'a}' },
+    { keys: 'i shift+[', selectCommand: 'waltz.innerBraceSelect' },
+    { keys: 'a shift+[', selectCommand: 'waltz.aroundBraceSelect' },
+    { keys: 'i shift+]', selectCommand: 'waltz.innerBraceRightSelect' },
+    { keys: 'a shift+]', selectCommand: 'waltz.aroundBraceRightSelect' },
     // Brackets: [ and ]
-    { keys: 'i [', id: 'i[' },
-    { keys: 'a [', id: 'a[' },
-    { keys: 'i ]', id: 'i]' },
-    { keys: 'a ]', id: 'a]' },
+    { keys: 'i [', selectCommand: 'waltz.innerBracketSelect' },
+    { keys: 'a [', selectCommand: 'waltz.aroundBracketSelect' },
+    { keys: 'i ]', selectCommand: 'waltz.innerBracketRightSelect' },
+    { keys: 'a ]', selectCommand: 'waltz.aroundBracketRightSelect' },
     // Angle brackets: shift+, and shift+.
-    { keys: 'i shift+,', id: 'i<' },
-    { keys: 'a shift+,', id: 'a<' },
-    { keys: 'i shift+.', id: 'i>' },
-    { keys: 'a shift+.', id: 'a>' },
+    { keys: 'i shift+,', selectCommand: 'waltz.innerAngleSelect' },
+    { keys: 'a shift+,', selectCommand: 'waltz.aroundAngleSelect' },
+    { keys: 'i shift+.', selectCommand: 'waltz.innerAngleRightSelect' },
+    { keys: 'a shift+.', selectCommand: 'waltz.aroundAngleRightSelect' },
     // Quotes: shift+7 for ', shift+2 for "
-    { keys: 'i shift+7', id: "i'" },
-    { keys: 'a shift+7', id: "a'" },
-    { keys: 'i shift+2', id: 'i"' },
-    { keys: 'a shift+2', id: 'a"' },
-    { keys: 'i shift+[BracketLeft]', id: 'i`' },
-    { keys: 'a shift+[BracketLeft]', id: 'a`' },
+    { keys: 'i shift+7', selectCommand: 'waltz.innerSingleQuoteSelect' },
+    { keys: 'a shift+7', selectCommand: 'waltz.aroundSingleQuoteSelect' },
+    { keys: 'i shift+2', selectCommand: 'waltz.innerDoubleQuoteSelect' },
+    { keys: 'a shift+2', selectCommand: 'waltz.aroundDoubleQuoteSelect' },
+    { keys: 'i shift+[BracketLeft]', selectCommand: 'waltz.innerBacktickSelect' },
+    { keys: 'a shift+[BracketLeft]', selectCommand: 'waltz.aroundBacktickSelect' },
 ];
-
-// Positional targets (cursor to target)
-const motionTargets = [
-    { keys: 'w', id: 'w' },
-    { keys: 'shift+w', id: 'W' },
-    { keys: 'b', id: 'b' },
-    { keys: 'shift+b', id: 'B' },
-    { keys: 'e', id: 'e' },
-    { keys: 'shift+e', id: 'E' },
-    { keys: '0', id: '0' },
-    { keys: 'shift+4', id: '$' },
-    { keys: 'shift+6', id: '^' },
-    { keys: 'j', id: 'j' },
-    { keys: 'k', id: 'k' },
-    { keys: 'h', id: 'h' },
-    { keys: 'l', id: 'l' },
-    { keys: 'g g', id: 'gg' },
-    { keys: 'shift+g', id: 'G' },
-];
-
-// Find character targets (f/t/F/T)
-const findTargets = [
-    { keys: 'f', id: 'f' },
-    { keys: 't', id: 't' },
-    { keys: 'shift+f', id: 'F' },
-    { keys: 'shift+t', id: 'T' },
-];
-
-// Keep full target list for text-object-like commands (surround, etc.)
-const textObjects = [...explicitTextObjects, ...motionTargets, ...findTargets];
 
 const operatorSelections: SelectionBinding[] = [
-    ...explicitTextObjects.map((obj) => ({
+    ...textObjectSelections.map((obj) => ({
         keys: obj.keys,
-        selectCommand: 'waltz.selectTextObject',
-        selectArgs: { target: obj.id },
+        selectCommand: obj.selectCommand,
     })),
     { keys: 'w', selectCommand: 'cursorWordStartRightSelect' },
     { keys: 'shift+w', selectCommand: 'waltz.cursorWhitespaceWordStartRightSelect' },
@@ -181,6 +149,13 @@ const basicMovement = [
     { key: 'shift+]', normal: 'waltz.paragraphDown', visual: 'waltz.paragraphDownSelect' },  // }
     // Match bracket
     { key: 'shift+5', normal: 'editor.action.jumpToBracket', visual: 'editor.action.selectToBracket' },  // %
+    // Find (f, t, F, T, ;, ,)
+    { key: 'f', normal: 'waltz.findCharForward', visual: 'waltz.findCharForwardSelect' },
+    { key: 't', normal: 'waltz.findCharForwardBefore', visual: 'waltz.findCharForwardBeforeSelect' },
+    { key: 'shift+f', normal: 'waltz.findCharBackward', visual: 'waltz.findCharBackwardSelect' },
+    { key: 'shift+t', normal: 'waltz.findCharBackwardBefore', visual: 'waltz.findCharBackwardBeforeSelect' },
+    { key: ';', normal: 'waltz.repeatFindChar', visual: 'waltz.repeatFindChar' },
+    { key: ',', normal: 'waltz.repeatFindCharReverse', visual: 'waltz.repeatFindCharReverse' },
 ];
 
 // ============================================================
@@ -243,19 +218,6 @@ const editCommands = [
 ];
 
 // ============================================================
-// Find commands (f, t, F, T, ;, ,)
-// ============================================================
-
-const findCommands = [
-    { key: 'f', normal: 'waltz.findCharForward', visual: 'waltz.findCharForwardSelect' },
-    { key: 't', normal: 'waltz.findCharForwardBefore', visual: 'waltz.findCharForwardBeforeSelect' },
-    { key: 'shift+f', normal: 'waltz.findCharBackward', visual: 'waltz.findCharBackwardSelect' },
-    { key: 'shift+t', normal: 'waltz.findCharBackwardBefore', visual: 'waltz.findCharBackwardBeforeSelect' },
-    { key: ';', normal: 'waltz.repeatFindChar', visual: 'waltz.repeatFindChar' },
-    { key: ',', normal: 'waltz.repeatFindCharReverse', visual: 'waltz.repeatFindCharReverse' },
-];
-
-// ============================================================
 // Surround commands (ys, cs, ds, visual S)
 // ============================================================
 
@@ -313,17 +275,10 @@ function generateKeybindings(): Keybinding[] {
     // Operator + selection-command combinations (d, c, y)
     for (const op of operators) {
         for (const selection of operatorSelections) {
-            const args: Record<string, unknown> = {
-                selectCommand: selection.selectCommand,
-            };
-            if (selection.selectArgs) {
-                args.selectArgs = selection.selectArgs;
-            }
-
             keybindings.push({
                 key: `${op.key} ${selection.keys}`,
                 command: op.command,
-                args,
+                args: { selectCommand: selection.selectCommand },
                 when: NORMAL,
             });
         }
@@ -338,22 +293,21 @@ function generateKeybindings(): Keybinding[] {
     }
 
     // Visual mode text object selection (viw, vaw, vi(, etc.)
-    for (const obj of explicitTextObjects) {
+    for (const obj of textObjectSelections) {
         keybindings.push({
             key: obj.keys,
-            command: 'waltz.selectTextObject',
-            args: { target: obj.id },
+            command: obj.selectCommand,
             when: VISUAL,
         });
     }
 
-    // Surround: ys{textObject}{surroundWith}
-    for (const obj of textObjects) {
+    // Surround: ys{selectionTarget}{surroundWith}
+    for (const selection of operatorSelections) {
         for (const surround of surroundTargets) {
             keybindings.push({
-                key: `y s ${obj.keys} ${surround.keys}`,
+                key: `y s ${selection.keys} ${surround.keys}`,
                 command: 'waltz.surround',
-                args: { target: obj.id, surroundWith: surround.id },
+                args: { selectCommand: selection.selectCommand, surroundWith: surround.id },
                 when: NORMAL,
             });
         }
@@ -417,12 +371,6 @@ function generateKeybindings(): Keybinding[] {
         } else {
             keybindings.push({ key: cmd.key, command: cmd.command, when: cmd.when });
         }
-    }
-
-    // Find commands
-    for (const cmd of findCommands) {
-        keybindings.push({ key: cmd.key, command: cmd.normal, when: NORMAL });
-        keybindings.push({ key: cmd.key, command: cmd.visual, when: VISUAL });
     }
 
     // Viewport commands

@@ -336,7 +336,10 @@ suite('Surround Commands Tests', () => {
             await vscode.commands.executeCommand('waltz.escapeKey');
             await new Promise((resolve) => setTimeout(resolve, 50));
 
-            await vscode.commands.executeCommand('waltz.surround', { target: 'iw', surroundWith: '"' });
+            await vscode.commands.executeCommand('waltz.surround', {
+                selectCommand: 'waltz.innerWordSelect',
+                surroundWith: '"',
+            });
             await new Promise((resolve) => setTimeout(resolve, 50));
 
             assert.strictEqual(doc.getText(), '"hello" world', 'Should wrap word in quotes');
@@ -350,7 +353,10 @@ suite('Surround Commands Tests', () => {
             await vscode.commands.executeCommand('waltz.escapeKey');
             await new Promise((resolve) => setTimeout(resolve, 50));
 
-            await vscode.commands.executeCommand('waltz.surround', { target: 'iw', surroundWith: '(' });
+            await vscode.commands.executeCommand('waltz.surround', {
+                selectCommand: 'waltz.innerWordSelect',
+                surroundWith: '(',
+            });
             await new Promise((resolve) => setTimeout(resolve, 50));
 
             assert.strictEqual(doc.getText(), '(hello) world', 'Should wrap word in parentheses');
@@ -364,7 +370,10 @@ suite('Surround Commands Tests', () => {
             await vscode.commands.executeCommand('waltz.escapeKey');
             await new Promise((resolve) => setTimeout(resolve, 50));
 
-            await vscode.commands.executeCommand('waltz.surround', { target: 'iw', surroundWith: '{' });
+            await vscode.commands.executeCommand('waltz.surround', {
+                selectCommand: 'waltz.innerWordSelect',
+                surroundWith: '{',
+            });
             await new Promise((resolve) => setTimeout(resolve, 50));
 
             assert.strictEqual(doc.getText(), '{hello} world', 'Should wrap word in braces');
