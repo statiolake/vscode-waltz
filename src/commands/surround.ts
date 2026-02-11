@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import { type Position, Range } from 'vscode';
 import { enterMode } from '../modes';
 import type { VimState } from '../vimState';
+import { getCharViaQuickPick } from './find';
 import { findPairRange, findQuoteRange } from './operator';
 
 /**
@@ -75,7 +76,36 @@ async function getSurroundPair(char: string): Promise<SurroundPair | null> {
         if (!tagName) return null;
         return createTagPair(tagName);
     }
-    return SURROUND_PAIRS[char] ?? null;
+
+    const predefined = SURROUND_PAIRS[char];
+    if (predefined) return predefined;
+
+    // Fallback: symmetric delimiter such as "*", "**", "__", etc.
+    return { open: char, close: char };
+}
+
+function findDelimitedRange(document: vscode.TextDocument, position: Position, delimiter: string): Range | null {
+    if (delimiter.length === 0) return null;
+
+    const text = document.getText();
+    const offset = document.offsetAt(position);
+
+    let openStart = text.lastIndexOf(delimiter, offset);
+    if (openStart === -1) return null;
+
+    // If cursor is inside the opening delimiter, search previous one.
+    if (offset > openStart && offset < openStart + delimiter.length) {
+        openStart = text.lastIndexOf(delimiter, openStart - 1);
+        if (openStart === -1) return null;
+    }
+
+    const closeSearchStart = Math.max(offset, openStart + delimiter.length);
+    const closeStart = text.indexOf(delimiter, closeSearchStart);
+    if (closeStart === -1) return null;
+
+    const start = document.positionAt(openStart);
+    const end = document.positionAt(closeStart + delimiter.length);
+    return new Range(start, end);
 }
 
 /**
@@ -143,14 +173,12 @@ function findTagRange(
 
 /**
  * Surround target (ys command)
- * Args: { selectCommand: string, surroundWith: string }
+ * Args: { selectCommand?: string, surroundWith?: string }
  */
-async function surround(args: { selectCommand: string; surroundWith: string }): Promise<void> {
+async function surround(args: { selectCommand?: string; surroundWith?: string }): Promise<void> {
     const editor = vscode.window.activeTextEditor;
     if (!editor) return;
-
-    const pair = await getSurroundPair(args.surroundWith);
-    if (!pair) return;
+    if (!args.selectCommand) return;
 
     try {
         await vscode.commands.executeCommand('cancelSelection');
@@ -160,6 +188,14 @@ async function surround(args: { selectCommand: string; surroundWith: string }): 
     }
 
     if (editor.selections.every((selection) => selection.isEmpty)) return;
+
+    const surroundWith =
+        args.surroundWith ??
+        (await getCharViaQuickPick('Type a character to surround with... (use t for HTML/XML tag)'));
+    if (!surroundWith) return;
+
+    const pair = await getSurroundPair(surroundWith);
+    if (!pair) return;
 
     const document = editor.document;
     const edits: { range: Range; newText: string }[] = [];
@@ -185,17 +221,22 @@ async function surround(args: { selectCommand: string; surroundWith: string }): 
 
 /**
  * Change surround (cs command)
- * Args: { from: string, to: string }
+ * Args: { from?: string, to?: string }
  */
-async function changeSurround(args: { from: string; to: string }): Promise<void> {
+async function changeSurround(args: { from?: string; to?: string }): Promise<void> {
     const editor = vscode.window.activeTextEditor;
     if (!editor) return;
 
-    const newPair = await getSurroundPair(args.to);
+    const from = args.from ?? (await getCharViaQuickPick('Type a character to change FROM... (use t for tag)'));
+    if (!from) return;
+
+    const to = args.to ?? (await getCharViaQuickPick('Type a character to change TO... (use t for tag)'));
+    if (!to) return;
+
+    const newPair = await getSurroundPair(to);
     if (!newPair) return;
 
     const document = editor.document;
-    const { from } = args;
 
     // Handle tag target
     if (from === 't') {
@@ -231,25 +272,34 @@ async function changeSurround(args: { from: string; to: string }): Promise<void>
         return;
     }
 
-    // Handle pair/quote target
-    const isQuote = from === "'" || from === '"' || from === '`';
+    // Handle pair/quote/any-delimiter target
     const edits: { range: Range; newText: string }[] = [];
 
     for (const selection of editor.selections) {
         let range: Range | null = null;
+        let openTokenLength = from.length;
+        let closeTokenLength = from.length;
 
-        if (isQuote) {
+        const p = PAIR_MAP[from];
+        if (p) {
+            range = findPairRange(document, selection.active, p.open, p.close, false);
+            openTokenLength = p.open.length;
+            closeTokenLength = p.close.length;
+        } else if (from.length === 1) {
             range = findQuoteRange(document, selection.active, from, false);
-        } else {
-            const p = PAIR_MAP[from];
-            if (p) {
-                range = findPairRange(document, selection.active, p.open, p.close, false);
+            if (!range) {
+                range = findDelimitedRange(document, selection.active, from);
             }
+        } else {
+            range = findDelimitedRange(document, selection.active, from);
         }
 
         if (range) {
             // Get inner content
-            const innerRange = new Range(range.start.translate(0, 1), range.end.translate(0, -1));
+            const innerStartOffset = document.offsetAt(range.start) + openTokenLength;
+            const innerEndOffset = document.offsetAt(range.end) - closeTokenLength;
+            if (innerEndOffset < innerStartOffset) continue;
+            const innerRange = new Range(document.positionAt(innerStartOffset), document.positionAt(innerEndOffset));
             const innerText = document.getText(innerRange);
             edits.push({
                 range,
@@ -269,14 +319,15 @@ async function changeSurround(args: { from: string; to: string }): Promise<void>
 
 /**
  * Delete surround (ds command)
- * Args: { target: string }
+ * Args: { target?: string }
  */
-async function deleteSurround(args: { target: string }): Promise<void> {
+async function deleteSurround(args: { target?: string }): Promise<void> {
     const editor = vscode.window.activeTextEditor;
     if (!editor) return;
 
     const document = editor.document;
-    const { target } = args;
+    const target = args.target ?? (await getCharViaQuickPick('Type a character to delete surround... (use t for tag)'));
+    if (!target) return;
 
     // Handle tag target
     if (target === 't') {
@@ -312,25 +363,34 @@ async function deleteSurround(args: { target: string }): Promise<void> {
         return;
     }
 
-    // Handle pair/quote target
-    const isQuote = target === "'" || target === '"' || target === '`';
+    // Handle pair/quote/any-delimiter target
     const edits: { range: Range; newText: string }[] = [];
 
     for (const selection of editor.selections) {
         let range: Range | null = null;
+        let openTokenLength = target.length;
+        let closeTokenLength = target.length;
 
-        if (isQuote) {
+        const p = PAIR_MAP[target];
+        if (p) {
+            range = findPairRange(document, selection.active, p.open, p.close, false);
+            openTokenLength = p.open.length;
+            closeTokenLength = p.close.length;
+        } else if (target.length === 1) {
             range = findQuoteRange(document, selection.active, target, false);
-        } else {
-            const p = PAIR_MAP[target];
-            if (p) {
-                range = findPairRange(document, selection.active, p.open, p.close, false);
+            if (!range) {
+                range = findDelimitedRange(document, selection.active, target);
             }
+        } else {
+            range = findDelimitedRange(document, selection.active, target);
         }
 
         if (range) {
             // Get inner content and replace the whole range with just the content
-            const innerRange = new Range(range.start.translate(0, 1), range.end.translate(0, -1));
+            const innerStartOffset = document.offsetAt(range.start) + openTokenLength;
+            const innerEndOffset = document.offsetAt(range.end) - closeTokenLength;
+            if (innerEndOffset < innerStartOffset) continue;
+            const innerRange = new Range(document.positionAt(innerStartOffset), document.positionAt(innerEndOffset));
             const innerText = document.getText(innerRange);
             edits.push({
                 range,
@@ -350,13 +410,18 @@ async function deleteSurround(args: { target: string }): Promise<void> {
 
 /**
  * Visual surround (S command in visual mode)
- * Args: { surroundWith: string }
+ * Args: { surroundWith?: string }
  */
-async function visualSurround(vimState: VimState, args: { surroundWith: string }): Promise<void> {
+async function visualSurround(vimState: VimState, args: { surroundWith?: string }): Promise<void> {
     const editor = vscode.window.activeTextEditor;
     if (!editor) return;
 
-    const pair = await getSurroundPair(args.surroundWith);
+    const surroundWith =
+        args.surroundWith ??
+        (await getCharViaQuickPick('Type a character to surround with... (use t for HTML/XML tag)'));
+    if (!surroundWith) return;
+
+    const pair = await getSurroundPair(surroundWith);
     if (!pair) return;
 
     const document = editor.document;
@@ -386,17 +451,20 @@ async function visualSurround(vimState: VimState, args: { surroundWith: string }
 
 export function registerSurroundCommands(context: vscode.ExtensionContext, getVimState: () => VimState): void {
     context.subscriptions.push(
-        vscode.commands.registerCommand('waltz.surround', (args: { selectCommand: string; surroundWith: string }) => {
-            if (args?.selectCommand && args?.surroundWith) surround(args);
+        vscode.commands.registerCommand(
+            'waltz.surround',
+            (args: { selectCommand?: string; surroundWith?: string } = {}) => {
+                surround(args);
+            },
+        ),
+        vscode.commands.registerCommand('waltz.changeSurround', (args: { from?: string; to?: string } = {}) => {
+            changeSurround(args);
         }),
-        vscode.commands.registerCommand('waltz.changeSurround', (args: { from: string; to: string }) => {
-            if (args?.from && args?.to) changeSurround(args);
+        vscode.commands.registerCommand('waltz.deleteSurround', (args: { target?: string } = {}) => {
+            deleteSurround(args);
         }),
-        vscode.commands.registerCommand('waltz.deleteSurround', (args: { target: string }) => {
-            if (args?.target) deleteSurround(args);
-        }),
-        vscode.commands.registerCommand('waltz.visualSurround', (args: { surroundWith: string }) => {
-            if (args?.surroundWith) visualSurround(getVimState(), args);
+        vscode.commands.registerCommand('waltz.visualSurround', (args: { surroundWith?: string } = {}) => {
+            visualSurround(getVimState(), args);
         }),
     );
 }

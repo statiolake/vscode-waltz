@@ -221,30 +221,6 @@ const editCommands = [
 // Surround commands (ys, cs, ds, visual S)
 // ============================================================
 
-// Surround targets (JIS keyboard layout)
-const surroundTargets = [
-    // Parentheses: shift+8 for (, shift+9 for )
-    { keys: 'shift+8', id: '(' },
-    { keys: 'shift+9', id: ')' },
-    { keys: 'b', id: 'b' },        // Vim alias for ()
-    // Braces: shift+[ for {, shift+] for }
-    { keys: 'shift+[', id: '{' },
-    { keys: 'shift+]', id: '}' },
-    { keys: 'shift+b', id: 'B' },  // Vim alias for {}
-    // Brackets
-    { keys: '[', id: '[' },
-    { keys: ']', id: ']' },
-    // Angle brackets: shift+, for <, shift+. for >
-    { keys: 'shift+,', id: '<' },
-    { keys: 'shift+.', id: '>' },
-    // Quotes: shift+7 for ', shift+2 for "
-    { keys: 'shift+7', id: "'" },
-    { keys: 'shift+2', id: '"' },
-    { keys: 'shift+[BracketLeft]', id: '`' },
-    // Tag
-    { keys: 't', id: 't' },
-];
-
 // ============================================================
 // Viewport / scroll commands
 // ============================================================
@@ -301,49 +277,36 @@ function generateKeybindings(): Keybinding[] {
         });
     }
 
-    // Surround: ys{selectionTarget}{surroundWith}
+    // Surround: ys{selectionTarget} then prompt surroundWith
     for (const selection of operatorSelections) {
-        for (const surround of surroundTargets) {
-            keybindings.push({
-                key: `y s ${selection.keys} ${surround.keys}`,
-                command: 'waltz.surround',
-                args: { selectCommand: selection.selectCommand, surroundWith: surround.id },
-                when: NORMAL,
-            });
-        }
-    }
-
-    // Surround: cs{from}{to}
-    for (const from of surroundTargets) {
-        for (const to of surroundTargets) {
-            keybindings.push({
-                key: `c s ${from.keys} ${to.keys}`,
-                command: 'waltz.changeSurround',
-                args: { from: from.id, to: to.id },
-                when: NORMAL,
-            });
-        }
-    }
-
-    // Surround: ds{target}
-    for (const target of surroundTargets) {
         keybindings.push({
-            key: `d s ${target.keys}`,
-            command: 'waltz.deleteSurround',
-            args: { target: target.id },
+            key: `y s ${selection.keys}`,
+            command: 'waltz.surround',
+            args: { selectCommand: selection.selectCommand },
             when: NORMAL,
         });
     }
 
-    // Surround: S{surroundWith} in visual mode
-    for (const surround of surroundTargets) {
-        keybindings.push({
-            key: `shift+s ${surround.keys}`,
-            command: 'waltz.visualSurround',
-            args: { surroundWith: surround.id },
-            when: VISUAL,
-        });
-    }
+    // Surround: cs then prompt from/to
+    keybindings.push({
+        key: 'c s',
+        command: 'waltz.changeSurround',
+        when: NORMAL,
+    });
+
+    // Surround: ds then prompt target
+    keybindings.push({
+        key: 'd s',
+        command: 'waltz.deleteSurround',
+        when: NORMAL,
+    });
+
+    // Surround: S then prompt surroundWith in visual mode
+    keybindings.push({
+        key: 'shift+s',
+        command: 'waltz.visualSurround',
+        when: VISUAL,
+    });
 
     // Basic movement (normal and visual)
     for (const cmd of basicMovement) {
