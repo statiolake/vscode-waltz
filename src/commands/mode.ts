@@ -24,7 +24,7 @@ export function registerModeCommands(context: vscode.ExtensionContext, getVimSta
 
     // I - Insert mode at line start
     context.subscriptions.push(
-        vscode.commands.registerCommand('waltz.enterInsertLineStart', async () => {
+        vscode.commands.registerCommand('waltz.enterInsertAtLineStart', async () => {
             const editor = vscode.window.activeTextEditor;
             if (editor) {
                 await vscode.commands.executeCommand('cursorHome');
@@ -35,7 +35,7 @@ export function registerModeCommands(context: vscode.ExtensionContext, getVimSta
 
     // A - Insert mode at line end
     context.subscriptions.push(
-        vscode.commands.registerCommand('waltz.enterInsertLineEnd', async () => {
+        vscode.commands.registerCommand('waltz.enterInsertAtLineEnd', async () => {
             const editor = vscode.window.activeTextEditor;
             if (editor) {
                 await vscode.commands.executeCommand('cursorEnd');
@@ -46,7 +46,7 @@ export function registerModeCommands(context: vscode.ExtensionContext, getVimSta
 
     // o - Insert mode on new line below
     context.subscriptions.push(
-        vscode.commands.registerCommand('waltz.enterInsertNewLineBelow', async () => {
+        vscode.commands.registerCommand('waltz.enterInsertAtNewLineBelow', async () => {
             const editor = vscode.window.activeTextEditor;
             if (editor) {
                 await vscode.commands.executeCommand('editor.action.insertLineAfter');
@@ -57,7 +57,7 @@ export function registerModeCommands(context: vscode.ExtensionContext, getVimSta
 
     // O - Insert mode on new line above
     context.subscriptions.push(
-        vscode.commands.registerCommand('waltz.enterInsertNewLineAbove', async () => {
+        vscode.commands.registerCommand('waltz.enterInsertAtNewLineAbove', async () => {
             const editor = vscode.window.activeTextEditor;
             if (editor) {
                 await vscode.commands.executeCommand('editor.action.insertLineBefore');
@@ -71,6 +71,36 @@ export function registerModeCommands(context: vscode.ExtensionContext, getVimSta
         vscode.commands.registerCommand('waltz.enterVisual', () => {
             const editor = vscode.window.activeTextEditor;
             enterMode(getVimState(), editor, 'visual');
+        }),
+    );
+
+    // i in Visual mode - Insert at start of selection
+    context.subscriptions.push(
+        vscode.commands.registerCommand('waltz.enterInsertAtSelectionStart', () => {
+            const editor = vscode.window.activeTextEditor;
+            if (editor) {
+                // Move cursor to start of each selection
+                editor.selections = editor.selections.map((selection) => {
+                    const start = selection.start;
+                    return new vscode.Selection(start, start);
+                });
+            }
+            enterMode(getVimState(), editor, 'insert');
+        }),
+    );
+
+    // a in Visual mode - Insert at end of selection
+    context.subscriptions.push(
+        vscode.commands.registerCommand('waltz.enterInsertAtSelectionEnd', () => {
+            const editor = vscode.window.activeTextEditor;
+            if (editor) {
+                // Move cursor to end of each selection
+                editor.selections = editor.selections.map((selection) => {
+                    const end = selection.end;
+                    return new vscode.Selection(end, end);
+                });
+            }
+            enterMode(getVimState(), editor, 'insert');
         }),
     );
 }

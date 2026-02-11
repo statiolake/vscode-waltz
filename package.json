@@ -77,24 +77,40 @@
                 "title": "Waltz: Enter Insert Mode (i)"
             },
             {
-                "command": "waltz.enterInsertLineStart",
+                "command": "waltz.enterInsertAtLineStart",
                 "title": "Waltz: Enter Insert Mode at Line Start (I)"
             },
             {
-                "command": "waltz.enterInsertLineEnd",
+                "command": "waltz.enterInsertAtLineEnd",
                 "title": "Waltz: Enter Insert Mode at Line End (A)"
             },
             {
-                "command": "waltz.enterInsertNewLineBelow",
+                "command": "waltz.enterInsertAtNewLineBelow",
                 "title": "Waltz: Enter Insert Mode New Line Below (o)"
             },
             {
-                "command": "waltz.enterInsertNewLineAbove",
+                "command": "waltz.enterInsertAtNewLineAbove",
                 "title": "Waltz: Enter Insert Mode New Line Above (O)"
             },
             {
                 "command": "waltz.enterVisual",
                 "title": "Waltz: Enter Visual Mode (v)"
+            },
+            {
+                "command": "waltz.enterNormal",
+                "title": "Waltz: Enter Normal Mode"
+            },
+            {
+                "command": "waltz.enterInsertAtSelectionStart",
+                "title": "Waltz: Enter Insert Mode at Selection Start (Visual i)"
+            },
+            {
+                "command": "waltz.enterInsertAtSelectionEnd",
+                "title": "Waltz: Enter Insert Mode at Selection End (Visual a)"
+            },
+            {
+                "command": "waltz.toggleMode",
+                "title": "Waltz: Toggle Between Normal and Insert Mode"
             },
             {
                 "command": "waltz.visualChange",
@@ -532,11 +548,6 @@
                 "args": {
                     "line": true
                 },
-                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
-            },
-            {
-                "key": "r",
-                "command": "waltz.replaceChar",
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
@@ -9724,23 +9735,33 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
+                "key": "i",
+                "command": "waltz.enterInsertAtSelectionStart",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
+                "key": "a",
+                "command": "waltz.enterInsertAtSelectionEnd",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
+            },
+            {
                 "key": "shift+i",
-                "command": "waltz.enterInsertLineStart",
+                "command": "waltz.enterInsertAtLineStart",
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
                 "key": "shift+a",
-                "command": "waltz.enterInsertLineEnd",
+                "command": "waltz.enterInsertAtLineEnd",
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
                 "key": "o",
-                "command": "waltz.enterInsertNewLineBelow",
+                "command": "waltz.enterInsertAtNewLineBelow",
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
                 "key": "shift+o",
-                "command": "waltz.enterInsertNewLineAbove",
+                "command": "waltz.enterInsertAtNewLineAbove",
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
             {
@@ -9995,6 +10016,7 @@
         "lint-staged": "^16.2.4",
         "mocha": "^11.7.4",
         "npm-run-all": "^4.1.5",
+        "ts-node": "^10.9.2",
         "typescript": "5.9.3",
         "typescript-eslint": "^8.46.0"
     },
