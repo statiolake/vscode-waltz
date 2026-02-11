@@ -4,7 +4,7 @@ import { enterMode } from '../modes';
 import { collapseSelections } from '../utils/selection';
 import type { VimState } from '../vimState';
 import { getCharViaQuickPick } from './find';
-import { findPairRange, findQuoteRange } from './operator';
+import { findPairRange, findQuoteRange } from './textObject';
 
 /**
  * Surround pair mapping

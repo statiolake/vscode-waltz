@@ -6,6 +6,7 @@ import { registerModeCommands } from './mode';
 import { registerMotionCommands } from './motion';
 import { registerOperatorCommands } from './operator';
 import { registerSurroundCommands } from './surround';
+import { registerTextObjectCommands } from './textObject';
 import { registerViewportCommands } from './viewport';
 
 /**
@@ -13,6 +14,7 @@ import { registerViewportCommands } from './viewport';
  */
 export function registerCommands(context: vscode.ExtensionContext, getVimState: () => VimState): void {
     registerFindCommands(context, getVimState);
+    registerTextObjectCommands(context);
     registerOperatorCommands(context, getVimState);
     registerModeCommands(context, getVimState);
     registerEditCommands(context, getVimState);

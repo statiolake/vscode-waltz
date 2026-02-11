@@ -6,7 +6,33 @@
 import * as assert from 'node:assert';
 import * as vscode from 'vscode';
 import { Position } from 'vscode';
-import { findPairRange, findQuoteRange, getTextObjectRange } from '../../commands/operator';
+import {
+    findPairRange,
+    findQuoteRange,
+    getAroundBigWordRange,
+    getAroundDoubleQuoteRange,
+    getAroundParenRange,
+    getAroundWordRange,
+    getCharLeftRange,
+    getCharRightRange,
+    getInnerAngleRange,
+    getInnerBacktickRange,
+    getInnerBigWordRange,
+    getInnerBraceRange,
+    getInnerBracketRange,
+    getInnerDoubleQuoteRange,
+    getInnerParenRange,
+    getInnerSingleQuoteRange,
+    getInnerWordRange,
+    getLineDownRange,
+    getLineEndRange,
+    getLineFirstNonWhitespaceRange,
+    getLineStartRange,
+    getLineUpRange,
+    getWordBackwardRange,
+    getWordEndRange,
+    getWordForwardRange,
+} from '../../commands/textObject';
 
 suite('Text Object Range Calculation Tests', () => {
     // Helper to create a real VS Code document
@@ -215,7 +241,7 @@ suite('Text Object Range Calculation Tests', () => {
         suite('iw (inner word)', () => {
             test('cursor in middle of word', async () => {
                 const doc = await createDocument('hello world');
-                const range = getTextObjectRange(doc, new Position(0, 2), 'iw');
+                const range = getInnerWordRange(doc, new Position(0, 2));
                 assert.ok(range, 'Should find range');
                 assert.strictEqual(range.start.character, 0, 'Should start at word start');
                 assert.strictEqual(range.end.character, 5, 'Should end at word end');
@@ -223,7 +249,7 @@ suite('Text Object Range Calculation Tests', () => {
 
             test('cursor at start of word', async () => {
                 const doc = await createDocument('hello world');
-                const range = getTextObjectRange(doc, new Position(0, 0), 'iw');
+                const range = getInnerWordRange(doc, new Position(0, 0));
                 assert.ok(range, 'Should find range');
                 assert.strictEqual(range.start.character, 0);
                 assert.strictEqual(range.end.character, 5);
@@ -231,7 +257,7 @@ suite('Text Object Range Calculation Tests', () => {
 
             test('cursor at end of word', async () => {
                 const doc = await createDocument('hello world');
-                const range = getTextObjectRange(doc, new Position(0, 4), 'iw');
+                const range = getInnerWordRange(doc, new Position(0, 4));
                 assert.ok(range, 'Should find range');
                 assert.strictEqual(range.start.character, 0);
                 assert.strictEqual(range.end.character, 5);
@@ -239,7 +265,7 @@ suite('Text Object Range Calculation Tests', () => {
 
             test('cursor on second word', async () => {
                 const doc = await createDocument('hello world');
-                const range = getTextObjectRange(doc, new Position(0, 7), 'iw');
+                const range = getInnerWordRange(doc, new Position(0, 7));
                 assert.ok(range, 'Should find range');
                 assert.strictEqual(range.start.character, 6, 'Should start at second word');
                 assert.strictEqual(range.end.character, 11, 'Should end at second word end');
@@ -249,7 +275,7 @@ suite('Text Object Range Calculation Tests', () => {
         suite('aw (around word)', () => {
             test('should include trailing whitespace', async () => {
                 const doc = await createDocument('hello world');
-                const range = getTextObjectRange(doc, new Position(0, 2), 'aw');
+                const range = getAroundWordRange(doc, new Position(0, 2));
                 assert.ok(range, 'Should find range');
                 assert.strictEqual(range.start.character, 0, 'Should start at word start');
                 assert.strictEqual(range.end.character, 6, 'Should include trailing space');
@@ -259,7 +285,7 @@ suite('Text Object Range Calculation Tests', () => {
         suite('iW (inner WORD)', () => {
             test('whitespace-delimited WORD', async () => {
                 const doc = await createDocument('hello_world foo');
-                const range = getTextObjectRange(doc, new Position(0, 5), 'iW');
+                const range = getInnerBigWordRange(doc, new Position(0, 5));
                 assert.ok(range, 'Should find range');
                 assert.strictEqual(range.start.character, 0, 'Should start at WORD start');
                 assert.strictEqual(range.end.character, 11, 'Should end at WORD end');
@@ -267,7 +293,7 @@ suite('Text Object Range Calculation Tests', () => {
 
             test('cursor in middle of WORD', async () => {
                 const doc = await createDocument('foo-bar+baz');
-                const range = getTextObjectRange(doc, new Position(0, 4), 'iW');
+                const range = getInnerBigWordRange(doc, new Position(0, 4));
                 assert.ok(range, 'Should find range');
                 assert.strictEqual(range.start.character, 0);
                 assert.strictEqual(range.end.character, 11);
@@ -277,7 +303,7 @@ suite('Text Object Range Calculation Tests', () => {
         suite('aW (around WORD)', () => {
             test('should include trailing whitespace', async () => {
                 const doc = await createDocument('foo-bar baz');
-                const range = getTextObjectRange(doc, new Position(0, 3), 'aW');
+                const range = getAroundBigWordRange(doc, new Position(0, 3));
                 assert.ok(range, 'Should find range');
                 assert.strictEqual(range.start.character, 0);
                 assert.strictEqual(range.end.character, 8, 'Should include trailing space');
@@ -288,7 +314,7 @@ suite('Text Object Range Calculation Tests', () => {
     suite('getTextObjectRange - quote text objects', () => {
         test('i" should call findQuoteRange with inner=true', async () => {
             const doc = await createDocument('"Hello"');
-            const range = getTextObjectRange(doc, new Position(0, 3), 'i"');
+            const range = getInnerDoubleQuoteRange(doc, new Position(0, 3));
             assert.ok(range, 'Should find range');
             assert.strictEqual(range.start.character, 1, 'Should start after opening quote');
             assert.strictEqual(range.end.character, 6, 'Should end before closing quote');
@@ -296,7 +322,7 @@ suite('Text Object Range Calculation Tests', () => {
 
         test('a" should call findQuoteRange with inner=false', async () => {
             const doc = await createDocument('"Hello"');
-            const range = getTextObjectRange(doc, new Position(0, 3), 'a"');
+            const range = getAroundDoubleQuoteRange(doc, new Position(0, 3));
             assert.ok(range, 'Should find range');
             assert.strictEqual(range.start.character, 0, 'Should start at opening quote');
             assert.strictEqual(range.end.character, 7, 'Should end after closing quote');
@@ -304,7 +330,7 @@ suite('Text Object Range Calculation Tests', () => {
 
         test("i' should work with single quotes", async () => {
             const doc = await createDocument("'Hello'");
-            const range = getTextObjectRange(doc, new Position(0, 3), "i'");
+            const range = getInnerSingleQuoteRange(doc, new Position(0, 3));
             assert.ok(range, 'Should find range');
             assert.strictEqual(range.start.character, 1);
             assert.strictEqual(range.end.character, 6);
@@ -312,7 +338,7 @@ suite('Text Object Range Calculation Tests', () => {
 
         test('i` should work with backticks', async () => {
             const doc = await createDocument('`Hello`');
-            const range = getTextObjectRange(doc, new Position(0, 3), 'i`');
+            const range = getInnerBacktickRange(doc, new Position(0, 3));
             assert.ok(range, 'Should find range');
             assert.strictEqual(range.start.character, 1);
             assert.strictEqual(range.end.character, 6);
@@ -322,7 +348,7 @@ suite('Text Object Range Calculation Tests', () => {
     suite('getTextObjectRange - pair text objects', () => {
         test('i( should find inner parentheses', async () => {
             const doc = await createDocument('(Hello)');
-            const range = getTextObjectRange(doc, new Position(0, 3), 'i(');
+            const range = getInnerParenRange(doc, new Position(0, 3));
             assert.ok(range, 'Should find range');
             assert.strictEqual(range.start.character, 1);
             assert.strictEqual(range.end.character, 6);
@@ -330,7 +356,7 @@ suite('Text Object Range Calculation Tests', () => {
 
         test('ib should find inner parentheses (b for block)', async () => {
             const doc = await createDocument('(Hello)');
-            const range = getTextObjectRange(doc, new Position(0, 3), 'ib');
+            const range = getInnerParenRange(doc, new Position(0, 3));
             assert.ok(range, 'Should find range');
             assert.strictEqual(range.start.character, 1);
             assert.strictEqual(range.end.character, 6);
@@ -338,7 +364,7 @@ suite('Text Object Range Calculation Tests', () => {
 
         test('i) should find inner parentheses', async () => {
             const doc = await createDocument('(Hello)');
-            const range = getTextObjectRange(doc, new Position(0, 3), 'i)');
+            const range = getInnerParenRange(doc, new Position(0, 3));
             assert.ok(range, 'Should find range');
             assert.strictEqual(range.start.character, 1);
             assert.strictEqual(range.end.character, 6);
@@ -346,7 +372,7 @@ suite('Text Object Range Calculation Tests', () => {
 
         test('a( should find outer parentheses', async () => {
             const doc = await createDocument('(Hello)');
-            const range = getTextObjectRange(doc, new Position(0, 3), 'a(');
+            const range = getAroundParenRange(doc, new Position(0, 3));
             assert.ok(range, 'Should find range');
             assert.strictEqual(range.start.character, 0);
             assert.strictEqual(range.end.character, 7);
@@ -354,7 +380,7 @@ suite('Text Object Range Calculation Tests', () => {
 
         test('i{ should find inner braces', async () => {
             const doc = await createDocument('{Hello}');
-            const range = getTextObjectRange(doc, new Position(0, 3), 'i{');
+            const range = getInnerBraceRange(doc, new Position(0, 3));
             assert.ok(range, 'Should find range');
             assert.strictEqual(range.start.character, 1);
             assert.strictEqual(range.end.character, 6);
@@ -362,7 +388,7 @@ suite('Text Object Range Calculation Tests', () => {
 
         test('iB should find inner braces (B for block)', async () => {
             const doc = await createDocument('{Hello}');
-            const range = getTextObjectRange(doc, new Position(0, 3), 'iB');
+            const range = getInnerBraceRange(doc, new Position(0, 3));
             assert.ok(range, 'Should find range');
             assert.strictEqual(range.start.character, 1);
             assert.strictEqual(range.end.character, 6);
@@ -370,7 +396,7 @@ suite('Text Object Range Calculation Tests', () => {
 
         test('i} should find inner braces', async () => {
             const doc = await createDocument('{Hello}');
-            const range = getTextObjectRange(doc, new Position(0, 3), 'i}');
+            const range = getInnerBraceRange(doc, new Position(0, 3));
             assert.ok(range, 'Should find range');
             assert.strictEqual(range.start.character, 1);
             assert.strictEqual(range.end.character, 6);
@@ -378,7 +404,7 @@ suite('Text Object Range Calculation Tests', () => {
 
         test('i[ should find inner brackets', async () => {
             const doc = await createDocument('[Hello]');
-            const range = getTextObjectRange(doc, new Position(0, 3), 'i[');
+            const range = getInnerBracketRange(doc, new Position(0, 3));
             assert.ok(range, 'Should find range');
             assert.strictEqual(range.start.character, 1);
             assert.strictEqual(range.end.character, 6);
@@ -386,7 +412,7 @@ suite('Text Object Range Calculation Tests', () => {
 
         test('i] should find inner brackets', async () => {
             const doc = await createDocument('[Hello]');
-            const range = getTextObjectRange(doc, new Position(0, 3), 'i]');
+            const range = getInnerBracketRange(doc, new Position(0, 3));
             assert.ok(range, 'Should find range');
             assert.strictEqual(range.start.character, 1);
             assert.strictEqual(range.end.character, 6);
@@ -394,7 +420,7 @@ suite('Text Object Range Calculation Tests', () => {
 
         test('i< should find inner angle brackets', async () => {
             const doc = await createDocument('<Hello>');
-            const range = getTextObjectRange(doc, new Position(0, 3), 'i<');
+            const range = getInnerAngleRange(doc, new Position(0, 3));
             assert.ok(range, 'Should find range');
             assert.strictEqual(range.start.character, 1);
             assert.strictEqual(range.end.character, 6);
@@ -402,7 +428,7 @@ suite('Text Object Range Calculation Tests', () => {
 
         test('i> should find inner angle brackets', async () => {
             const doc = await createDocument('<Hello>');
-            const range = getTextObjectRange(doc, new Position(0, 3), 'i>');
+            const range = getInnerAngleRange(doc, new Position(0, 3));
             assert.ok(range, 'Should find range');
             assert.strictEqual(range.start.character, 1);
             assert.strictEqual(range.end.character, 6);
@@ -413,7 +439,7 @@ suite('Text Object Range Calculation Tests', () => {
         suite('w (forward to end of word)', () => {
             test('should move from cursor to end of word', async () => {
                 const doc = await createDocument('hello world');
-                const range = getTextObjectRange(doc, new Position(0, 2), 'w');
+                const range = getWordForwardRange(doc, new Position(0, 2));
                 assert.ok(range, 'Should find range');
                 assert.strictEqual(range.start.character, 2, 'Should start at cursor');
                 assert.strictEqual(range.end.character, 5, 'Should end at word end');
@@ -423,7 +449,7 @@ suite('Text Object Range Calculation Tests', () => {
         suite('b (backward to start of word)', () => {
             test('should move from cursor to start of word', async () => {
                 const doc = await createDocument('hello world');
-                const range = getTextObjectRange(doc, new Position(0, 3), 'b');
+                const range = getWordBackwardRange(doc, new Position(0, 3));
                 assert.ok(range, 'Should find range');
                 assert.strictEqual(range.start.character, 0, 'Should start at word start');
                 assert.strictEqual(range.end.character, 3, 'Should end at cursor');
@@ -433,7 +459,7 @@ suite('Text Object Range Calculation Tests', () => {
         suite('e (forward to end of word)', () => {
             test('should move from cursor to end of word', async () => {
                 const doc = await createDocument('hello world');
-                const range = getTextObjectRange(doc, new Position(0, 2), 'e');
+                const range = getWordEndRange(doc, new Position(0, 2));
                 assert.ok(range, 'Should find range');
                 assert.strictEqual(range.start.character, 2, 'Should start at cursor');
                 assert.strictEqual(range.end.character, 5, 'Should end at word end');
@@ -443,7 +469,7 @@ suite('Text Object Range Calculation Tests', () => {
         suite('$ (to end of line)', () => {
             test('should move from cursor to end of line', async () => {
                 const doc = await createDocument('hello world');
-                const range = getTextObjectRange(doc, new Position(0, 5), '$');
+                const range = getLineEndRange(doc, new Position(0, 5));
                 assert.ok(range, 'Should find range');
                 assert.strictEqual(range.start.character, 5, 'Should start at cursor');
                 assert.strictEqual(range.end.character, 11, 'Should end at line end');
@@ -453,7 +479,7 @@ suite('Text Object Range Calculation Tests', () => {
         suite('0 (to start of line)', () => {
             test('should move from cursor to start of line', async () => {
                 const doc = await createDocument('hello world');
-                const range = getTextObjectRange(doc, new Position(0, 7), '0');
+                const range = getLineStartRange(doc, new Position(0, 7));
                 assert.ok(range, 'Should find range');
                 assert.strictEqual(range.start.character, 0, 'Should start at line start');
                 assert.strictEqual(range.end.character, 7, 'Should end at cursor');
@@ -463,7 +489,7 @@ suite('Text Object Range Calculation Tests', () => {
         suite('^ (to first non-whitespace)', () => {
             test('should move to first non-whitespace character', async () => {
                 const doc = await createDocument('  hello world');
-                const range = getTextObjectRange(doc, new Position(0, 7), '^');
+                const range = getLineFirstNonWhitespaceRange(doc, new Position(0, 7));
                 assert.ok(range, 'Should find range');
                 assert.strictEqual(range.start.character, 2, 'Should start at first non-whitespace');
                 assert.strictEqual(range.end.character, 7, 'Should end at cursor');
@@ -473,7 +499,7 @@ suite('Text Object Range Calculation Tests', () => {
         suite('h (left)', () => {
             test('should move one character left', async () => {
                 const doc = await createDocument('hello');
-                const range = getTextObjectRange(doc, new Position(0, 3), 'h');
+                const range = getCharLeftRange(doc, new Position(0, 3));
                 assert.ok(range, 'Should find range');
                 assert.strictEqual(range.start.character, 2, 'Should start one left');
                 assert.strictEqual(range.end.character, 3, 'Should end at cursor');
@@ -481,7 +507,7 @@ suite('Text Object Range Calculation Tests', () => {
 
             test('at start of line should return null', async () => {
                 const doc = await createDocument('hello');
-                const range = getTextObjectRange(doc, new Position(0, 0), 'h');
+                const range = getCharLeftRange(doc, new Position(0, 0));
                 assert.strictEqual(range, null, 'Should return null at line start');
             });
         });
@@ -489,7 +515,7 @@ suite('Text Object Range Calculation Tests', () => {
         suite('l (right)', () => {
             test('should move one character right', async () => {
                 const doc = await createDocument('hello');
-                const range = getTextObjectRange(doc, new Position(0, 2), 'l');
+                const range = getCharRightRange(doc, new Position(0, 2));
                 assert.ok(range, 'Should find range');
                 assert.strictEqual(range.start.character, 2, 'Should start at cursor');
                 assert.strictEqual(range.end.character, 3, 'Should end one right');
@@ -497,7 +523,7 @@ suite('Text Object Range Calculation Tests', () => {
 
             test('at end of line should return null', async () => {
                 const doc = await createDocument('hello');
-                const range = getTextObjectRange(doc, new Position(0, 5), 'l');
+                const range = getCharRightRange(doc, new Position(0, 5));
                 assert.strictEqual(range, null, 'Should return null at line end');
             });
         });
@@ -505,7 +531,7 @@ suite('Text Object Range Calculation Tests', () => {
         suite('j (down)', () => {
             test('should select current and next line', async () => {
                 const doc = await createDocument('line1\nline2');
-                const range = getTextObjectRange(doc, new Position(0, 3), 'j');
+                const range = getLineDownRange(doc, new Position(0, 3));
                 assert.ok(range, 'Should find range');
                 assert.strictEqual(range.start.line, 0, 'Should start at current line');
                 assert.strictEqual(range.end.line, 1, 'Should end at next line');
@@ -515,7 +541,7 @@ suite('Text Object Range Calculation Tests', () => {
         suite('k (up)', () => {
             test('should select previous and current line', async () => {
                 const doc = await createDocument('line1\nline2');
-                const range = getTextObjectRange(doc, new Position(1, 3), 'k');
+                const range = getLineUpRange(doc, new Position(1, 3));
                 assert.ok(range, 'Should find range');
                 assert.strictEqual(range.start.line, 0, 'Should start at previous line');
                 assert.strictEqual(range.end.line, 1, 'Should end at current line');

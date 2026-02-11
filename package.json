@@ -542,7 +542,7 @@
                 "key": "d d",
                 "command": "waltz.delete",
                 "args": {
-                    "line": true
+                    "selectCommand": "expandLineSelection"
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -910,7 +910,7 @@
                 "key": "c c",
                 "command": "waltz.change",
                 "args": {
-                    "line": true
+                    "selectCommand": "expandLineSelection"
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -1278,7 +1278,7 @@
                 "key": "y y",
                 "command": "waltz.yank",
                 "args": {
-                    "line": true
+                    "selectCommand": "expandLineSelection"
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -2331,7 +2331,7 @@
                 "key": "shift+s",
                 "command": "waltz.change",
                 "args": {
-                    "line": true
+                    "selectCommand": "expandLineSelection"
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },

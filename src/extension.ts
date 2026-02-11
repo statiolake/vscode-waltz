@@ -9,9 +9,9 @@ import {
 } from 'vscode';
 import { registerCommands } from './commands';
 import { createCommentConfigProvider, createVimState } from './contextInitializers';
-import { escapeHandler } from './escapeHandler';
 import { enterMode } from './modes';
 import type { CommentConfigProvider } from './utils/comment';
+import { collapseSelections } from './utils/selection';
 import type { VimState } from './vimState';
 
 // グローバルな CommentConfigProvider（起動時に一度だけ初期化）
@@ -104,7 +104,22 @@ export async function activate(context: ExtensionContext): Promise<{ getVimState
         }),
         vscode.commands.registerCommand('waltz.escapeKey', async () => {
             await vscode.commands.executeCommand('hideSuggestWidget');
-            await escapeHandler(vimState);
+            const editor = vscode.window.activeTextEditor;
+            switch (vimState.mode) {
+                case 'insert':
+                    await enterMode(vimState, editor, 'normal');
+                    break;
+                case 'normal':
+                    await vscode.commands.executeCommand('removeSecondaryCursors');
+                    await vscode.commands.executeCommand('cancelSelection');
+                    console.log('cancelled');
+                    break;
+                case 'visual': {
+                    await collapseSelections(editor);
+                    await enterMode(vimState, editor, 'normal');
+                    break;
+                }
+            }
         }),
         vscode.commands.registerCommand('waltz.toggleMode', async () => {
             const editor = vscode.window.activeTextEditor;

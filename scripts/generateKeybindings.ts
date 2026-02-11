@@ -202,7 +202,7 @@ const editCommands = [
     // Normal mode edits
     { key: 'x', command: 'waltz.deleteChar', when: NORMAL },
     { key: 's', command: 'waltz.substituteChar', when: NORMAL },
-    { key: 'shift+s', command: 'waltz.change', args: { line: true }, when: NORMAL },  // S = cc
+    { key: 'shift+s', command: 'waltz.change', args: { selectCommand: 'expandLineSelection' }, when: NORMAL },  // S = cc
     { key: 'shift+d', command: 'waltz.deleteToEnd', when: NORMAL },
     { key: 'shift+c', command: 'waltz.changeToEndOfLine', when: NORMAL },
     { key: 'shift+j', command: 'editor.action.joinLines', when: NORMAL },
@@ -259,11 +259,11 @@ function generateKeybindings(): Keybinding[] {
             });
         }
 
-        // Line operations (dd, cc, yy)
+        // Line operations (dd, cc, yy) are also select-command based
         keybindings.push({
             key: `${op.key} ${op.key}`,
             command: op.command,
-            args: { line: true },
+            args: { selectCommand: 'expandLineSelection' },
             when: NORMAL,
         });
     }
