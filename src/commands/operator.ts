@@ -2,74 +2,73 @@ import * as vscode from 'vscode';
 import { Position, Range, Selection } from 'vscode';
 import { enterMode } from '../modes';
 import type { VimState } from '../vimState';
-import { findCharInLine, getCharViaQuickPick } from './find';
 
 /**
  * Operator commands with args support
- * Called via keybindings like: { "command": "waltz.delete", "args": { "target": "iw" } }
+ * Called via keybindings like:
+ * { "command": "waltz.delete", "args": { "selectCommand": "cursorWordStartRightSelect" } }
  */
 
 interface OperatorArgs {
-    target?: string; // "iw", "aw", "w", "b", "$", "f", "t", etc. - all are text objects
+    selectCommand?: string; // command to create selection, e.g. cursorWordStartRightSelect
+    selectArgs?: Record<string, unknown>; // optional args for selectCommand
     line?: boolean; // true for dd, cc, yy
 }
 
+type OperatorAction = 'delete' | 'change' | 'yank';
+
+interface SelectionCommandSpec {
+    command: string;
+    args?: Record<string, unknown>;
+}
+
+function resolveSelectionCommandSpec(args: OperatorArgs): SelectionCommandSpec | null {
+    if (args.selectCommand) {
+        return {
+            command: args.selectCommand,
+            args: args.selectArgs,
+        };
+    }
+
+    return null;
+}
+
 /**
- * Get range for f/t/F/T text object with a specific character
- * VS Code philosophy: f=t (forward to left of char), F=T (backward to right of char)
+ * Select range through command, then run copy/cut on that selection.
+ * Selection is always reset before applying the selection command.
  */
-function getFindCharRange(
-    document: vscode.TextDocument,
-    position: Position,
-    textObject: string,
-    char: string,
-): Range | null {
-    const direction = textObject === 'f' || textObject === 't' ? 'forward' : 'backward';
+async function executeOperatorWithSelectionCommand(
+    editor: vscode.TextEditor,
+    selectionSpec: SelectionCommandSpec,
+    action: OperatorAction,
+): Promise<boolean> {
+    const originalSelections = editor.selections;
 
-    const targetPos = findCharInLine(document, position, char, direction);
-    if (!targetPos) return null;
+    try {
+        // Start from a collapsed selection before applying selection command.
+        await vscode.commands.executeCommand('cancelSelection');
+        if (selectionSpec.args) {
+            await vscode.commands.executeCommand(selectionSpec.command, selectionSpec.args);
+        } else {
+            await vscode.commands.executeCommand(selectionSpec.command);
+        }
+    } catch {
+        return false;
+    }
 
-    // For operators, we want the range from cursor to target
-    // forward: cursor to left side of char
-    // backward: right side of char to cursor
-    if (direction === 'forward') {
-        return new Range(position, targetPos);
+    if (editor.selections.every((selection) => selection.isEmpty)) {
+        await vscode.commands.executeCommand('cancelSelection');
+        return false;
+    }
+
+    if (action === 'yank') {
+        await vscode.commands.executeCommand('editor.action.clipboardCopyAction');
+        editor.selections = originalSelections;
     } else {
-        return new Range(targetPos, position);
-    }
-}
-
-/**
- * Check if a text object requires character input (f/t/F/T)
- */
-function isFindCharTextObject(textObject: string): boolean {
-    return textObject === 'f' || textObject === 't' || textObject === 'F' || textObject === 'T';
-}
-
-/**
- * Get ranges for all selections based on a text object target
- * Handles f/t/F/T specially by prompting for character once
- */
-async function getRangesForTarget(editor: vscode.TextEditor, target: string): Promise<Range[] | null> {
-    const document = editor.document;
-    const ranges: Range[] = [];
-
-    // For f/t/F/T, get the character once before processing selections
-    let findChar: string | null = null;
-    if (isFindCharTextObject(target)) {
-        const direction = target === 'f' || target === 't' ? 'forward' : 'backward';
-        findChar = await getCharViaQuickPick(`Type a character to find ${direction}...`);
-        if (!findChar) return null; // User cancelled
+        await vscode.commands.executeCommand('editor.action.clipboardCutAction');
     }
 
-    for (const selection of editor.selections) {
-        const range = findChar
-            ? getFindCharRange(document, selection.active, target, findChar)
-            : getTextObjectRange(document, selection.active, target);
-        if (range) ranges.push(range);
-    }
-
-    return ranges;
+    return true;
 }
 
 /**
@@ -373,32 +372,24 @@ export function findQuoteRange(
  */
 async function executeDelete(editor: vscode.TextEditor, args: OperatorArgs): Promise<void> {
     const document = editor.document;
-    let ranges: Range[] = [];
+    const ranges: Range[] = [];
 
     if (args.line) {
         for (const selection of editor.selections) {
             const line = document.lineAt(selection.active.line);
             ranges.push(line.rangeIncludingLineBreak);
         }
-    } else if (args.target) {
-        const result = await getRangesForTarget(editor, args.target);
-        if (!result) return; // User cancelled
-        ranges = result;
+    } else {
+        const selectionSpec = resolveSelectionCommandSpec(args);
+        if (!selectionSpec) return;
+        await executeOperatorWithSelectionCommand(editor, selectionSpec, 'delete');
+        return;
     }
 
     if (ranges.length === 0) return;
 
-    const originalSelections = editor.selections;
     editor.selections = ranges.map((r) => new Selection(r.start, r.end));
-    await vscode.commands.executeCommand('editor.action.clipboardCopyAction');
-    editor.selections = originalSelections;
-
-    // Delete
-    await editor.edit((editBuilder) => {
-        for (const range of ranges) {
-            editBuilder.delete(range);
-        }
-    });
+    await vscode.commands.executeCommand('editor.action.clipboardCutAction');
 }
 
 /**
@@ -406,7 +397,7 @@ async function executeDelete(editor: vscode.TextEditor, args: OperatorArgs): Pro
  */
 async function executeChange(editor: vscode.TextEditor, args: OperatorArgs, vimState: VimState): Promise<void> {
     const document = editor.document;
-    let ranges: Range[] = [];
+    const ranges: Range[] = [];
 
     if (args.line) {
         for (const selection of editor.selections) {
@@ -414,25 +405,20 @@ async function executeChange(editor: vscode.TextEditor, args: OperatorArgs, vimS
             const firstNonWhitespace = line.firstNonWhitespaceCharacterIndex;
             ranges.push(new Range(new Position(selection.active.line, firstNonWhitespace), line.range.end));
         }
-    } else if (args.target) {
-        const result = await getRangesForTarget(editor, args.target);
-        if (!result) return; // User cancelled
-        ranges = result;
+    } else {
+        const selectionSpec = resolveSelectionCommandSpec(args);
+        if (!selectionSpec) return;
+        const applied = await executeOperatorWithSelectionCommand(editor, selectionSpec, 'change');
+        if (applied) {
+            enterMode(vimState, editor, 'insert');
+        }
+        return;
     }
 
     if (ranges.length === 0) return;
 
-    // Copy to clipboard
-    const text = ranges.map((r) => document.getText(r)).join('\n');
-    await vscode.env.clipboard.writeText(text);
-
-    // Delete and enter insert mode
-    await editor.edit((editBuilder) => {
-        for (const range of ranges) {
-            editBuilder.delete(range);
-        }
-    });
-
+    editor.selections = ranges.map((r) => new Selection(r.start, r.end));
+    await vscode.commands.executeCommand('editor.action.clipboardCutAction');
     enterMode(vimState, editor, 'insert');
 }
 
@@ -441,17 +427,18 @@ async function executeChange(editor: vscode.TextEditor, args: OperatorArgs, vimS
  */
 async function executeYank(editor: vscode.TextEditor, args: OperatorArgs): Promise<void> {
     const document = editor.document;
-    let ranges: Range[] = [];
+    const ranges: Range[] = [];
 
     if (args.line) {
         for (const selection of editor.selections) {
             const line = document.lineAt(selection.active.line);
             ranges.push(line.rangeIncludingLineBreak);
         }
-    } else if (args.target) {
-        const result = await getRangesForTarget(editor, args.target);
-        if (!result) return; // User cancelled
-        ranges = result;
+    } else {
+        const selectionSpec = resolveSelectionCommandSpec(args);
+        if (!selectionSpec) return;
+        await executeOperatorWithSelectionCommand(editor, selectionSpec, 'yank');
+        return;
     }
 
     if (ranges.length === 0) return;
@@ -467,9 +454,11 @@ async function executeYank(editor: vscode.TextEditor, args: OperatorArgs): Promi
  * Execute select text object operation (for visual mode)
  */
 async function executeSelectTextObject(editor: vscode.TextEditor, args: { target: string }): Promise<void> {
-    const ranges = await getRangesForTarget(editor, args.target);
-    if (!ranges) return; // User cancelled
-
+    const ranges: Array<Range | null> = [];
+    for (const selection of editor.selections) {
+        const range = getTextObjectRange(editor.document, selection.active, args.target);
+        ranges.push(range);
+    }
     const newSelections: Selection[] = [];
     const selections = editor.selections;
 

@@ -14,6 +14,12 @@ interface Keybinding {
     when: string;
 }
 
+interface SelectionBinding {
+    keys: string;
+    selectCommand: string;
+    selectArgs?: Record<string, unknown>;
+}
+
 // When clauses
 const NORMAL = "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'";
 const VISUAL = "editorTextFocus && waltz.mode == 'visual'";
@@ -30,9 +36,7 @@ const operators = [
     { key: 'y', command: 'waltz.yank' },
 ];
 
-// All text objects (unified: includes what was previously called "motions")
-// JIS keyboard layout
-const textObjects = [
+const explicitTextObjects = [
     // Traditional text objects (inner/around)
     { keys: 'i w', id: 'iw' },
     { keys: 'a w', id: 'aw' },
@@ -65,7 +69,10 @@ const textObjects = [
     { keys: 'a shift+2', id: 'a"' },
     { keys: 'i shift+[BracketLeft]', id: 'i`' },
     { keys: 'a shift+[BracketLeft]', id: 'a`' },
-    // Positional text objects (cursor to target)
+];
+
+// Positional targets (cursor to target)
+const motionTargets = [
     { keys: 'w', id: 'w' },
     { keys: 'shift+w', id: 'W' },
     { keys: 'b', id: 'b' },
@@ -81,11 +88,44 @@ const textObjects = [
     { keys: 'l', id: 'l' },
     { keys: 'g g', id: 'gg' },
     { keys: 'shift+g', id: 'G' },
-    // Find character (f/t/F/T) - prompts for character via QuickPick
+];
+
+// Find character targets (f/t/F/T)
+const findTargets = [
     { keys: 'f', id: 'f' },
     { keys: 't', id: 't' },
     { keys: 'shift+f', id: 'F' },
     { keys: 'shift+t', id: 'T' },
+];
+
+// Keep full target list for text-object-like commands (surround, etc.)
+const textObjects = [...explicitTextObjects, ...motionTargets, ...findTargets];
+
+const operatorSelections: SelectionBinding[] = [
+    ...explicitTextObjects.map((obj) => ({
+        keys: obj.keys,
+        selectCommand: 'waltz.selectTextObject',
+        selectArgs: { target: obj.id },
+    })),
+    { keys: 'w', selectCommand: 'cursorWordStartRightSelect' },
+    { keys: 'shift+w', selectCommand: 'waltz.cursorWhitespaceWordStartRightSelect' },
+    { keys: 'b', selectCommand: 'cursorWordStartLeftSelect' },
+    { keys: 'shift+b', selectCommand: 'waltz.cursorWhitespaceWordStartLeftSelect' },
+    { keys: 'e', selectCommand: 'cursorWordEndRightSelect' },
+    { keys: 'shift+e', selectCommand: 'waltz.cursorWhitespaceWordEndRightSelect' },
+    { keys: '0', selectCommand: 'cursorLineStartSelect' },
+    { keys: 'shift+4', selectCommand: 'cursorEndSelect' },
+    { keys: 'shift+6', selectCommand: 'cursorHomeSelect' },
+    { keys: 'j', selectCommand: 'cursorDownSelect' },
+    { keys: 'k', selectCommand: 'cursorUpSelect' },
+    { keys: 'h', selectCommand: 'cursorLeftSelect' },
+    { keys: 'l', selectCommand: 'cursorRightSelect' },
+    { keys: 'g g', selectCommand: 'cursorTopSelect' },
+    { keys: 'shift+g', selectCommand: 'cursorBottomSelect' },
+    { keys: 'f', selectCommand: 'waltz.findCharForwardSelect' },
+    { keys: 't', selectCommand: 'waltz.findCharForwardBeforeSelect' },
+    { keys: 'shift+f', selectCommand: 'waltz.findCharBackwardSelect' },
+    { keys: 'shift+t', selectCommand: 'waltz.findCharBackwardBeforeSelect' },
 ];
 
 // ============================================================
@@ -207,12 +247,12 @@ const editCommands = [
 // ============================================================
 
 const findCommands = [
-    { key: 'f', command: 'waltz.findCharForward', when: NOT_INSERT },
-    { key: 't', command: 'waltz.findCharForwardBefore', when: NOT_INSERT },
-    { key: 'shift+f', command: 'waltz.findCharBackward', when: NOT_INSERT },
-    { key: 'shift+t', command: 'waltz.findCharBackwardBefore', when: NOT_INSERT },
-    { key: ';', command: 'waltz.repeatFindChar', when: NOT_INSERT },
-    { key: ',', command: 'waltz.repeatFindCharReverse', when: NOT_INSERT },
+    { key: 'f', normal: 'waltz.findCharForward', visual: 'waltz.findCharForwardSelect' },
+    { key: 't', normal: 'waltz.findCharForwardBefore', visual: 'waltz.findCharForwardBeforeSelect' },
+    { key: 'shift+f', normal: 'waltz.findCharBackward', visual: 'waltz.findCharBackwardSelect' },
+    { key: 'shift+t', normal: 'waltz.findCharBackwardBefore', visual: 'waltz.findCharBackwardBeforeSelect' },
+    { key: ';', normal: 'waltz.repeatFindChar', visual: 'waltz.repeatFindChar' },
+    { key: ',', normal: 'waltz.repeatFindCharReverse', visual: 'waltz.repeatFindCharReverse' },
 ];
 
 // ============================================================
@@ -270,13 +310,20 @@ const ignoredKeys = [
 function generateKeybindings(): Keybinding[] {
     const keybindings: Keybinding[] = [];
 
-    // Operator + textObject combinations (d, c, y with all text objects)
+    // Operator + selection-command combinations (d, c, y)
     for (const op of operators) {
-        for (const obj of textObjects) {
+        for (const selection of operatorSelections) {
+            const args: Record<string, unknown> = {
+                selectCommand: selection.selectCommand,
+            };
+            if (selection.selectArgs) {
+                args.selectArgs = selection.selectArgs;
+            }
+
             keybindings.push({
-                key: `${op.key} ${obj.keys}`,
+                key: `${op.key} ${selection.keys}`,
                 command: op.command,
-                args: { target: obj.id },
+                args,
                 when: NORMAL,
             });
         }
@@ -291,7 +338,7 @@ function generateKeybindings(): Keybinding[] {
     }
 
     // Visual mode text object selection (viw, vaw, vi(, etc.)
-    for (const obj of textObjects) {
+    for (const obj of explicitTextObjects) {
         keybindings.push({
             key: obj.keys,
             command: 'waltz.selectTextObject',
@@ -374,7 +421,8 @@ function generateKeybindings(): Keybinding[] {
 
     // Find commands
     for (const cmd of findCommands) {
-        keybindings.push({ key: cmd.key, command: cmd.command, when: cmd.when });
+        keybindings.push({ key: cmd.key, command: cmd.normal, when: NORMAL });
+        keybindings.push({ key: cmd.key, command: cmd.visual, when: VISUAL });
     }
 
     // Viewport commands

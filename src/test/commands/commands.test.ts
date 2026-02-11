@@ -135,6 +135,133 @@ suite('Native Commands Tests', () => {
             assert.strictEqual(vimState.mode, 'insert', 'Should enter insert mode');
         });
     });
+
+    suite('Operator motion behavior', () => {
+        test('waltz.delete with w should include trailing spaces unlike e', async () => {
+            const docDw = await vscode.workspace.openTextDocument({ content: 'hello   world' });
+            const editorDw = await vscode.window.showTextDocument(docDw);
+            editorDw.selection = new Selection(new Position(0, 0), new Position(0, 0));
+
+            await vscode.commands.executeCommand('waltz.escapeKey');
+            await wait(50);
+
+            await vscode.commands.executeCommand('waltz.delete', { selectCommand: 'cursorWordStartRightSelect' });
+            await wait(50);
+            assert.strictEqual(docDw.getText(), 'world', 'dw should delete to next word start');
+
+            const docDe = await vscode.workspace.openTextDocument({ content: 'hello   world' });
+            const editorDe = await vscode.window.showTextDocument(docDe);
+            editorDe.selection = new Selection(new Position(0, 0), new Position(0, 0));
+
+            await vscode.commands.executeCommand('waltz.escapeKey');
+            await wait(50);
+
+            await vscode.commands.executeCommand('waltz.delete', { selectCommand: 'cursorWordEndRightSelect' });
+            await wait(50);
+            assert.strictEqual(docDe.getText(), '   world', 'de should delete to end of word');
+        });
+
+        test('waltz.delete with W should include trailing spaces unlike E', async () => {
+            const docDW = await vscode.workspace.openTextDocument({ content: 'foo-bar   baz' });
+            const editorDW = await vscode.window.showTextDocument(docDW);
+            editorDW.selection = new Selection(new Position(0, 0), new Position(0, 0));
+
+            await vscode.commands.executeCommand('waltz.escapeKey');
+            await wait(50);
+
+            await vscode.commands.executeCommand('waltz.delete', {
+                selectCommand: 'waltz.cursorWhitespaceWordStartRightSelect',
+            });
+            await wait(50);
+            assert.strictEqual(docDW.getText(), 'baz', 'dW should delete to next WORD start');
+
+            const docDE = await vscode.workspace.openTextDocument({ content: 'foo-bar   baz' });
+            const editorDE = await vscode.window.showTextDocument(docDE);
+            editorDE.selection = new Selection(new Position(0, 0), new Position(0, 0));
+
+            await vscode.commands.executeCommand('waltz.escapeKey');
+            await wait(50);
+
+            await vscode.commands.executeCommand('waltz.delete', {
+                selectCommand: 'waltz.cursorWhitespaceWordEndRightSelect',
+            });
+            await wait(50);
+            assert.strictEqual(docDE.getText(), '   baz', 'dE should delete to end of WORD');
+        });
+
+        test('waltz.change with w/e should follow native ranges and enter insert mode', async () => {
+            const docCw = await vscode.workspace.openTextDocument({ content: 'hello   world' });
+            const editorCw = await vscode.window.showTextDocument(docCw);
+            editorCw.selection = new Selection(new Position(0, 0), new Position(0, 0));
+
+            const vimState = await getVimState();
+            await vscode.commands.executeCommand('waltz.escapeKey');
+            await wait(50);
+
+            await vscode.commands.executeCommand('waltz.change', { selectCommand: 'cursorWordStartRightSelect' });
+            await wait(50);
+            assert.strictEqual(docCw.getText(), 'world', 'cw should delete to next word start');
+            assert.strictEqual(vimState.mode, 'insert', 'cw should enter insert mode');
+
+            const docCe = await vscode.workspace.openTextDocument({ content: 'hello   world' });
+            const editorCe = await vscode.window.showTextDocument(docCe);
+            editorCe.selection = new Selection(new Position(0, 0), new Position(0, 0));
+
+            await vscode.commands.executeCommand('waltz.escapeKey');
+            await wait(50);
+
+            await vscode.commands.executeCommand('waltz.change', { selectCommand: 'cursorWordEndRightSelect' });
+            await wait(50);
+            assert.strictEqual(docCe.getText(), '   world', 'ce should delete to end of word');
+            assert.strictEqual(vimState.mode, 'insert', 'ce should enter insert mode');
+        });
+
+        test('waltz.change with W/E should follow native ranges and enter insert mode', async () => {
+            const docCW = await vscode.workspace.openTextDocument({ content: 'foo-bar   baz' });
+            const editorCW = await vscode.window.showTextDocument(docCW);
+            editorCW.selection = new Selection(new Position(0, 0), new Position(0, 0));
+
+            const vimState = await getVimState();
+            await vscode.commands.executeCommand('waltz.escapeKey');
+            await wait(50);
+
+            await vscode.commands.executeCommand('waltz.change', {
+                selectCommand: 'waltz.cursorWhitespaceWordStartRightSelect',
+            });
+            await wait(50);
+            assert.strictEqual(docCW.getText(), 'baz', 'cW should delete to next WORD start');
+            assert.strictEqual(vimState.mode, 'insert', 'cW should enter insert mode');
+
+            const docCE = await vscode.workspace.openTextDocument({ content: 'foo-bar   baz' });
+            const editorCE = await vscode.window.showTextDocument(docCE);
+            editorCE.selection = new Selection(new Position(0, 0), new Position(0, 0));
+
+            await vscode.commands.executeCommand('waltz.escapeKey');
+            await wait(50);
+
+            await vscode.commands.executeCommand('waltz.change', {
+                selectCommand: 'waltz.cursorWhitespaceWordEndRightSelect',
+            });
+            await wait(50);
+            assert.strictEqual(docCE.getText(), '   baz', 'cE should delete to end of WORD');
+            assert.strictEqual(vimState.mode, 'insert', 'cE should enter insert mode');
+        });
+
+        test('waltz.delete with native motion target cancels existing selection first', async () => {
+            const doc = await vscode.workspace.openTextDocument({ content: 'hello world' });
+            const editor = await vscode.window.showTextDocument(doc);
+            editor.selection = new Selection(new Position(0, 0), new Position(0, 2));
+
+            await vscode.commands.executeCommand('waltz.delete', { selectCommand: 'cursorWordStartRightSelect' });
+            await wait(50);
+
+            assert.strictEqual(
+                doc.getText(),
+                'heworld',
+                'Should operate from active cursor, not pre-existing selection',
+            );
+        });
+    });
 });
 
 suite('Find Character Commands Tests', () => {

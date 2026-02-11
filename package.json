@@ -186,7 +186,10 @@
                 "key": "d i w",
                 "command": "waltz.delete",
                 "args": {
-                    "target": "iw"
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "iw"
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -194,7 +197,10 @@
                 "key": "d a w",
                 "command": "waltz.delete",
                 "args": {
-                    "target": "aw"
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "aw"
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -202,7 +208,10 @@
                 "key": "d i shift+w",
                 "command": "waltz.delete",
                 "args": {
-                    "target": "iW"
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "iW"
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -210,7 +219,10 @@
                 "key": "d a shift+w",
                 "command": "waltz.delete",
                 "args": {
-                    "target": "aW"
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "aW"
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -218,7 +230,10 @@
                 "key": "d i shift+8",
                 "command": "waltz.delete",
                 "args": {
-                    "target": "i("
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "i("
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -226,7 +241,10 @@
                 "key": "d a shift+8",
                 "command": "waltz.delete",
                 "args": {
-                    "target": "a("
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "a("
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -234,7 +252,10 @@
                 "key": "d i shift+9",
                 "command": "waltz.delete",
                 "args": {
-                    "target": "i)"
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "i)"
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -242,7 +263,10 @@
                 "key": "d a shift+9",
                 "command": "waltz.delete",
                 "args": {
-                    "target": "a)"
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "a)"
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -250,7 +274,10 @@
                 "key": "d i shift+[",
                 "command": "waltz.delete",
                 "args": {
-                    "target": "i{"
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "i{"
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -258,7 +285,10 @@
                 "key": "d a shift+[",
                 "command": "waltz.delete",
                 "args": {
-                    "target": "a{"
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "a{"
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -266,7 +296,10 @@
                 "key": "d i shift+]",
                 "command": "waltz.delete",
                 "args": {
-                    "target": "i}"
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "i}"
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -274,7 +307,10 @@
                 "key": "d a shift+]",
                 "command": "waltz.delete",
                 "args": {
-                    "target": "a}"
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "a}"
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -282,7 +318,10 @@
                 "key": "d i [",
                 "command": "waltz.delete",
                 "args": {
-                    "target": "i["
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "i["
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -290,7 +329,10 @@
                 "key": "d a [",
                 "command": "waltz.delete",
                 "args": {
-                    "target": "a["
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "a["
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -298,7 +340,10 @@
                 "key": "d i ]",
                 "command": "waltz.delete",
                 "args": {
-                    "target": "i]"
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "i]"
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -306,7 +351,10 @@
                 "key": "d a ]",
                 "command": "waltz.delete",
                 "args": {
-                    "target": "a]"
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "a]"
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -314,7 +362,10 @@
                 "key": "d i shift+,",
                 "command": "waltz.delete",
                 "args": {
-                    "target": "i<"
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "i<"
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -322,7 +373,10 @@
                 "key": "d a shift+,",
                 "command": "waltz.delete",
                 "args": {
-                    "target": "a<"
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "a<"
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -330,7 +384,10 @@
                 "key": "d i shift+.",
                 "command": "waltz.delete",
                 "args": {
-                    "target": "i>"
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "i>"
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -338,7 +395,10 @@
                 "key": "d a shift+.",
                 "command": "waltz.delete",
                 "args": {
-                    "target": "a>"
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "a>"
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -346,7 +406,10 @@
                 "key": "d i shift+7",
                 "command": "waltz.delete",
                 "args": {
-                    "target": "i'"
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "i'"
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -354,7 +417,10 @@
                 "key": "d a shift+7",
                 "command": "waltz.delete",
                 "args": {
-                    "target": "a'"
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "a'"
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -362,7 +428,10 @@
                 "key": "d i shift+2",
                 "command": "waltz.delete",
                 "args": {
-                    "target": "i\""
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "i\""
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -370,7 +439,10 @@
                 "key": "d a shift+2",
                 "command": "waltz.delete",
                 "args": {
-                    "target": "a\""
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "a\""
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -378,7 +450,10 @@
                 "key": "d i shift+[BracketLeft]",
                 "command": "waltz.delete",
                 "args": {
-                    "target": "i`"
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "i`"
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -386,7 +461,10 @@
                 "key": "d a shift+[BracketLeft]",
                 "command": "waltz.delete",
                 "args": {
-                    "target": "a`"
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "a`"
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -394,7 +472,7 @@
                 "key": "d w",
                 "command": "waltz.delete",
                 "args": {
-                    "target": "w"
+                    "selectCommand": "cursorWordStartRightSelect"
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -402,7 +480,7 @@
                 "key": "d shift+w",
                 "command": "waltz.delete",
                 "args": {
-                    "target": "W"
+                    "selectCommand": "waltz.cursorWhitespaceWordStartRightSelect"
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -410,7 +488,7 @@
                 "key": "d b",
                 "command": "waltz.delete",
                 "args": {
-                    "target": "b"
+                    "selectCommand": "cursorWordStartLeftSelect"
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -418,7 +496,7 @@
                 "key": "d shift+b",
                 "command": "waltz.delete",
                 "args": {
-                    "target": "B"
+                    "selectCommand": "waltz.cursorWhitespaceWordStartLeftSelect"
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -426,7 +504,7 @@
                 "key": "d e",
                 "command": "waltz.delete",
                 "args": {
-                    "target": "e"
+                    "selectCommand": "cursorWordEndRightSelect"
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -434,7 +512,7 @@
                 "key": "d shift+e",
                 "command": "waltz.delete",
                 "args": {
-                    "target": "E"
+                    "selectCommand": "waltz.cursorWhitespaceWordEndRightSelect"
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -442,7 +520,7 @@
                 "key": "d 0",
                 "command": "waltz.delete",
                 "args": {
-                    "target": "0"
+                    "selectCommand": "cursorLineStartSelect"
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -450,7 +528,7 @@
                 "key": "d shift+4",
                 "command": "waltz.delete",
                 "args": {
-                    "target": "$"
+                    "selectCommand": "cursorEndSelect"
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -458,7 +536,7 @@
                 "key": "d shift+6",
                 "command": "waltz.delete",
                 "args": {
-                    "target": "^"
+                    "selectCommand": "cursorHomeSelect"
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -466,7 +544,7 @@
                 "key": "d j",
                 "command": "waltz.delete",
                 "args": {
-                    "target": "j"
+                    "selectCommand": "cursorDownSelect"
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -474,7 +552,7 @@
                 "key": "d k",
                 "command": "waltz.delete",
                 "args": {
-                    "target": "k"
+                    "selectCommand": "cursorUpSelect"
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -482,7 +560,7 @@
                 "key": "d h",
                 "command": "waltz.delete",
                 "args": {
-                    "target": "h"
+                    "selectCommand": "cursorLeftSelect"
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -490,7 +568,7 @@
                 "key": "d l",
                 "command": "waltz.delete",
                 "args": {
-                    "target": "l"
+                    "selectCommand": "cursorRightSelect"
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -498,7 +576,7 @@
                 "key": "d g g",
                 "command": "waltz.delete",
                 "args": {
-                    "target": "gg"
+                    "selectCommand": "cursorTopSelect"
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -506,7 +584,7 @@
                 "key": "d shift+g",
                 "command": "waltz.delete",
                 "args": {
-                    "target": "G"
+                    "selectCommand": "cursorBottomSelect"
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -514,7 +592,7 @@
                 "key": "d f",
                 "command": "waltz.delete",
                 "args": {
-                    "target": "f"
+                    "selectCommand": "waltz.findCharForwardSelect"
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -522,7 +600,7 @@
                 "key": "d t",
                 "command": "waltz.delete",
                 "args": {
-                    "target": "t"
+                    "selectCommand": "waltz.findCharForwardBeforeSelect"
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -530,7 +608,7 @@
                 "key": "d shift+f",
                 "command": "waltz.delete",
                 "args": {
-                    "target": "F"
+                    "selectCommand": "waltz.findCharBackwardSelect"
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -538,7 +616,7 @@
                 "key": "d shift+t",
                 "command": "waltz.delete",
                 "args": {
-                    "target": "T"
+                    "selectCommand": "waltz.findCharBackwardBeforeSelect"
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -554,7 +632,10 @@
                 "key": "c i w",
                 "command": "waltz.change",
                 "args": {
-                    "target": "iw"
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "iw"
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -562,7 +643,10 @@
                 "key": "c a w",
                 "command": "waltz.change",
                 "args": {
-                    "target": "aw"
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "aw"
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -570,7 +654,10 @@
                 "key": "c i shift+w",
                 "command": "waltz.change",
                 "args": {
-                    "target": "iW"
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "iW"
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -578,7 +665,10 @@
                 "key": "c a shift+w",
                 "command": "waltz.change",
                 "args": {
-                    "target": "aW"
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "aW"
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -586,7 +676,10 @@
                 "key": "c i shift+8",
                 "command": "waltz.change",
                 "args": {
-                    "target": "i("
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "i("
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -594,7 +687,10 @@
                 "key": "c a shift+8",
                 "command": "waltz.change",
                 "args": {
-                    "target": "a("
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "a("
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -602,7 +698,10 @@
                 "key": "c i shift+9",
                 "command": "waltz.change",
                 "args": {
-                    "target": "i)"
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "i)"
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -610,7 +709,10 @@
                 "key": "c a shift+9",
                 "command": "waltz.change",
                 "args": {
-                    "target": "a)"
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "a)"
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -618,7 +720,10 @@
                 "key": "c i shift+[",
                 "command": "waltz.change",
                 "args": {
-                    "target": "i{"
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "i{"
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -626,7 +731,10 @@
                 "key": "c a shift+[",
                 "command": "waltz.change",
                 "args": {
-                    "target": "a{"
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "a{"
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -634,7 +742,10 @@
                 "key": "c i shift+]",
                 "command": "waltz.change",
                 "args": {
-                    "target": "i}"
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "i}"
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -642,7 +753,10 @@
                 "key": "c a shift+]",
                 "command": "waltz.change",
                 "args": {
-                    "target": "a}"
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "a}"
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -650,7 +764,10 @@
                 "key": "c i [",
                 "command": "waltz.change",
                 "args": {
-                    "target": "i["
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "i["
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -658,7 +775,10 @@
                 "key": "c a [",
                 "command": "waltz.change",
                 "args": {
-                    "target": "a["
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "a["
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -666,7 +786,10 @@
                 "key": "c i ]",
                 "command": "waltz.change",
                 "args": {
-                    "target": "i]"
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "i]"
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -674,7 +797,10 @@
                 "key": "c a ]",
                 "command": "waltz.change",
                 "args": {
-                    "target": "a]"
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "a]"
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -682,7 +808,10 @@
                 "key": "c i shift+,",
                 "command": "waltz.change",
                 "args": {
-                    "target": "i<"
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "i<"
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -690,7 +819,10 @@
                 "key": "c a shift+,",
                 "command": "waltz.change",
                 "args": {
-                    "target": "a<"
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "a<"
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -698,7 +830,10 @@
                 "key": "c i shift+.",
                 "command": "waltz.change",
                 "args": {
-                    "target": "i>"
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "i>"
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -706,7 +841,10 @@
                 "key": "c a shift+.",
                 "command": "waltz.change",
                 "args": {
-                    "target": "a>"
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "a>"
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -714,7 +852,10 @@
                 "key": "c i shift+7",
                 "command": "waltz.change",
                 "args": {
-                    "target": "i'"
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "i'"
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -722,7 +863,10 @@
                 "key": "c a shift+7",
                 "command": "waltz.change",
                 "args": {
-                    "target": "a'"
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "a'"
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -730,7 +874,10 @@
                 "key": "c i shift+2",
                 "command": "waltz.change",
                 "args": {
-                    "target": "i\""
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "i\""
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -738,7 +885,10 @@
                 "key": "c a shift+2",
                 "command": "waltz.change",
                 "args": {
-                    "target": "a\""
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "a\""
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -746,7 +896,10 @@
                 "key": "c i shift+[BracketLeft]",
                 "command": "waltz.change",
                 "args": {
-                    "target": "i`"
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "i`"
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -754,7 +907,10 @@
                 "key": "c a shift+[BracketLeft]",
                 "command": "waltz.change",
                 "args": {
-                    "target": "a`"
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "a`"
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -762,7 +918,7 @@
                 "key": "c w",
                 "command": "waltz.change",
                 "args": {
-                    "target": "w"
+                    "selectCommand": "cursorWordStartRightSelect"
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -770,7 +926,7 @@
                 "key": "c shift+w",
                 "command": "waltz.change",
                 "args": {
-                    "target": "W"
+                    "selectCommand": "waltz.cursorWhitespaceWordStartRightSelect"
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -778,7 +934,7 @@
                 "key": "c b",
                 "command": "waltz.change",
                 "args": {
-                    "target": "b"
+                    "selectCommand": "cursorWordStartLeftSelect"
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -786,7 +942,7 @@
                 "key": "c shift+b",
                 "command": "waltz.change",
                 "args": {
-                    "target": "B"
+                    "selectCommand": "waltz.cursorWhitespaceWordStartLeftSelect"
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -794,7 +950,7 @@
                 "key": "c e",
                 "command": "waltz.change",
                 "args": {
-                    "target": "e"
+                    "selectCommand": "cursorWordEndRightSelect"
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -802,7 +958,7 @@
                 "key": "c shift+e",
                 "command": "waltz.change",
                 "args": {
-                    "target": "E"
+                    "selectCommand": "waltz.cursorWhitespaceWordEndRightSelect"
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -810,7 +966,7 @@
                 "key": "c 0",
                 "command": "waltz.change",
                 "args": {
-                    "target": "0"
+                    "selectCommand": "cursorLineStartSelect"
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -818,7 +974,7 @@
                 "key": "c shift+4",
                 "command": "waltz.change",
                 "args": {
-                    "target": "$"
+                    "selectCommand": "cursorEndSelect"
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -826,7 +982,7 @@
                 "key": "c shift+6",
                 "command": "waltz.change",
                 "args": {
-                    "target": "^"
+                    "selectCommand": "cursorHomeSelect"
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -834,7 +990,7 @@
                 "key": "c j",
                 "command": "waltz.change",
                 "args": {
-                    "target": "j"
+                    "selectCommand": "cursorDownSelect"
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -842,7 +998,7 @@
                 "key": "c k",
                 "command": "waltz.change",
                 "args": {
-                    "target": "k"
+                    "selectCommand": "cursorUpSelect"
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -850,7 +1006,7 @@
                 "key": "c h",
                 "command": "waltz.change",
                 "args": {
-                    "target": "h"
+                    "selectCommand": "cursorLeftSelect"
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -858,7 +1014,7 @@
                 "key": "c l",
                 "command": "waltz.change",
                 "args": {
-                    "target": "l"
+                    "selectCommand": "cursorRightSelect"
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -866,7 +1022,7 @@
                 "key": "c g g",
                 "command": "waltz.change",
                 "args": {
-                    "target": "gg"
+                    "selectCommand": "cursorTopSelect"
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -874,7 +1030,7 @@
                 "key": "c shift+g",
                 "command": "waltz.change",
                 "args": {
-                    "target": "G"
+                    "selectCommand": "cursorBottomSelect"
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -882,7 +1038,7 @@
                 "key": "c f",
                 "command": "waltz.change",
                 "args": {
-                    "target": "f"
+                    "selectCommand": "waltz.findCharForwardSelect"
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -890,7 +1046,7 @@
                 "key": "c t",
                 "command": "waltz.change",
                 "args": {
-                    "target": "t"
+                    "selectCommand": "waltz.findCharForwardBeforeSelect"
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -898,7 +1054,7 @@
                 "key": "c shift+f",
                 "command": "waltz.change",
                 "args": {
-                    "target": "F"
+                    "selectCommand": "waltz.findCharBackwardSelect"
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -906,7 +1062,7 @@
                 "key": "c shift+t",
                 "command": "waltz.change",
                 "args": {
-                    "target": "T"
+                    "selectCommand": "waltz.findCharBackwardBeforeSelect"
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -922,7 +1078,10 @@
                 "key": "y i w",
                 "command": "waltz.yank",
                 "args": {
-                    "target": "iw"
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "iw"
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -930,7 +1089,10 @@
                 "key": "y a w",
                 "command": "waltz.yank",
                 "args": {
-                    "target": "aw"
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "aw"
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -938,7 +1100,10 @@
                 "key": "y i shift+w",
                 "command": "waltz.yank",
                 "args": {
-                    "target": "iW"
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "iW"
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -946,7 +1111,10 @@
                 "key": "y a shift+w",
                 "command": "waltz.yank",
                 "args": {
-                    "target": "aW"
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "aW"
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -954,7 +1122,10 @@
                 "key": "y i shift+8",
                 "command": "waltz.yank",
                 "args": {
-                    "target": "i("
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "i("
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -962,7 +1133,10 @@
                 "key": "y a shift+8",
                 "command": "waltz.yank",
                 "args": {
-                    "target": "a("
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "a("
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -970,7 +1144,10 @@
                 "key": "y i shift+9",
                 "command": "waltz.yank",
                 "args": {
-                    "target": "i)"
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "i)"
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -978,7 +1155,10 @@
                 "key": "y a shift+9",
                 "command": "waltz.yank",
                 "args": {
-                    "target": "a)"
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "a)"
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -986,7 +1166,10 @@
                 "key": "y i shift+[",
                 "command": "waltz.yank",
                 "args": {
-                    "target": "i{"
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "i{"
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -994,7 +1177,10 @@
                 "key": "y a shift+[",
                 "command": "waltz.yank",
                 "args": {
-                    "target": "a{"
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "a{"
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -1002,7 +1188,10 @@
                 "key": "y i shift+]",
                 "command": "waltz.yank",
                 "args": {
-                    "target": "i}"
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "i}"
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -1010,7 +1199,10 @@
                 "key": "y a shift+]",
                 "command": "waltz.yank",
                 "args": {
-                    "target": "a}"
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "a}"
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -1018,7 +1210,10 @@
                 "key": "y i [",
                 "command": "waltz.yank",
                 "args": {
-                    "target": "i["
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "i["
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -1026,7 +1221,10 @@
                 "key": "y a [",
                 "command": "waltz.yank",
                 "args": {
-                    "target": "a["
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "a["
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -1034,7 +1232,10 @@
                 "key": "y i ]",
                 "command": "waltz.yank",
                 "args": {
-                    "target": "i]"
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "i]"
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -1042,7 +1243,10 @@
                 "key": "y a ]",
                 "command": "waltz.yank",
                 "args": {
-                    "target": "a]"
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "a]"
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -1050,7 +1254,10 @@
                 "key": "y i shift+,",
                 "command": "waltz.yank",
                 "args": {
-                    "target": "i<"
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "i<"
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -1058,7 +1265,10 @@
                 "key": "y a shift+,",
                 "command": "waltz.yank",
                 "args": {
-                    "target": "a<"
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "a<"
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -1066,7 +1276,10 @@
                 "key": "y i shift+.",
                 "command": "waltz.yank",
                 "args": {
-                    "target": "i>"
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "i>"
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -1074,7 +1287,10 @@
                 "key": "y a shift+.",
                 "command": "waltz.yank",
                 "args": {
-                    "target": "a>"
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "a>"
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -1082,7 +1298,10 @@
                 "key": "y i shift+7",
                 "command": "waltz.yank",
                 "args": {
-                    "target": "i'"
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "i'"
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -1090,7 +1309,10 @@
                 "key": "y a shift+7",
                 "command": "waltz.yank",
                 "args": {
-                    "target": "a'"
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "a'"
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -1098,7 +1320,10 @@
                 "key": "y i shift+2",
                 "command": "waltz.yank",
                 "args": {
-                    "target": "i\""
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "i\""
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -1106,7 +1331,10 @@
                 "key": "y a shift+2",
                 "command": "waltz.yank",
                 "args": {
-                    "target": "a\""
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "a\""
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -1114,7 +1342,10 @@
                 "key": "y i shift+[BracketLeft]",
                 "command": "waltz.yank",
                 "args": {
-                    "target": "i`"
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "i`"
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -1122,7 +1353,10 @@
                 "key": "y a shift+[BracketLeft]",
                 "command": "waltz.yank",
                 "args": {
-                    "target": "a`"
+                    "selectCommand": "waltz.selectTextObject",
+                    "selectArgs": {
+                        "target": "a`"
+                    }
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -1130,7 +1364,7 @@
                 "key": "y w",
                 "command": "waltz.yank",
                 "args": {
-                    "target": "w"
+                    "selectCommand": "cursorWordStartRightSelect"
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -1138,7 +1372,7 @@
                 "key": "y shift+w",
                 "command": "waltz.yank",
                 "args": {
-                    "target": "W"
+                    "selectCommand": "waltz.cursorWhitespaceWordStartRightSelect"
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -1146,7 +1380,7 @@
                 "key": "y b",
                 "command": "waltz.yank",
                 "args": {
-                    "target": "b"
+                    "selectCommand": "cursorWordStartLeftSelect"
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -1154,7 +1388,7 @@
                 "key": "y shift+b",
                 "command": "waltz.yank",
                 "args": {
-                    "target": "B"
+                    "selectCommand": "waltz.cursorWhitespaceWordStartLeftSelect"
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -1162,7 +1396,7 @@
                 "key": "y e",
                 "command": "waltz.yank",
                 "args": {
-                    "target": "e"
+                    "selectCommand": "cursorWordEndRightSelect"
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -1170,7 +1404,7 @@
                 "key": "y shift+e",
                 "command": "waltz.yank",
                 "args": {
-                    "target": "E"
+                    "selectCommand": "waltz.cursorWhitespaceWordEndRightSelect"
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -1178,7 +1412,7 @@
                 "key": "y 0",
                 "command": "waltz.yank",
                 "args": {
-                    "target": "0"
+                    "selectCommand": "cursorLineStartSelect"
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -1186,7 +1420,7 @@
                 "key": "y shift+4",
                 "command": "waltz.yank",
                 "args": {
-                    "target": "$"
+                    "selectCommand": "cursorEndSelect"
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -1194,7 +1428,7 @@
                 "key": "y shift+6",
                 "command": "waltz.yank",
                 "args": {
-                    "target": "^"
+                    "selectCommand": "cursorHomeSelect"
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -1202,7 +1436,7 @@
                 "key": "y j",
                 "command": "waltz.yank",
                 "args": {
-                    "target": "j"
+                    "selectCommand": "cursorDownSelect"
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -1210,7 +1444,7 @@
                 "key": "y k",
                 "command": "waltz.yank",
                 "args": {
-                    "target": "k"
+                    "selectCommand": "cursorUpSelect"
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -1218,7 +1452,7 @@
                 "key": "y h",
                 "command": "waltz.yank",
                 "args": {
-                    "target": "h"
+                    "selectCommand": "cursorLeftSelect"
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -1226,7 +1460,7 @@
                 "key": "y l",
                 "command": "waltz.yank",
                 "args": {
-                    "target": "l"
+                    "selectCommand": "cursorRightSelect"
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -1234,7 +1468,7 @@
                 "key": "y g g",
                 "command": "waltz.yank",
                 "args": {
-                    "target": "gg"
+                    "selectCommand": "cursorTopSelect"
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -1242,7 +1476,7 @@
                 "key": "y shift+g",
                 "command": "waltz.yank",
                 "args": {
-                    "target": "G"
+                    "selectCommand": "cursorBottomSelect"
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -1250,7 +1484,7 @@
                 "key": "y f",
                 "command": "waltz.yank",
                 "args": {
-                    "target": "f"
+                    "selectCommand": "waltz.findCharForwardSelect"
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -1258,7 +1492,7 @@
                 "key": "y t",
                 "command": "waltz.yank",
                 "args": {
-                    "target": "t"
+                    "selectCommand": "waltz.findCharForwardBeforeSelect"
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -1266,7 +1500,7 @@
                 "key": "y shift+f",
                 "command": "waltz.yank",
                 "args": {
-                    "target": "F"
+                    "selectCommand": "waltz.findCharBackwardSelect"
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -1274,7 +1508,7 @@
                 "key": "y shift+t",
                 "command": "waltz.yank",
                 "args": {
-                    "target": "T"
+                    "selectCommand": "waltz.findCharBackwardBeforeSelect"
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -1491,158 +1725,6 @@
                 "command": "waltz.selectTextObject",
                 "args": {
                     "target": "a`"
-                },
-                "when": "editorTextFocus && waltz.mode == 'visual'"
-            },
-            {
-                "key": "w",
-                "command": "waltz.selectTextObject",
-                "args": {
-                    "target": "w"
-                },
-                "when": "editorTextFocus && waltz.mode == 'visual'"
-            },
-            {
-                "key": "shift+w",
-                "command": "waltz.selectTextObject",
-                "args": {
-                    "target": "W"
-                },
-                "when": "editorTextFocus && waltz.mode == 'visual'"
-            },
-            {
-                "key": "b",
-                "command": "waltz.selectTextObject",
-                "args": {
-                    "target": "b"
-                },
-                "when": "editorTextFocus && waltz.mode == 'visual'"
-            },
-            {
-                "key": "shift+b",
-                "command": "waltz.selectTextObject",
-                "args": {
-                    "target": "B"
-                },
-                "when": "editorTextFocus && waltz.mode == 'visual'"
-            },
-            {
-                "key": "e",
-                "command": "waltz.selectTextObject",
-                "args": {
-                    "target": "e"
-                },
-                "when": "editorTextFocus && waltz.mode == 'visual'"
-            },
-            {
-                "key": "shift+e",
-                "command": "waltz.selectTextObject",
-                "args": {
-                    "target": "E"
-                },
-                "when": "editorTextFocus && waltz.mode == 'visual'"
-            },
-            {
-                "key": "0",
-                "command": "waltz.selectTextObject",
-                "args": {
-                    "target": "0"
-                },
-                "when": "editorTextFocus && waltz.mode == 'visual'"
-            },
-            {
-                "key": "shift+4",
-                "command": "waltz.selectTextObject",
-                "args": {
-                    "target": "$"
-                },
-                "when": "editorTextFocus && waltz.mode == 'visual'"
-            },
-            {
-                "key": "shift+6",
-                "command": "waltz.selectTextObject",
-                "args": {
-                    "target": "^"
-                },
-                "when": "editorTextFocus && waltz.mode == 'visual'"
-            },
-            {
-                "key": "j",
-                "command": "waltz.selectTextObject",
-                "args": {
-                    "target": "j"
-                },
-                "when": "editorTextFocus && waltz.mode == 'visual'"
-            },
-            {
-                "key": "k",
-                "command": "waltz.selectTextObject",
-                "args": {
-                    "target": "k"
-                },
-                "when": "editorTextFocus && waltz.mode == 'visual'"
-            },
-            {
-                "key": "h",
-                "command": "waltz.selectTextObject",
-                "args": {
-                    "target": "h"
-                },
-                "when": "editorTextFocus && waltz.mode == 'visual'"
-            },
-            {
-                "key": "l",
-                "command": "waltz.selectTextObject",
-                "args": {
-                    "target": "l"
-                },
-                "when": "editorTextFocus && waltz.mode == 'visual'"
-            },
-            {
-                "key": "g g",
-                "command": "waltz.selectTextObject",
-                "args": {
-                    "target": "gg"
-                },
-                "when": "editorTextFocus && waltz.mode == 'visual'"
-            },
-            {
-                "key": "shift+g",
-                "command": "waltz.selectTextObject",
-                "args": {
-                    "target": "G"
-                },
-                "when": "editorTextFocus && waltz.mode == 'visual'"
-            },
-            {
-                "key": "f",
-                "command": "waltz.selectTextObject",
-                "args": {
-                    "target": "f"
-                },
-                "when": "editorTextFocus && waltz.mode == 'visual'"
-            },
-            {
-                "key": "t",
-                "command": "waltz.selectTextObject",
-                "args": {
-                    "target": "t"
-                },
-                "when": "editorTextFocus && waltz.mode == 'visual'"
-            },
-            {
-                "key": "shift+f",
-                "command": "waltz.selectTextObject",
-                "args": {
-                    "target": "F"
-                },
-                "when": "editorTextFocus && waltz.mode == 'visual'"
-            },
-            {
-                "key": "shift+t",
-                "command": "waltz.selectTextObject",
-                "args": {
-                    "target": "T"
                 },
                 "when": "editorTextFocus && waltz.mode == 'visual'"
             },
@@ -9850,32 +9932,62 @@
             {
                 "key": "f",
                 "command": "waltz.findCharForward",
-                "when": "editorTextFocus && waltz.mode != 'insert'"
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "f",
+                "command": "waltz.findCharForwardSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
             },
             {
                 "key": "t",
                 "command": "waltz.findCharForwardBefore",
-                "when": "editorTextFocus && waltz.mode != 'insert'"
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "t",
+                "command": "waltz.findCharForwardBeforeSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
             },
             {
                 "key": "shift+f",
                 "command": "waltz.findCharBackward",
-                "when": "editorTextFocus && waltz.mode != 'insert'"
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "shift+f",
+                "command": "waltz.findCharBackwardSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
             },
             {
                 "key": "shift+t",
                 "command": "waltz.findCharBackwardBefore",
-                "when": "editorTextFocus && waltz.mode != 'insert'"
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": "shift+t",
+                "command": "waltz.findCharBackwardBeforeSelect",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
             },
             {
                 "key": ";",
                 "command": "waltz.repeatFindChar",
-                "when": "editorTextFocus && waltz.mode != 'insert'"
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": ";",
+                "command": "waltz.repeatFindChar",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
             },
             {
                 "key": ",",
                 "command": "waltz.repeatFindCharReverse",
-                "when": "editorTextFocus && waltz.mode != 'insert'"
+                "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
+            },
+            {
+                "key": ",",
+                "command": "waltz.repeatFindCharReverse",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
             },
             {
                 "key": "z z",

@@ -69,7 +69,7 @@ export async function getCharViaQuickPick(prompt: string): Promise<string | null
  * QuickPick で文字入力を待ち、即時発火
  * VS Code philosophy: f=t (forward), F=T (backward)
  */
-async function findCharCommand(vimState: VimState, direction: 'forward' | 'backward'): Promise<void> {
+async function findCharCommand(vimState: VimState, direction: 'forward' | 'backward', select: boolean): Promise<void> {
     const editor = vscode.window.activeTextEditor;
     if (!editor) return;
 
@@ -84,7 +84,7 @@ async function findCharCommand(vimState: VimState, direction: 'forward' | 'backw
     };
 
     // Execute find
-    executeFindChar(editor, vimState, char, direction);
+    executeFindChar(editor, vimState, char, direction, select);
 }
 
 function executeFindChar(
@@ -92,13 +92,14 @@ function executeFindChar(
     vimState: VimState,
     char: string,
     direction: 'forward' | 'backward',
+    select: boolean,
 ): void {
-    const isVisual = vimState.mode === 'visual';
+    const shouldSelect = select || vimState.mode === 'visual';
 
     editor.selections = editor.selections.map((selection) => {
         const newPos = findCharInLine(editor.document, selection.active, char, direction);
         if (newPos) {
-            if (isVisual) {
+            if (shouldSelect) {
                 return new Selection(selection.anchor, newPos);
             }
             return new Selection(newPos, newPos);
@@ -114,18 +115,36 @@ function repeatFindChar(vimState: VimState, reverse: boolean): void {
     const { character, direction } = vimState.lastFt;
     const actualDirection = reverse ? (direction === 'after' ? 'before' : 'after') : direction;
 
-    executeFindChar(editor, vimState, character, actualDirection === 'after' ? 'forward' : 'backward');
+    executeFindChar(editor, vimState, character, actualDirection === 'after' ? 'forward' : 'backward', false);
 }
 
 export function registerFindCommands(context: vscode.ExtensionContext, getVimState: () => VimState): void {
     context.subscriptions.push(
         // f and t both move to the character (same behavior in waltz)
-        vscode.commands.registerCommand('waltz.findCharForward', () => findCharCommand(getVimState(), 'forward')),
-        vscode.commands.registerCommand('waltz.findCharForwardBefore', () => findCharCommand(getVimState(), 'forward')),
+        vscode.commands.registerCommand('waltz.findCharForward', () =>
+            findCharCommand(getVimState(), 'forward', false),
+        ),
+        vscode.commands.registerCommand('waltz.findCharForwardBefore', () =>
+            findCharCommand(getVimState(), 'forward', false),
+        ),
+        vscode.commands.registerCommand('waltz.findCharForwardSelect', () =>
+            findCharCommand(getVimState(), 'forward', true),
+        ),
+        vscode.commands.registerCommand('waltz.findCharForwardBeforeSelect', () =>
+            findCharCommand(getVimState(), 'forward', true),
+        ),
         // F and T both move to the character backward (same behavior in waltz)
-        vscode.commands.registerCommand('waltz.findCharBackward', () => findCharCommand(getVimState(), 'backward')),
+        vscode.commands.registerCommand('waltz.findCharBackward', () =>
+            findCharCommand(getVimState(), 'backward', false),
+        ),
         vscode.commands.registerCommand('waltz.findCharBackwardBefore', () =>
-            findCharCommand(getVimState(), 'backward'),
+            findCharCommand(getVimState(), 'backward', false),
+        ),
+        vscode.commands.registerCommand('waltz.findCharBackwardSelect', () =>
+            findCharCommand(getVimState(), 'backward', true),
+        ),
+        vscode.commands.registerCommand('waltz.findCharBackwardBeforeSelect', () =>
+            findCharCommand(getVimState(), 'backward', true),
         ),
         vscode.commands.registerCommand('waltz.repeatFindChar', () => repeatFindChar(getVimState(), false)),
         vscode.commands.registerCommand('waltz.repeatFindCharReverse', () => repeatFindChar(getVimState(), true)),
