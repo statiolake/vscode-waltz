@@ -542,7 +542,7 @@
                 "key": "d d",
                 "command": "waltz.delete",
                 "args": {
-                    "selectCommand": "expandLineSelection"
+                    "line": true
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -910,7 +910,7 @@
                 "key": "c c",
                 "command": "waltz.change",
                 "args": {
-                    "selectCommand": "expandLineSelection"
+                    "line": true
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -1278,7 +1278,7 @@
                 "key": "y y",
                 "command": "waltz.yank",
                 "args": {
-                    "selectCommand": "expandLineSelection"
+                    "line": true
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -2331,7 +2331,7 @@
                 "key": "shift+s",
                 "command": "waltz.change",
                 "args": {
-                    "selectCommand": "expandLineSelection"
+                    "line": true
                 },
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'"
             },
@@ -2362,12 +2362,12 @@
             },
             {
                 "key": "d",
-                "command": "editor.action.clipboardCutAction",
+                "command": "waltz.visualCut",
                 "when": "editorTextFocus && waltz.mode == 'visual'"
             },
             {
                 "key": "x",
-                "command": "editor.action.clipboardCutAction",
+                "command": "waltz.visualCut",
                 "when": "editorTextFocus && waltz.mode == 'visual'"
             },
             {
@@ -2382,7 +2382,7 @@
             },
             {
                 "key": "y",
-                "command": "editor.action.clipboardCopyAction",
+                "command": "waltz.visualYank",
                 "when": "editorTextFocus && waltz.mode == 'visual'"
             },
             {

@@ -72,6 +72,38 @@ suite('Native Commands Tests', () => {
             assert.strictEqual(doc.getText(), ' world', 'Should delete selected text');
             assert.strictEqual(vimState.mode, 'insert', 'Should enter insert mode');
         });
+
+        test('waltz.visualCut should delete selection and return to normal mode', async () => {
+            const doc = await vscode.workspace.openTextDocument({ content: 'hello world' });
+            const editor = await vscode.window.showTextDocument(doc);
+            editor.selection = new Selection(new Position(0, 0), new Position(0, 5));
+
+            const vimState = await getVimState();
+            await vscode.commands.executeCommand('waltz.enterVisual');
+            await wait(50);
+
+            await vscode.commands.executeCommand('waltz.visualCut');
+            await wait(50);
+
+            assert.strictEqual(doc.getText(), ' world', 'Should delete selected text');
+            assert.strictEqual(vimState.mode, 'normal', 'Should return to normal mode');
+        });
+
+        test('waltz.visualYank should keep text and return to normal mode', async () => {
+            const doc = await vscode.workspace.openTextDocument({ content: 'hello world' });
+            const editor = await vscode.window.showTextDocument(doc);
+            editor.selection = new Selection(new Position(0, 0), new Position(0, 5));
+
+            const vimState = await getVimState();
+            await vscode.commands.executeCommand('waltz.enterVisual');
+            await wait(50);
+
+            await vscode.commands.executeCommand('waltz.visualYank');
+            await wait(50);
+
+            assert.strictEqual(doc.getText(), 'hello world', 'Should not modify text');
+            assert.strictEqual(vimState.mode, 'normal', 'Should return to normal mode');
+        });
     });
 
     suite('Paragraph movement', () => {

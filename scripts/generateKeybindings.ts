@@ -202,18 +202,18 @@ const editCommands = [
     // Normal mode edits
     { key: 'x', command: 'waltz.deleteChar', when: NORMAL },
     { key: 's', command: 'waltz.substituteChar', when: NORMAL },
-    { key: 'shift+s', command: 'waltz.change', args: { selectCommand: 'expandLineSelection' }, when: NORMAL },  // S = cc
+    { key: 'shift+s', command: 'waltz.change', args: { line: true }, when: NORMAL },  // S = cc
     { key: 'shift+d', command: 'waltz.deleteToEnd', when: NORMAL },
     { key: 'shift+c', command: 'waltz.changeToEndOfLine', when: NORMAL },
     { key: 'shift+j', command: 'editor.action.joinLines', when: NORMAL },
     { key: 'p', command: 'editor.action.clipboardPasteAction', when: NORMAL },
     { key: 'shift+p', command: 'editor.action.clipboardPasteAction', when: NORMAL },
     // Visual mode edits (use native commands - mode change handled by selection event)
-    { key: 'd', command: 'editor.action.clipboardCutAction', when: VISUAL },
-    { key: 'x', command: 'editor.action.clipboardCutAction', when: VISUAL },
+    { key: 'd', command: 'waltz.visualCut', when: VISUAL },
+    { key: 'x', command: 'waltz.visualCut', when: VISUAL },
     { key: 'c', command: 'waltz.visualChange', when: VISUAL },
     { key: 's', command: 'waltz.visualChange', when: VISUAL },
-    { key: 'y', command: 'editor.action.clipboardCopyAction', when: VISUAL },
+    { key: 'y', command: 'waltz.visualYank', when: VISUAL },
     { key: 'p', command: 'editor.action.clipboardPasteAction', when: VISUAL },
 ];
 
@@ -259,11 +259,11 @@ function generateKeybindings(): Keybinding[] {
             });
         }
 
-        // Line operations (dd, cc, yy) are also select-command based
+        // Line operations (dd, cc, yy)
         keybindings.push({
             key: `${op.key} ${op.key}`,
             command: op.command,
-            args: { selectCommand: 'expandLineSelection' },
+            args: { line: true },
             when: NORMAL,
         });
     }

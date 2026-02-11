@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import { Position, Selection } from 'vscode';
 import { enterMode } from '../modes';
+import { collapseSelections } from '../utils/selection';
 import type { VimState } from '../vimState';
 
 /**
@@ -36,7 +37,18 @@ async function getCharViaQuickPick(prompt: string): Promise<string | null> {
 
 async function visualChange(vimState: VimState): Promise<void> {
     await vscode.commands.executeCommand('editor.action.clipboardCutAction');
-    enterMode(vimState, vscode.window.activeTextEditor, 'insert');
+    await enterMode(vimState, vscode.window.activeTextEditor, 'insert');
+}
+
+async function visualCut(vimState: VimState): Promise<void> {
+    await vscode.commands.executeCommand('editor.action.clipboardCutAction');
+    await enterMode(vimState, vscode.window.activeTextEditor, 'normal');
+}
+
+async function visualYank(vimState: VimState): Promise<void> {
+    await vscode.commands.executeCommand('editor.action.clipboardCopyAction');
+    await collapseSelections(vscode.window.activeTextEditor);
+    await enterMode(vimState, vscode.window.activeTextEditor, 'normal');
 }
 
 async function changeToEndOfLine(vimState: VimState): Promise<void> {
@@ -159,6 +171,8 @@ function paragraphMove(_vimState: VimState, direction: 'up' | 'down', select: bo
 export function registerEditCommands(context: vscode.ExtensionContext, getVimState: () => VimState): void {
     context.subscriptions.push(
         vscode.commands.registerCommand('waltz.visualChange', () => visualChange(getVimState())),
+        vscode.commands.registerCommand('waltz.visualCut', () => visualCut(getVimState())),
+        vscode.commands.registerCommand('waltz.visualYank', () => visualYank(getVimState())),
         vscode.commands.registerCommand('waltz.changeToEndOfLine', () => changeToEndOfLine(getVimState())),
         vscode.commands.registerCommand('waltz.deleteChar', () => deleteChar(getVimState())),
         vscode.commands.registerCommand('waltz.substituteChar', () => substituteChar(getVimState())),

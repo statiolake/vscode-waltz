@@ -5,61 +5,73 @@ import type { VimState } from '../vimState';
 
 interface OperatorArgs {
     selectCommand?: string;
+    line?: boolean;
 }
 
 async function executeDelete(vimState: VimState, args: OperatorArgs): Promise<void> {
     const editor = vscode.window.activeTextEditor;
-
-    const { selectCommand } = args;
-    if (!selectCommand) return;
-
     await collapseSelections(editor);
-    try {
-        await vscode.commands.executeCommand(selectCommand);
-    } catch {
-        return;
+
+    if (args.line) {
+        await vscode.commands.executeCommand('editor.action.clipboardCutAction');
+        await enterMode(vimState, editor, 'normal');
+    } else {
+        if (!args.selectCommand) return;
+
+        try {
+            await vscode.commands.executeCommand(args.selectCommand);
+        } catch {
+            return;
+        }
+
+        await vscode.commands.executeCommand('editor.action.clipboardCutAction');
+        await enterMode(vimState, editor, 'normal');
     }
-    await vscode.commands.executeCommand('editor.action.clipboardCutAction');
-    await enterMode(vimState, editor, 'normal');
 }
 
 async function executeChange(vimState: VimState, args: OperatorArgs): Promise<void> {
     const editor = vscode.window.activeTextEditor;
-
-    const { selectCommand } = args;
-    if (!selectCommand) return;
-
     await collapseSelections(editor);
-    try {
-        await vscode.commands.executeCommand(selectCommand);
-    } catch {
-        return;
-    }
 
-    await vscode.commands.executeCommand('editor.action.clipboardCutAction');
-    await enterMode(vimState, vscode.window.activeTextEditor, 'insert');
+    if (args.line) {
+        await vscode.commands.executeCommand('editor.action.clipboardCutAction');
+        await vscode.commands.executeCommand('editor.action.insertLineBefore');
+        await enterMode(vimState, editor, 'insert');
+    } else {
+        if (!args.selectCommand) return;
+
+        try {
+            await vscode.commands.executeCommand(args.selectCommand);
+        } catch {
+            return;
+        }
+
+        await vscode.commands.executeCommand('editor.action.clipboardCutAction');
+        await enterMode(vimState, editor, 'insert');
+    }
 }
 
 async function executeYank(vimState: VimState, args: OperatorArgs): Promise<void> {
     const editor = vscode.window.activeTextEditor;
-    if (!editor) return;
-
-    const { selectCommand } = args;
-    if (!selectCommand) return;
-
     await collapseSelections(editor);
-    try {
-        await vscode.commands.executeCommand(selectCommand);
-    } catch {
-        return;
-    }
-    if (editor.selections.every((selection) => selection.isEmpty)) {
+
+    if (args.line) {
+        await vscode.commands.executeCommand('editor.action.clipboardCopyAction');
         await collapseSelections(editor);
-        return;
+        await enterMode(vimState, editor, 'normal');
+    } else {
+        if (!args.selectCommand) return;
+
+        try {
+            await vscode.commands.executeCommand(args.selectCommand);
+        } catch {
+            return;
+        }
+
+        await vscode.commands.executeCommand('editor.action.clipboardCopyAction');
+        await collapseSelections(editor);
+        await enterMode(vimState, editor, 'normal');
     }
-    await vscode.commands.executeCommand('editor.action.clipboardCopyAction');
-    await collapseSelections(editor);
-    await enterMode(vimState, editor, 'normal');
 }
 
 export function registerOperatorCommands(context: vscode.ExtensionContext, getVimState: () => VimState): void {
