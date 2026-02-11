@@ -6,6 +6,14 @@ import type { VimState } from '../vimState';
  * モード切替コマンド
  */
 export function registerModeCommands(context: vscode.ExtensionContext, getVimState: () => VimState): void {
+    // Normal mode
+    context.subscriptions.push(
+        vscode.commands.registerCommand('waltz.enterNormal', () => {
+            const editor = vscode.window.activeTextEditor;
+            enterMode(getVimState(), editor, 'normal');
+        }),
+    );
+
     // i/a - Insert mode at cursor (I-beam model: i and a are the same)
     context.subscriptions.push(
         vscode.commands.registerCommand('waltz.enterInsert', () => {
