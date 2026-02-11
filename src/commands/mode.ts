@@ -25,44 +25,32 @@ export function registerModeCommands(context: vscode.ExtensionContext, getVimSta
     // I - Insert mode at line start
     context.subscriptions.push(
         vscode.commands.registerCommand('waltz.enterInsertAtLineStart', async () => {
-            const editor = vscode.window.activeTextEditor;
-            if (editor) {
-                await vscode.commands.executeCommand('cursorHome');
-            }
-            enterMode(getVimState(), editor, 'insert');
+            await vscode.commands.executeCommand('cursorHome');
+            await enterMode(getVimState(), vscode.window.activeTextEditor, 'insert');
         }),
     );
 
     // A - Insert mode at line end
     context.subscriptions.push(
         vscode.commands.registerCommand('waltz.enterInsertAtLineEnd', async () => {
-            const editor = vscode.window.activeTextEditor;
-            if (editor) {
-                await vscode.commands.executeCommand('cursorEnd');
-            }
-            enterMode(getVimState(), editor, 'insert');
+            await vscode.commands.executeCommand('cursorEnd');
+            await enterMode(getVimState(), vscode.window.activeTextEditor, 'insert');
         }),
     );
 
     // o - Insert mode on new line below
     context.subscriptions.push(
         vscode.commands.registerCommand('waltz.enterInsertAtNewLineBelow', async () => {
-            const editor = vscode.window.activeTextEditor;
-            if (editor) {
-                await vscode.commands.executeCommand('editor.action.insertLineAfter');
-            }
-            enterMode(getVimState(), editor, 'insert');
+            await vscode.commands.executeCommand('editor.action.insertLineAfter');
+            await enterMode(getVimState(), vscode.window.activeTextEditor, 'insert');
         }),
     );
 
     // O - Insert mode on new line above
     context.subscriptions.push(
         vscode.commands.registerCommand('waltz.enterInsertAtNewLineAbove', async () => {
-            const editor = vscode.window.activeTextEditor;
-            if (editor) {
-                await vscode.commands.executeCommand('editor.action.insertLineBefore');
-            }
-            enterMode(getVimState(), editor, 'insert');
+            await vscode.commands.executeCommand('editor.action.insertLineBefore');
+            await enterMode(getVimState(), vscode.window.activeTextEditor, 'insert');
         }),
     );
 

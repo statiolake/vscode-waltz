@@ -1,9 +1,10 @@
+import type { TextEditor } from 'vscode';
 import * as vscode from 'vscode';
-import { Selection, type TextEditor } from 'vscode';
 import { registerTypeCommand, unregisterTypeCommand } from './extension';
 import type { Mode } from './modesTypes';
 import { getCursorStyleForMode } from './utils/cursorStyle';
 import { getModeDisplayText } from './utils/modeDisplay';
+import { collapseSelections } from './utils/selection';
 import type { VimState } from './vimState';
 
 export async function enterMode(vimState: VimState, editor: TextEditor | undefined, mode: Mode): Promise<void> {
@@ -24,23 +25,11 @@ export async function enterMode(vimState: VimState, editor: TextEditor | undefin
         registerTypeCommand(vimState);
     }
 
-    // 選択範囲の調整はモードが実際に変わった場合のみ行う
-    reinitUiForState(vimState, editor, { adjustSelections: oldMode !== mode });
-}
+    reinitUiForState(vimState, editor);
 
-/** 現在の状態に応じて UI 要素 (ステータスバー屋カーソルスタイルなど) を再反映する */
-export async function reinitUiForState(
-    vimState: VimState,
-    editor: TextEditor | undefined,
-    opts: { adjustSelections?: boolean } = {},
-) {
-    // UI 関連は念のため常に再反映する
-    updateModeContext(vimState.mode);
-    updateCursorStyle(editor, vimState.mode);
-    updateStatusBar(vimState, vimState.mode, editor === undefined);
-
-    // ここから先の処理は重たく副作用も大きいので、明示的に指定されない限りスキップする
-    if (!opts.adjustSelections) return;
+    // 選択範囲の調整は重たく副作用も大きいので、明示的に指定されない限りスキップする
+    // モードが実際に変わった場合のみ行う
+    if (oldMode === mode) return;
 
     if (vimState.mode === 'normal' && editor && editor.selections.some((selection) => !selection.isEmpty)) {
         // ノーマルモードに入ったら、選択範囲を解除する
@@ -55,8 +44,14 @@ export async function reinitUiForState(
         // どういうわけかわからないが、こういう順番で不整合が起きてしまうっぽい。
         // これ自体はイベント発火の仕組みなのかな。とりあえず避けられそうにないので、影響を最小化するため不必要な場合
         // はセットしないようにしておく。
-        editor.selections = editor.selections.map((selection) => new Selection(selection.active, selection.active));
+        await collapseSelections(editor);
     }
+}
+
+function reinitUiForState(vimState: VimState, editor: TextEditor | undefined) {
+    updateModeContext(vimState.mode);
+    updateCursorStyle(editor, vimState.mode);
+    updateStatusBar(vimState, vimState.mode, editor === undefined);
 }
 
 function updateModeContext(mode: Mode) {

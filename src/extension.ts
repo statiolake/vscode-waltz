@@ -10,7 +10,7 @@ import {
 import { registerCommands } from './commands';
 import { createCommentConfigProvider, createVimState } from './contextInitializers';
 import { escapeHandler } from './escapeHandler';
-import { enterMode, reinitUiForState as reinitUiElement } from './modes';
+import { enterMode } from './modes';
 import type { CommentConfigProvider } from './utils/comment';
 import type { VimState } from './vimState';
 
@@ -28,6 +28,11 @@ async function onDidChangeTextEditorSelection(vimState: VimState, e: TextEditorS
         vimState.visualModeEnteredAt !== undefined &&
         Date.now() - vimState.visualModeEnteredAt < 10
     ) {
+        await enterMode(vimState, e.textEditor, 'normal');
+    }
+    // マウスクリックによってカーソルがゼロ幅になったケースで visual モードが持続するのはかなり違和感のある挙動なの
+    // で、Normal に戻す
+    else if (allEmpty && vimState.mode === 'visual' && e.kind === vscode.TextEditorSelectionChangeKind.Mouse) {
         await enterMode(vimState, e.textEditor, 'normal');
     }
     // 選択範囲が非空になった場合、Visual モードでなければ Visual モードに入る
@@ -54,17 +59,20 @@ async function onDidChangeActiveTextEditor(vimState: VimState, editor: TextEdito
 
     // 選択の状態によってノーマルモードまたはビジュアルモードに遷移
     // エディタが存在しない場合 (巨大ファイル、エディタグループが空など) はとりあえずノーマルモードへ
-    if (editor === undefined || editor.selections.every((selection) => selection.isEmpty)) {
+    const allEmpty = !editor || editor.selections.every((selection) => selection.isEmpty);
+    if (!allEmpty) {
+        await enterMode(vimState, editor, 'visual');
+    } else if (vimState.mode === 'visual') {
         await enterMode(vimState, editor, 'normal');
     } else {
-        await enterMode(vimState, editor, 'visual');
+        // インサートモードではインサートモードをキープする
     }
 }
 
-function onDidChangeConfiguration(vimState: VimState, e: ConfigurationChangeEvent): void {
+async function onDidChangeConfiguration(vimState: VimState, e: ConfigurationChangeEvent): Promise<void> {
     if (!e.affectsConfiguration('waltz')) return;
 
-    reinitUiElement(vimState, vscode.window.activeTextEditor);
+    await enterMode(vimState, vscode.window.activeTextEditor, vimState.mode);
 }
 
 export async function activate(context: ExtensionContext): Promise<{ getVimState: () => VimState }> {
@@ -91,11 +99,8 @@ export async function activate(context: ExtensionContext): Promise<{ getVimState
         vscode.workspace.onDidChangeConfiguration((e) => onDidChangeConfiguration(vimState, e)),
         // 保存する前にはノーマルモードに戻る - 本当は別に保存に限る必要はないが、「保存」という操作がある一定の処理の完
         // 了を意味するため。
-        vscode.workspace.onWillSaveTextDocument(() => {
-            const editor = vscode.window.activeTextEditor;
-            if (editor) {
-                enterMode(vimState, editor, 'normal');
-            }
+        vscode.workspace.onWillSaveTextDocument(async () => {
+            await enterMode(vimState, vscode.window.activeTextEditor, 'normal');
         }),
         vscode.commands.registerCommand('waltz.escapeKey', async () => {
             await vscode.commands.executeCommand('hideSuggestWidget');

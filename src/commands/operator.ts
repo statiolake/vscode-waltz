@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import { Position, Range, Selection } from 'vscode';
 import { enterMode } from '../modes';
+import { collapseSelections } from '../utils/selection';
 import type { VimState } from '../vimState';
 
 /**
@@ -69,28 +70,20 @@ const TEXT_OBJECT_SELECT_BINDINGS: readonly TextObjectSelectBinding[] = [
  * Selection is always reset before applying the selection command.
  */
 async function executeOperatorWithSelectionCommand(
-    editor: vscode.TextEditor,
+    editor: vscode.TextEditor | undefined,
     selectionSpec: SelectionCommandSpec,
     action: OperatorAction,
 ): Promise<boolean> {
-    const originalSelections = editor.selections;
-
     try {
         // Start from a collapsed selection before applying selection command.
-        await vscode.commands.executeCommand('cancelSelection');
+        await collapseSelections(editor);
         await vscode.commands.executeCommand(selectionSpec.command);
     } catch {
         return false;
     }
 
-    if (editor.selections.every((selection) => selection.isEmpty)) {
-        await vscode.commands.executeCommand('cancelSelection');
-        return false;
-    }
-
     if (action === 'yank') {
         await vscode.commands.executeCommand('editor.action.clipboardCopyAction');
-        editor.selections = originalSelections;
     } else {
         await vscode.commands.executeCommand('editor.action.clipboardCutAction');
     }
@@ -397,90 +390,66 @@ export function findQuoteRange(
 /**
  * Execute delete operation
  */
-async function executeDelete(editor: vscode.TextEditor, args: OperatorArgs): Promise<void> {
-    const document = editor.document;
-    const ranges: Range[] = [];
-
+async function executeDelete(args: OperatorArgs): Promise<void> {
+    const editor = vscode.window.activeTextEditor;
     if (args.line) {
-        for (const selection of editor.selections) {
-            const line = document.lineAt(selection.active.line);
-            ranges.push(line.rangeIncludingLineBreak);
-        }
-    } else {
-        const selectionSpec = resolveSelectionCommandSpec(args);
-        if (!selectionSpec) return;
-        await executeOperatorWithSelectionCommand(editor, selectionSpec, 'delete');
+        await collapseSelections(editor);
+        await vscode.commands.executeCommand('editor.action.clipboardCutAction');
         return;
     }
 
-    if (ranges.length === 0) return;
-
-    editor.selections = ranges.map((r) => new Selection(r.start, r.end));
-    await vscode.commands.executeCommand('editor.action.clipboardCutAction');
+    const selectionSpec = resolveSelectionCommandSpec(args);
+    if (!selectionSpec) return;
+    await executeOperatorWithSelectionCommand(editor, selectionSpec, 'delete');
 }
 
 /**
  * Execute change operation
  */
-async function executeChange(editor: vscode.TextEditor, args: OperatorArgs, vimState: VimState): Promise<void> {
-    const document = editor.document;
-    const ranges: Range[] = [];
-
+async function executeChange(args: OperatorArgs, vimState: VimState): Promise<void> {
+    const editor = vscode.window.activeTextEditor;
     if (args.line) {
-        for (const selection of editor.selections) {
-            const line = document.lineAt(selection.active.line);
-            const firstNonWhitespace = line.firstNonWhitespaceCharacterIndex;
-            ranges.push(new Range(new Position(selection.active.line, firstNonWhitespace), line.range.end));
-        }
-    } else {
-        const selectionSpec = resolveSelectionCommandSpec(args);
-        if (!selectionSpec) return;
-        const applied = await executeOperatorWithSelectionCommand(editor, selectionSpec, 'change');
-        if (applied) {
-            enterMode(vimState, editor, 'insert');
-        }
+        // Match current behavior for cc/S: delete from first non-whitespace to EOL.
+        await collapseSelections(editor);
+        await vscode.commands.executeCommand('cursorHome');
+        await vscode.commands.executeCommand('deleteAllRight');
+        await enterMode(vimState, editor, 'insert');
         return;
     }
 
-    if (ranges.length === 0) return;
-
-    editor.selections = ranges.map((r) => new Selection(r.start, r.end));
-    await vscode.commands.executeCommand('editor.action.clipboardCutAction');
-    enterMode(vimState, editor, 'insert');
+    const selectionSpec = resolveSelectionCommandSpec(args);
+    if (!selectionSpec) return;
+    const applied = await executeOperatorWithSelectionCommand(editor, selectionSpec, 'change');
+    if (applied) {
+        await enterMode(vimState, editor, 'insert');
+    }
 }
 
 /**
  * Execute yank operation
  */
-async function executeYank(editor: vscode.TextEditor, args: OperatorArgs): Promise<void> {
-    const document = editor.document;
-    const ranges: Range[] = [];
-
+async function executeYank(args: OperatorArgs): Promise<void> {
+    const editor = vscode.window.activeTextEditor;
     if (args.line) {
-        for (const selection of editor.selections) {
-            const line = document.lineAt(selection.active.line);
-            ranges.push(line.rangeIncludingLineBreak);
-        }
-    } else {
-        const selectionSpec = resolveSelectionCommandSpec(args);
-        if (!selectionSpec) return;
-        await executeOperatorWithSelectionCommand(editor, selectionSpec, 'yank');
+        await collapseSelections(editor);
+        await vscode.commands.executeCommand('expandLineSelection');
+        await vscode.commands.executeCommand('editor.action.clipboardCopyAction');
+        await collapseSelections(editor);
         return;
     }
 
-    if (ranges.length === 0) return;
-
-    // Copy to clipboard using VS Code's native copy command
-    const originalSelections = editor.selections;
-    editor.selections = ranges.map((r) => new Selection(r.start, r.end));
-    await vscode.commands.executeCommand('editor.action.clipboardCopyAction');
-    editor.selections = originalSelections;
+    const selectionSpec = resolveSelectionCommandSpec(args);
+    if (!selectionSpec) return;
+    await executeOperatorWithSelectionCommand(editor, selectionSpec, 'yank');
 }
 
 /**
  * Execute select text object operation (for visual mode)
  */
-async function executeSelectTextObject(editor: vscode.TextEditor, target: string): Promise<void> {
+async function executeSelectTextObject(target: string): Promise<void> {
+    const editor = vscode.window.activeTextEditor;
+    if (!editor) return;
+
     const ranges: Array<Range | null> = [];
     for (const selection of editor.selections) {
         const range = getTextObjectRange(editor.document, selection.active, target);
@@ -515,25 +484,15 @@ async function executeSelectTextObject(editor: vscode.TextEditor, target: string
 
 export function registerOperatorCommands(context: vscode.ExtensionContext, getVimState: () => VimState): void {
     const textObjectSelectCommands = TEXT_OBJECT_SELECT_BINDINGS.map(({ command, target }) =>
-        vscode.commands.registerCommand(command, () => {
-            const editor = vscode.window.activeTextEditor;
-            if (editor) executeSelectTextObject(editor, target);
-        }),
+        vscode.commands.registerCommand(command, () => executeSelectTextObject(target)),
     );
 
     context.subscriptions.push(
-        vscode.commands.registerCommand('waltz.delete', (args: OperatorArgs) => {
-            const editor = vscode.window.activeTextEditor;
-            if (editor) executeDelete(editor, args || {});
-        }),
-        vscode.commands.registerCommand('waltz.change', (args: OperatorArgs) => {
-            const editor = vscode.window.activeTextEditor;
-            if (editor) executeChange(editor, args || {}, getVimState());
-        }),
-        vscode.commands.registerCommand('waltz.yank', (args: OperatorArgs) => {
-            const editor = vscode.window.activeTextEditor;
-            if (editor) executeYank(editor, args || {});
-        }),
+        vscode.commands.registerCommand('waltz.delete', (args: OperatorArgs) => executeDelete(args || {})),
+        vscode.commands.registerCommand('waltz.change', (args: OperatorArgs) =>
+            executeChange(args || {}, getVimState()),
+        ),
+        vscode.commands.registerCommand('waltz.yank', (args: OperatorArgs) => executeYank(args || {})),
         ...textObjectSelectCommands,
     );
 }

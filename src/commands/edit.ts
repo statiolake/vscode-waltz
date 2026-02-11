@@ -35,63 +35,28 @@ async function getCharViaQuickPick(prompt: string): Promise<string | null> {
  */
 
 async function visualChange(vimState: VimState): Promise<void> {
-    const editor = vscode.window.activeTextEditor;
-    if (!editor) return;
-
-    // Copy selection to clipboard
-    await vscode.commands.executeCommand('editor.action.clipboardCopyAction');
-
-    // Delete selection and enter insert mode
-    await editor.edit((editBuilder) => {
-        for (const selection of editor.selections) {
-            editBuilder.delete(selection);
-        }
-    });
-
-    // Enter insert mode
-    enterMode(vimState, editor, 'insert');
+    await vscode.commands.executeCommand('editor.action.clipboardCutAction');
+    enterMode(vimState, vscode.window.activeTextEditor, 'insert');
 }
 
 async function changeToEndOfLine(vimState: VimState): Promise<void> {
-    const editor = vscode.window.activeTextEditor;
-    if (!editor) return;
-
     // Delete to end of line
     await vscode.commands.executeCommand('deleteAllRight');
 
     // Enter insert mode
-    enterMode(vimState, editor, 'insert');
+    enterMode(vimState, vscode.window.activeTextEditor, 'insert');
 }
 
 async function deleteChar(_vimState: VimState): Promise<void> {
-    const editor = vscode.window.activeTextEditor;
-    if (!editor) return;
-
-    // Delete the character after cursor position (between cursor and next position)
-    await editor.edit((editBuilder) => {
-        for (const selection of editor.selections) {
-            if (selection.isEmpty) {
-                const line = editor.document.lineAt(selection.active.line);
-                if (selection.active.character < line.text.length) {
-                    const charRange = new vscode.Range(selection.active, selection.active.translate(0, 1));
-                    editBuilder.delete(charRange);
-                }
-            } else {
-                editBuilder.delete(selection);
-            }
-        }
-    });
+    await vscode.commands.executeCommand('deleteRight');
 }
 
 async function substituteChar(vimState: VimState): Promise<void> {
-    const editor = vscode.window.activeTextEditor;
-    if (!editor) return;
-
     // Delete the character after cursor position
-    await deleteChar(vimState);
+    await vscode.commands.executeCommand('deleteRight');
 
     // Enter insert mode
-    enterMode(vimState, editor, 'insert');
+    enterMode(vimState, vscode.window.activeTextEditor, 'insert');
 }
 
 /**
@@ -99,34 +64,15 @@ async function substituteChar(vimState: VimState): Promise<void> {
  * カーソル位置の文字を指定した文字で置換する（ノーマルモードのまま）
  */
 async function replaceChar(_vimState: VimState): Promise<void> {
-    const editor = vscode.window.activeTextEditor;
-    if (!editor) return;
-
     // QuickPickで置換文字を入力待ち
     const char = await getCharViaQuickPick('Type a character to replace with...');
     if (!char) return;
 
-    // カーソル位置の文字を置換
-    await editor.edit((editBuilder) => {
-        for (const selection of editor.selections) {
-            if (selection.isEmpty) {
-                const line = editor.document.lineAt(selection.active.line);
-                if (selection.active.character < line.text.length) {
-                    const charRange = new vscode.Range(selection.active, selection.active.translate(0, 1));
-                    editBuilder.replace(charRange, char);
-                }
-            } else {
-                // 選択範囲がある場合は削除して置換
-                editBuilder.replace(selection, char);
-            }
-        }
-    });
+    await vscode.commands.executeCommand('deleteRight');
+    await vscode.commands.executeCommand('default:type', { text: char });
 }
 
 async function deleteToEnd(_vimState: VimState): Promise<void> {
-    const editor = vscode.window.activeTextEditor;
-    if (!editor) return;
-
     // Delete to end of line
     await vscode.commands.executeCommand('deleteAllRight');
 }

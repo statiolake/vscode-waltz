@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import { type Position, Range } from 'vscode';
 import { enterMode } from '../modes';
+import { collapseSelections } from '../utils/selection';
 import type { VimState } from '../vimState';
 import { getCharViaQuickPick } from './find';
 import { findPairRange, findQuoteRange } from './operator';
@@ -181,7 +182,7 @@ async function surround(args: { selectCommand?: string; surroundWith?: string })
     if (!args.selectCommand) return;
 
     try {
-        await vscode.commands.executeCommand('cancelSelection');
+        await collapseSelections(editor);
         await vscode.commands.executeCommand(args.selectCommand);
     } catch {
         return;
