@@ -73,6 +73,7 @@ export async function activate(context: ExtensionContext): Promise<{ getVimState
 
     // Create status bar item
     const statusBarItem = vscode.window.createStatusBarItem(StatusBarAlignment.Left, 100);
+    statusBarItem.command = 'waltz.toggleMode';
     statusBarItem.show();
     context.subscriptions.push(statusBarItem);
 
@@ -99,6 +100,14 @@ export async function activate(context: ExtensionContext): Promise<{ getVimState
         vscode.commands.registerCommand('waltz.escapeKey', async () => {
             await vscode.commands.executeCommand('hideSuggestWidget');
             await escapeHandler(vimState);
+        }),
+        vscode.commands.registerCommand('waltz.toggleMode', async () => {
+            const editor = vscode.window.activeTextEditor;
+            if (vimState.mode === 'normal') {
+                await enterMode(vimState, editor, 'insert');
+            } else {
+                await enterMode(vimState, editor, 'normal');
+            }
         }),
         vscode.commands.registerCommand('waltz.noop', () => {
             // Do nothing - used to ignore keys in certain modes
