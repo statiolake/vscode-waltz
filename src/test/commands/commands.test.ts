@@ -279,6 +279,28 @@ suite('Native Commands Tests', () => {
             assert.strictEqual(vimState.mode, 'insert', 'cE should enter insert mode');
         });
 
+        test('waltz.change line on last line should keep cursor on last line', async () => {
+            const doc = await vscode.workspace.openTextDocument({
+                content: 'first line\nsecond line\nthird line',
+            });
+            const editor = await vscode.window.showTextDocument(doc);
+            editor.selection = new Selection(new Position(2, 3), new Position(2, 3));
+
+            const vimState = await getVimState();
+            await vscode.commands.executeCommand('waltz.escapeKey');
+            await wait(50);
+
+            await vscode.commands.executeCommand('waltz.change', { line: true });
+            await wait(50);
+
+            assert.strictEqual(vimState.mode, 'insert', 'S should enter insert mode');
+            assert.strictEqual(
+                editor.selection.active.line,
+                doc.lineCount - 1,
+                'Cursor should remain on the last line',
+            );
+        });
+
         test('waltz.delete with native motion target cancels existing selection first', async () => {
             const doc = await vscode.workspace.openTextDocument({ content: 'hello world' });
             const editor = await vscode.window.showTextDocument(doc);

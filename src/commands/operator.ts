@@ -34,8 +34,15 @@ async function executeChange(vimState: VimState, args: OperatorArgs): Promise<vo
     await collapseSelections(editor);
 
     if (args.line) {
+        const allCursorsOnLastLine =
+            !!editor &&
+            editor.selections.length > 0 &&
+            editor.selections.every((selection) => selection.active.line === editor.document.lineCount - 1);
+
         await vscode.commands.executeCommand('editor.action.clipboardCutAction');
-        await vscode.commands.executeCommand('editor.action.insertLineBefore');
+        await vscode.commands.executeCommand(
+            allCursorsOnLastLine ? 'editor.action.insertLineAfter' : 'editor.action.insertLineBefore',
+        );
         await enterMode(vimState, editor, 'insert');
     } else {
         if (!args.selectCommand) return;
