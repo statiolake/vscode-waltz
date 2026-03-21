@@ -15,6 +15,7 @@ const cursorStyleMap: Record<CursorStyleString, vscode.TextEditorCursorStyle> = 
 const defaultCursorStyles: Record<Mode, CursorStyleString> = {
     normal: 'line',
     insert: 'line-thin',
+    select: 'line-thin',
     visual: 'line-thin',
 };
 

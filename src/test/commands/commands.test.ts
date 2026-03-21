@@ -51,6 +51,44 @@ suite('Native Commands Tests', () => {
             await wait(50);
             assert.strictEqual(vimState.mode, 'visual', 'Should be in visual mode');
         });
+
+        test('waltz.toggleVisualSelect should toggle between visual and select mode', async () => {
+            const doc = await vscode.workspace.openTextDocument({ content: 'hello world' });
+            const editor = await vscode.window.showTextDocument(doc);
+            editor.selection = new Selection(new Position(0, 0), new Position(0, 5));
+
+            const vimState = await getVimState();
+            await vscode.commands.executeCommand('waltz.enterVisual');
+            await wait(50);
+            assert.strictEqual(vimState.mode, 'visual', 'Should start in visual mode');
+
+            await vscode.commands.executeCommand('waltz.toggleVisualSelect');
+            await wait(50);
+            assert.strictEqual(vimState.mode, 'select', 'Should switch to select mode');
+
+            await vscode.commands.executeCommand('waltz.toggleVisualSelect');
+            await wait(50);
+            assert.strictEqual(vimState.mode, 'visual', 'Should switch back to visual mode');
+        });
+
+        test('select mode typing should replace selection and return to insert mode', async () => {
+            const doc = await vscode.workspace.openTextDocument({ content: 'hello world' });
+            const editor = await vscode.window.showTextDocument(doc);
+            editor.selection = new Selection(new Position(0, 0), new Position(0, 5));
+
+            const vimState = await getVimState();
+            await vscode.commands.executeCommand('waltz.enterVisual');
+            await wait(50);
+            await vscode.commands.executeCommand('waltz.toggleVisualSelect');
+            await wait(50);
+            assert.strictEqual(vimState.mode, 'select', 'Should be in select mode before typing');
+
+            await vscode.commands.executeCommand('type', { text: 'X' });
+            await wait(50);
+
+            assert.strictEqual(doc.getText(), 'X world', 'Typing in select should replace current selection');
+            assert.strictEqual(vimState.mode, 'insert', 'After replacement, mode should become insert');
+        });
     });
 
     suite('Visual mode operations', () => {

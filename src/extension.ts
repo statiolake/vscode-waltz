@@ -18,6 +18,10 @@ import type { VimState } from './vimState';
 // グローバルな CommentConfigProvider（起動時に一度だけ初期化）
 export let globalCommentConfigProvider: CommentConfigProvider;
 
+function getSelectionModeForEvent(kind: vscode.TextEditorSelectionChangeKind | undefined): 'visual' | 'select' {
+    return kind === vscode.TextEditorSelectionChangeKind.Mouse && getPreferredMode() === 'insert' ? 'select' : 'visual';
+}
+
 async function onDidChangeTextEditorSelection(vimState: VimState, e: TextEditorSelectionChangeEvent): Promise<void> {
     const allEmpty = e.selections.every((selection) => selection.isEmpty);
 
@@ -36,11 +40,15 @@ async function onDidChangeTextEditorSelection(vimState: VimState, e: TextEditorS
     else if (allEmpty && e.kind === vscode.TextEditorSelectionChangeKind.Mouse) {
         await enterMode(vimState, e.textEditor, getPreferredMode());
     }
+    // select モードで選択がなくなったら insert モードへ戻す（入力で置換後の自然な遷移）
+    else if (allEmpty && vimState.mode === 'select') {
+        await enterMode(vimState, e.textEditor, 'insert');
+    }
 
-    // 選択範囲が非空になった場合、Visual モードでなければ Visual モードに入る
+    // 選択範囲が非空になった場合、未選択系モードから visual/select へ入る
     // (v コマンド後に選択を広げる場合、マウスダブルクリック、Shift+矢印など)
-    else if (!allEmpty && vimState.mode !== 'visual') {
-        await enterMode(vimState, e.textEditor, 'visual');
+    else if (!allEmpty && vimState.mode !== 'visual' && vimState.mode !== 'select') {
+        await enterMode(vimState, e.textEditor, getSelectionModeForEvent(e.kind));
     }
     // それ以外（選択が空になった場合、すでに Visual モードで選択範囲が変化）は
     // 自動的にモードを変更しない
@@ -66,6 +74,8 @@ async function onDidChangeActiveTextEditor(vimState: VimState, editor: TextEdito
         await enterMode(vimState, editor, 'visual');
     } else if (vimState.mode === 'visual') {
         await enterMode(vimState, editor, 'normal');
+    } else if (vimState.mode === 'select') {
+        await enterMode(vimState, editor, 'insert');
     } else {
         // インサートモードではインサートモードをキープする
     }
@@ -117,6 +127,11 @@ export async function activate(context: ExtensionContext): Promise<{ getVimState
                     console.log('cancelled');
                     break;
                 case 'visual': {
+                    await collapseSelections(editor);
+                    await enterMode(vimState, editor, 'normal');
+                    break;
+                }
+                case 'select': {
                     await collapseSelections(editor);
                     await enterMode(vimState, editor, 'normal');
                     break;
@@ -185,7 +200,7 @@ export function registerTypeCommand(vimState: VimState): void {
 
 /**
  * type コマンドの登録を解除する。
- * insert モードで呼び出す。VSCode ネイティブの入力処理に任せる。
+ * insert/select モードで呼び出す。VSCode ネイティブの入力処理に任せる。
  */
 export function unregisterTypeCommand(vimState: VimState): void {
     if (vimState.typeCommandDisposable) {

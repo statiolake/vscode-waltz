@@ -1,1 +1,1 @@
-export type Mode = 'insert' | 'normal' | 'visual';
+export type Mode = 'insert' | 'normal' | 'select' | 'visual';

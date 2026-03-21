@@ -26,10 +26,10 @@ Waltz operates in four distinct modes:
 
 | Mode | Entry | Exit |
 |-|-|-|
-| **Normal** | Default, press `Escape` | Enter Insert/Visual/Visual Line mode |
+| **Normal** | Default, press `Escape` | Enter Insert/Visual mode |
 | **Insert** | `i`, `a`, `I`, `A`, `o`, `O` | `Escape` |
 | **Visual** | `v` from Normal mode | `Escape` or mode-switching actions |
-| **Visual Line** | `V` from Normal mode | `Escape` or mode-switching actions |
+| **Select** | Mouse selection when `waltz.preferredMode` is `"insert"`, or `Ctrl+g` from Visual mode | Type to replace selection, `Ctrl+g`, or `Escape` |
 
 ## Operators
 
@@ -231,6 +231,12 @@ In Insert mode, you can customize additional editing commands:
 |-|-|-|
 | `<Waltz>delete-word-left` | `Ctrl+w` | Delete the word to the left of cursor |
 
+### Visual/Select Toggle
+
+| Keys | Description | Modes |
+|-|-|-|
+| `Ctrl+g` | Toggle between Visual mode and Select mode | Visual, Select |
+
 ### Register Operations
 
 | Keys | Description | Modes |
@@ -334,6 +340,10 @@ Use `waltz.preferredMode` to choose whether Waltz prefers Normal or Insert mode:
 - right after extension startup
 - after a mouse selection change collapses to empty
 
+When `waltz.preferredMode` is `"insert"`, mouse selections enter **Select** mode.
+When it is `"normal"`, mouse selections enter **Visual** mode.
+Selections created without the mouse continue to enter Visual mode.
+
 ```json
 {
     "waltz.preferredMode": "normal"
@@ -380,7 +390,7 @@ Extend Waltz with custom key bindings via the `waltz.customBindings` setting:
 - `commands` (required): Array of VS Code commands to execute sequentially, each with:
   - `command` (required): The VS Code command ID
   - `args` (optional): Arguments to pass to the command
-- `modes` (optional): Array of modes where binding is active (`"normal"`, `"visual"`, `"visualLine"`, `"insert"`). If omitted, applies to all modes.
+- `modes` (optional): Array of modes where binding is active (`"normal"`, `"visual"`, `"select"`, `"insert"`). If omitted, applies to all modes.
 
 Custom bindings are checked before default bindings, allowing you to override built-in mappings.
 
@@ -399,7 +409,7 @@ Default mappings for half-page movement can be customized:
     "args": {
         "keys": "<Waltz>half-page-down"
     },
-    "when": "editorTextFocus && waltz.mode != 'insert'"
+    "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'select'"
 },
 {
     "key": "ctrl+u",
@@ -407,7 +417,7 @@ Default mappings for half-page movement can be customized:
     "args": {
         "keys": "<Waltz>half-page-up"
     },
-    "when": "editorTextFocus && waltz.mode != 'insert'"
+    "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'select'"
 }
 ```
 
@@ -426,7 +436,7 @@ Copy, cut, and paste operations can be customized:
     "args": {
         "keys": "<Waltz>copy"
     },
-    "when": "editorTextFocus && waltz.mode != 'insert'"
+    "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'select'"
 },
 {
     "mac": "cmd+x",
@@ -436,7 +446,7 @@ Copy, cut, and paste operations can be customized:
     "args": {
         "keys": "<Waltz>cut"
     },
-    "when": "editorTextFocus && waltz.mode != 'insert'"
+    "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'select'"
 },
 {
     "mac": "cmd+v",
@@ -446,7 +456,7 @@ Copy, cut, and paste operations can be customized:
     "args": {
         "keys": "<Waltz>paste"
     },
-    "when": "editorTextFocus && waltz.mode != 'insert'"
+    "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'select'"
 }
 ```
 

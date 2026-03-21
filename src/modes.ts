@@ -18,10 +18,10 @@ export async function enterMode(vimState: VimState, editor: TextEditor | undefin
         vimState.visualModeEnteredAt = undefined;
     }
 
-    // insert モードに入るときは type コマンドを解除し、出るときは登録する
-    if (mode === 'insert' && oldMode !== 'insert') {
+    // insert/select モードに入るときは type コマンドを解除し、出るときは登録する
+    if (isNativeInputMode(mode) && !isNativeInputMode(oldMode)) {
         unregisterTypeCommand(vimState);
-    } else if (mode !== 'insert' && oldMode === 'insert') {
+    } else if (!isNativeInputMode(mode) && isNativeInputMode(oldMode)) {
         registerTypeCommand(vimState);
     }
 
@@ -46,6 +46,10 @@ export async function enterMode(vimState: VimState, editor: TextEditor | undefin
         // はセットしないようにしておく。
         await collapseSelections(editor);
     }
+}
+
+function isNativeInputMode(mode: Mode): boolean {
+    return mode === 'insert' || mode === 'select';
 }
 
 function reinitUiForState(vimState: VimState, editor: TextEditor | undefined) {

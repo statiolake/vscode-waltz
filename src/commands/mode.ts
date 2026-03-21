@@ -62,6 +62,20 @@ export function registerModeCommands(context: vscode.ExtensionContext, getVimSta
         }),
     );
 
+    // <C-g> - Toggle between Visual and Select mode
+    context.subscriptions.push(
+        vscode.commands.registerCommand('waltz.toggleVisualSelect', () => {
+            const editor = vscode.window.activeTextEditor;
+            const vimState = getVimState();
+
+            if (vimState.mode === 'visual') {
+                enterMode(vimState, editor, 'select');
+            } else if (vimState.mode === 'select') {
+                enterMode(vimState, editor, 'visual');
+            }
+        }),
+    );
+
     // i in Visual mode - Insert at start of selection
     context.subscriptions.push(
         vscode.commands.registerCommand('waltz.enterInsertAtSelectionStart', () => {

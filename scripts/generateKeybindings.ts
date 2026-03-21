@@ -20,9 +20,10 @@ interface SelectionBinding {
 }
 
 // When clauses
-const NORMAL = "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual'";
+const NORMAL = "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual' && waltz.mode != 'select'";
 const VISUAL = "editorTextFocus && waltz.mode == 'visual'";
-const NOT_INSERT = "editorTextFocus && waltz.mode != 'insert'";
+const VISUAL_OR_SELECT = "editorTextFocus && (waltz.mode == 'visual' || waltz.mode == 'select')";
+const NOT_INSERT = "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'select'";
 const ALL_MODES = 'editorTextFocus';
 
 // ============================================================
@@ -191,6 +192,7 @@ const modeSwitching = [
     { key: 'o', command: 'waltz.enterInsertAtNewLineBelow', when: NORMAL },
     { key: 'shift+o', command: 'waltz.enterInsertAtNewLineAbove', when: NORMAL },
     { key: 'v', command: 'waltz.enterVisual', when: NORMAL },
+    { key: 'ctrl+g', command: 'waltz.toggleVisualSelect', when: VISUAL_OR_SELECT },
     { key: 'shift+v', command: 'expandLineSelection', when: NOT_INSERT },
 ];
 

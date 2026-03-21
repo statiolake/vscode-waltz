@@ -4,6 +4,7 @@ import type { Mode } from '../modesTypes';
 const defaultModeDisplays: Record<Mode, string> = {
     normal: '-- NORMAL --',
     insert: '-- INSERT --',
+    select: '-- SELECT --',
     visual: '-- VISUAL --',
 };
 
