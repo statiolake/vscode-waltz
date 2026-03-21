@@ -11,6 +11,7 @@ import { registerCommands } from './commands';
 import { createCommentConfigProvider, createVimState } from './contextInitializers';
 import { enterMode } from './modes';
 import type { CommentConfigProvider } from './utils/comment';
+import { getPreferredMode } from './utils/preferredMode';
 import { collapseSelections } from './utils/selection';
 import type { VimState } from './vimState';
 
@@ -30,11 +31,12 @@ async function onDidChangeTextEditorSelection(vimState: VimState, e: TextEditorS
     ) {
         await enterMode(vimState, e.textEditor, 'normal');
     }
-    // マウスクリックによってカーソルがゼロ幅になったケースで visual モードが持続するのはかなり違和感のある挙動なの
-    // で、Normal に戻す
-    else if (allEmpty && vimState.mode === 'visual' && e.kind === vscode.TextEditorSelectionChangeKind.Mouse) {
-        await enterMode(vimState, e.textEditor, 'normal');
+
+    // マウスクリックによってカーソルがゼロ幅になった場合は、設定に応じたモードへ遷移する
+    else if (allEmpty && e.kind === vscode.TextEditorSelectionChangeKind.Mouse) {
+        await enterMode(vimState, e.textEditor, getPreferredMode());
     }
+
     // 選択範囲が非空になった場合、Visual モードでなければ Visual モードに入る
     // (v コマンド後に選択を広げる場合、マウスダブルクリック、Shift+矢印など)
     else if (!allEmpty && vimState.mode !== 'visual') {
@@ -137,9 +139,9 @@ export async function activate(context: ExtensionContext): Promise<{ getVimState
     // Register new commands (goto menu, find char, operators, mode switching)
     registerCommands(context, () => vimState);
 
-    // 起動時に normal モードに入る (big file で activeEditor が undefined でも)
+    // 起動時に preferredMode へ遷移する (big file で activeEditor が undefined でも)
     const activeEditor = vscode.window.activeTextEditor;
-    await enterMode(vimState, activeEditor, 'normal');
+    await enterMode(vimState, activeEditor, getPreferredMode());
     await onDidChangeActiveTextEditor(vimState, activeEditor);
 
     // Return API for testing

@@ -328,6 +328,20 @@ The `y` (yank) operator temporarily highlights the yanked text to make it obviou
 }
 ```
 
+### Preferred Mode
+
+Use `waltz.preferredMode` to choose whether Waltz prefers Normal or Insert mode:
+- right after extension startup
+- after a mouse selection change collapses to empty
+
+```json
+{
+    "waltz.preferredMode": "normal"
+}
+```
+
+Allowed values are `"normal"` and `"insert"`.
+
 ### Custom Key Bindings
 
 Extend Waltz with custom key bindings via the `waltz.customBindings` setting:

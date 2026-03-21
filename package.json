@@ -2473,6 +2473,15 @@
                         "underline-thin"
                     ]
                 },
+                "waltz.preferredMode": {
+                    "type": "string",
+                    "default": "normal",
+                    "description": "Preferred default mode on startup or after a mouse click.",
+                    "enum": [
+                        "normal",
+                        "insert"
+                    ]
+                },
                 "waltz.modeDisplay.normal.label": {
                     "type": "string",
                     "default": "-- NORMAL --",
