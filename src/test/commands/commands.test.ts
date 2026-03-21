@@ -339,6 +339,24 @@ suite('Native Commands Tests', () => {
             );
         });
 
+        test('waltz.change line on single-line document should not create extra line', async () => {
+            const doc = await vscode.workspace.openTextDocument({ content: 'single line' });
+            const editor = await vscode.window.showTextDocument(doc);
+            editor.selection = new Selection(new Position(0, 3), new Position(0, 3));
+
+            const vimState = await getVimState();
+            await vscode.commands.executeCommand('waltz.escapeKey');
+            await wait(50);
+
+            await vscode.commands.executeCommand('waltz.change', { line: true });
+            await wait(50);
+
+            assert.strictEqual(vimState.mode, 'insert', 'S should enter insert mode');
+            assert.strictEqual(doc.lineCount, 1, 'Single-line document should remain single-line');
+            assert.strictEqual(doc.getText(), '', 'S should clear the line content');
+            assert.strictEqual(editor.selection.active.line, 0, 'Cursor should stay on the first line');
+        });
+
         test('waltz.delete with native motion target cancels existing selection first', async () => {
             const doc = await vscode.workspace.openTextDocument({ content: 'hello world' });
             const editor = await vscode.window.showTextDocument(doc);
