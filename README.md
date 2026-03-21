@@ -339,6 +339,7 @@ The `y` (yank) operator temporarily highlights the yanked text to make it obviou
 Use `waltz.preferredMode` to choose whether Waltz prefers Normal or Insert mode:
 - right after extension startup
 - after a mouse selection change collapses to empty
+- just before save
 
 When `waltz.preferredMode` is `"insert"`, mouse selections enter **Select** mode.
 When it is `"normal"`, mouse selections enter **Visual** mode.

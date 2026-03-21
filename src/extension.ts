@@ -25,7 +25,7 @@ function getSelectionModeForEvent(kind: vscode.TextEditorSelectionChangeKind | u
 async function onDidChangeTextEditorSelection(vimState: VimState, e: TextEditorSelectionChangeEvent): Promise<void> {
     const allEmpty = e.selections.every((selection) => selection.isEmpty);
 
-    // 選択が空になった場合、Visual モード入室後 10ms 以内であれば Normal モードに戻す
+    // 選択が空になった場合、Visual モード入室後 10ms 以内であれば preferredMode に戻す
     // (Undo などで一時的に選択状態になり、すぐに戻った場合の自動復帰用)
     if (
         allEmpty &&
@@ -33,7 +33,7 @@ async function onDidChangeTextEditorSelection(vimState: VimState, e: TextEditorS
         vimState.visualModeEnteredAt !== undefined &&
         Date.now() - vimState.visualModeEnteredAt < 10
     ) {
-        await enterMode(vimState, e.textEditor, 'normal');
+        await enterMode(vimState, e.textEditor, getPreferredMode());
     }
 
     // マウスクリックによってカーソルがゼロ幅になった場合は、設定に応じたモードへ遷移する
@@ -72,10 +72,8 @@ async function onDidChangeActiveTextEditor(vimState: VimState, editor: TextEdito
     const allEmpty = !editor || editor.selections.every((selection) => selection.isEmpty);
     if (!allEmpty) {
         await enterMode(vimState, editor, 'visual');
-    } else if (vimState.mode === 'visual') {
-        await enterMode(vimState, editor, 'normal');
-    } else if (vimState.mode === 'select') {
-        await enterMode(vimState, editor, 'insert');
+    } else if (vimState.mode === 'visual' || vimState.mode === 'select') {
+        await enterMode(vimState, editor, getPreferredMode());
     } else {
         // インサートモードではインサートモードをキープする
     }
@@ -109,10 +107,10 @@ export async function activate(context: ExtensionContext): Promise<{ getVimState
         }),
         vscode.window.onDidChangeTextEditorSelection((e) => onDidChangeTextEditorSelection(vimState, e)),
         vscode.workspace.onDidChangeConfiguration((e) => onDidChangeConfiguration(vimState, e)),
-        // 保存する前にはノーマルモードに戻る - 本当は別に保存に限る必要はないが、「保存」という操作がある一定の処理の完
-        // 了を意味するため。
+        // 保存する前には preferredMode に戻る - 本当は別に保存に限る必要はないが、「保存」という操作がある一定の処
+        // 理の完了を意味するため。
         vscode.workspace.onWillSaveTextDocument(async () => {
-            await enterMode(vimState, vscode.window.activeTextEditor, 'normal');
+            await enterMode(vimState, vscode.window.activeTextEditor, getPreferredMode());
         }),
         vscode.commands.registerCommand('waltz.escapeKey', async () => {
             await vscode.commands.executeCommand('hideSuggestWidget');
