@@ -29,7 +29,7 @@ Waltz operates in four distinct modes:
 | **Normal** | Default, press `Escape` | Enter Insert/Visual mode |
 | **Insert** | `i`, `a`, `I`, `A`, `o`, `O` | `Escape` |
 | **Visual** | `v` from Normal mode | `Escape` or mode-switching actions |
-| **Select** | Mouse selection when `waltz.preferredMode` is `"insert"`, or `Ctrl+g` from Visual mode | Type to replace selection, `Ctrl+g`, or `Escape` |
+| **Select** | Creating a selection while in Insert mode when `waltz.preferredMode` is `"insert"`, or `Ctrl+g` from Visual mode | Type to replace selection, `Ctrl+g`, or `Escape` |
 
 ## Operators
 
@@ -341,9 +341,11 @@ Use `waltz.preferredMode` to choose whether Waltz prefers Normal or Insert mode:
 - after a mouse selection change collapses to empty
 - just before save
 
-When `waltz.preferredMode` is `"insert"`, mouse selections enter **Select** mode.
-When it is `"normal"`, mouse selections enter **Visual** mode.
-Selections created without the mouse continue to enter Visual mode.
+When `waltz.preferredMode` is `"insert"`, selections follow the current mode:
+- Insert mode -> Select mode
+- Normal mode -> Visual mode
+
+When it is `"normal"`, new selections always enter **Visual** mode.
 
 ```json
 {

@@ -10,6 +10,7 @@ import {
 import { registerCommands } from './commands';
 import { createCommentConfigProvider, createVimState } from './contextInitializers';
 import { enterMode } from './modes';
+import type { Mode } from './modesTypes';
 import type { CommentConfigProvider } from './utils/comment';
 import { getPreferredMode } from './utils/preferredMode';
 import { collapseSelections } from './utils/selection';
@@ -18,8 +19,12 @@ import type { VimState } from './vimState';
 // グローバルな CommentConfigProvider（起動時に一度だけ初期化）
 export let globalCommentConfigProvider: CommentConfigProvider;
 
-function getSelectionModeForEvent(kind: vscode.TextEditorSelectionChangeKind | undefined): 'visual' | 'select' {
-    return kind === vscode.TextEditorSelectionChangeKind.Mouse && getPreferredMode() === 'insert' ? 'select' : 'visual';
+function getSelectionModeForSourceMode(mode: Mode): 'visual' | 'select' {
+    if (getPreferredMode() !== 'insert') {
+        return 'visual';
+    }
+
+    return mode === 'insert' || mode === 'select' ? 'select' : 'visual';
 }
 
 async function onDidChangeTextEditorSelection(vimState: VimState, e: TextEditorSelectionChangeEvent): Promise<void> {
@@ -45,10 +50,11 @@ async function onDidChangeTextEditorSelection(vimState: VimState, e: TextEditorS
         await enterMode(vimState, e.textEditor, 'insert');
     }
 
-    // 選択範囲が非空になった場合、未選択系モードから visual/select へ入る
-    // (v コマンド後に選択を広げる場合、マウスダブルクリック、Shift+矢印など)
+    // 選択範囲が非空になった場合、未選択系モードから visual/select へ入る。
+    // preferredMode=insert のときだけ遷移元モードで分岐する。
+    // preferredMode=normal のときは常に visual へ入る。
     else if (!allEmpty && vimState.mode !== 'visual' && vimState.mode !== 'select') {
-        await enterMode(vimState, e.textEditor, getSelectionModeForEvent(e.kind));
+        await enterMode(vimState, e.textEditor, getSelectionModeForSourceMode(vimState.mode));
     }
     // それ以外（選択が空になった場合、すでに Visual モードで選択範囲が変化）は
     // 自動的にモードを変更しない
@@ -67,11 +73,11 @@ async function onDidChangeTextEditorSelection(vimState: VimState, e: TextEditorS
 async function onDidChangeActiveTextEditor(vimState: VimState, editor: TextEditor | undefined): Promise<void> {
     console.log(`Active editor changed: ${editor?.document.uri.toString()}`);
 
-    // 選択の状態によってノーマルモードまたはビジュアルモードに遷移
-    // エディタが存在しない場合 (巨大ファイル、エディタグループが空など) はとりあえずノーマルモードへ
+    // 選択の状態によって preferredMode / visual / select に遷移
+    // エディタが存在しない場合 (巨大ファイル、エディタグループが空など) は allEmpty 扱いにする
     const allEmpty = !editor || editor.selections.every((selection) => selection.isEmpty);
     if (!allEmpty) {
-        await enterMode(vimState, editor, 'visual');
+        await enterMode(vimState, editor, getSelectionModeForSourceMode(vimState.mode));
     } else if (vimState.mode === 'visual' || vimState.mode === 'select') {
         await enterMode(vimState, editor, getPreferredMode());
     } else {

@@ -2498,7 +2498,7 @@
                 "waltz.preferredMode": {
                     "type": "string",
                     "default": "normal",
-                    "description": "Preferred mode on startup and after mouse click. Also controls whether mouse selections enter visual (normal) or select (insert).",
+                    "description": "Preferred mode on startup, after mouse click, and before save. When set to insert, selections from insert mode enter select mode.",
                     "enum": [
                         "normal",
                         "insert"

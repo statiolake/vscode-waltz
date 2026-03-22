@@ -18,6 +18,21 @@ async function getVimState(): Promise<VimState> {
 // Helper to wait for mode change
 const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
+async function withPreferredMode(mode: 'normal' | 'insert', run: () => Promise<void>): Promise<void> {
+    const config = vscode.workspace.getConfiguration('waltz');
+    const previous = config.get<'normal' | 'insert'>('preferredMode', 'normal');
+
+    await config.update('preferredMode', mode, vscode.ConfigurationTarget.Global);
+    await wait(50);
+
+    try {
+        await run();
+    } finally {
+        await config.update('preferredMode', previous, vscode.ConfigurationTarget.Global);
+        await wait(50);
+    }
+}
+
 suite('Native Commands Tests', () => {
     suite('Mode switching commands', () => {
         test('waltz.enterInsert should switch to insert mode', async () => {
@@ -50,6 +65,64 @@ suite('Native Commands Tests', () => {
             await vscode.commands.executeCommand('waltz.enterVisual');
             await wait(50);
             assert.strictEqual(vimState.mode, 'visual', 'Should be in visual mode');
+        });
+
+        test('selection created in insert mode should enter select mode', async () => {
+            await withPreferredMode('insert', async () => {
+                const doc = await vscode.workspace.openTextDocument({ content: 'hello world' });
+                const editor = await vscode.window.showTextDocument(doc);
+                editor.selection = new Selection(new Position(0, 0), new Position(0, 0));
+
+                const vimState = await getVimState();
+                await vscode.commands.executeCommand('waltz.enterInsert');
+                await wait(50);
+                assert.strictEqual(vimState.mode, 'insert', 'Should start in insert mode');
+
+                editor.selection = new Selection(new Position(0, 0), new Position(0, 5));
+                await wait(50);
+
+                assert.strictEqual(vimState.mode, 'select', 'Selection from insert mode should enter select mode');
+            });
+        });
+
+        test('selection created in normal mode should enter visual mode', async () => {
+            await withPreferredMode('insert', async () => {
+                const doc = await vscode.workspace.openTextDocument({ content: 'hello world' });
+                const editor = await vscode.window.showTextDocument(doc);
+                editor.selection = new Selection(new Position(0, 0), new Position(0, 0));
+
+                const vimState = await getVimState();
+                await vscode.commands.executeCommand('waltz.escapeKey');
+                await wait(50);
+                assert.strictEqual(vimState.mode, 'normal', 'Should start in normal mode');
+
+                editor.selection = new Selection(new Position(0, 0), new Position(0, 5));
+                await wait(50);
+
+                assert.strictEqual(vimState.mode, 'visual', 'Selection from normal mode should enter visual mode');
+            });
+        });
+
+        test('selection created in insert mode should enter visual mode when preferred mode is normal', async () => {
+            await withPreferredMode('normal', async () => {
+                const doc = await vscode.workspace.openTextDocument({ content: 'hello world' });
+                const editor = await vscode.window.showTextDocument(doc);
+                editor.selection = new Selection(new Position(0, 0), new Position(0, 0));
+
+                const vimState = await getVimState();
+                await vscode.commands.executeCommand('waltz.enterInsert');
+                await wait(50);
+                assert.strictEqual(vimState.mode, 'insert', 'Should start in insert mode');
+
+                editor.selection = new Selection(new Position(0, 0), new Position(0, 5));
+                await wait(50);
+
+                assert.strictEqual(
+                    vimState.mode,
+                    'visual',
+                    'Selection from insert mode should enter visual mode when preferred mode is normal',
+                );
+            });
         });
 
         test('waltz.toggleVisualSelect should toggle between visual and select mode', async () => {
