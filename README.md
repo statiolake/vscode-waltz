@@ -29,7 +29,7 @@ Waltz operates in four distinct modes:
 | **Normal** | Default, press `Escape` | Enter Insert/Visual mode |
 | **Insert** | `i`, `a`, `I`, `A`, `o`, `O` | `Escape` |
 | **Visual** | `v` from Normal mode | `Escape` or mode-switching actions |
-| **Select** | Creating a selection while in Insert mode when `waltz.preferredMode` is `"insert"`, or `Ctrl+g` from Visual mode | Type to replace selection, `Ctrl+g`, or `Escape` |
+| **Select** | Creating a selection while in Insert mode when `waltz.preferredMode` is `"insert"`, or `Ctrl+g` from Visual mode | Type to replace selection, `Ctrl+g`, or `Escape` (`insert` if preferred mode is `insert`, otherwise `normal`) |
 
 ## Operators
 

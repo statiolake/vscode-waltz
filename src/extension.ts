@@ -137,7 +137,7 @@ export async function activate(context: ExtensionContext): Promise<{ getVimState
                 }
                 case 'select': {
                     await collapseSelections(editor);
-                    await enterMode(vimState, editor, 'normal');
+                    await enterMode(vimState, editor, getPreferredMode() === 'insert' ? 'insert' : 'normal');
                     break;
                 }
             }

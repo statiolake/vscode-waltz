@@ -162,6 +162,47 @@ suite('Native Commands Tests', () => {
             assert.strictEqual(doc.getText(), 'X world', 'Typing in select should replace current selection');
             assert.strictEqual(vimState.mode, 'insert', 'After replacement, mode should become insert');
         });
+
+        test('escape in select mode should return to insert mode when preferred mode is insert', async () => {
+            await withPreferredMode('insert', async () => {
+                const doc = await vscode.workspace.openTextDocument({ content: 'hello world' });
+                const editor = await vscode.window.showTextDocument(doc);
+                editor.selection = new Selection(new Position(0, 0), new Position(0, 0));
+
+                const vimState = await getVimState();
+                await vscode.commands.executeCommand('waltz.enterInsert');
+                await wait(50);
+
+                editor.selection = new Selection(new Position(0, 0), new Position(0, 5));
+                await wait(50);
+                assert.strictEqual(vimState.mode, 'select', 'Should be in select mode before Escape');
+
+                await vscode.commands.executeCommand('waltz.escapeKey');
+                await wait(50);
+
+                assert.strictEqual(vimState.mode, 'insert', 'Escape in select should enter insert mode');
+            });
+        });
+
+        test('escape in select mode should return to normal mode when preferred mode is normal', async () => {
+            await withPreferredMode('normal', async () => {
+                const doc = await vscode.workspace.openTextDocument({ content: 'hello world' });
+                const editor = await vscode.window.showTextDocument(doc);
+                editor.selection = new Selection(new Position(0, 0), new Position(0, 0));
+
+                const vimState = await getVimState();
+                await vscode.commands.executeCommand('waltz.enterVisual');
+                await wait(50);
+                await vscode.commands.executeCommand('waltz.toggleVisualSelect');
+                await wait(50);
+                assert.strictEqual(vimState.mode, 'select', 'Should be in select mode before Escape');
+
+                await vscode.commands.executeCommand('waltz.escapeKey');
+                await wait(50);
+
+                assert.strictEqual(vimState.mode, 'normal', 'Escape in select should enter normal mode');
+            });
+        });
     });
 
     suite('Visual mode operations', () => {
