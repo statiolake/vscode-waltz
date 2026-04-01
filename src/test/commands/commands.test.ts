@@ -33,6 +33,36 @@ async function withPreferredMode(mode: 'normal' | 'insert', run: () => Promise<v
     }
 }
 
+type CursorStyleSetting = 'block' | 'block-outline' | 'line' | 'line-thin' | 'underline' | 'underline-thin';
+type CursorStyleMode = 'normal' | 'insert' | 'select' | 'visual';
+
+const cursorStyleDefaults: Record<CursorStyleMode, CursorStyleSetting> = {
+    normal: 'line',
+    insert: 'line-thin',
+    select: 'line-thin',
+    visual: 'line-thin',
+};
+
+async function withCursorStyle(
+    mode: CursorStyleMode,
+    style: CursorStyleSetting,
+    run: () => Promise<void>,
+): Promise<void> {
+    const config = vscode.workspace.getConfiguration('waltz');
+    const key = `cursorStyle.${mode}`;
+    const previous = config.get<CursorStyleSetting>(key, cursorStyleDefaults[mode]);
+
+    await config.update(key, style, vscode.ConfigurationTarget.Global);
+    await wait(50);
+
+    try {
+        await run();
+    } finally {
+        await config.update(key, previous, vscode.ConfigurationTarget.Global);
+        await wait(50);
+    }
+}
+
 suite('Native Commands Tests', () => {
     suite('Mode switching commands', () => {
         test('waltz.enterInsert should switch to insert mode', async () => {
@@ -201,6 +231,28 @@ suite('Native Commands Tests', () => {
                 await wait(50);
 
                 assert.strictEqual(vimState.mode, 'normal', 'Escape in select should enter normal mode');
+            });
+        });
+
+        test('active editor change should reapply cursor style for current mode', async () => {
+            await withCursorStyle('normal', 'block', async () => {
+                const doc1 = await vscode.workspace.openTextDocument({ content: 'first' });
+                const editor1 = await vscode.window.showTextDocument(doc1);
+                editor1.selection = new Selection(new Position(0, 0), new Position(0, 0));
+
+                const vimState = await getVimState();
+                await vscode.commands.executeCommand('waltz.escapeKey');
+                await wait(50);
+                assert.strictEqual(vimState.mode, 'normal', 'Should be in normal mode');
+                assert.strictEqual(editor1.options.cursorStyle, vscode.TextEditorCursorStyle.Block);
+
+                const doc2 = await vscode.workspace.openTextDocument({ content: 'second' });
+                const editor2 = await vscode.window.showTextDocument(doc2);
+                editor2.selection = new Selection(new Position(0, 0), new Position(0, 0));
+                await wait(50);
+
+                assert.strictEqual(vimState.mode, 'normal', 'Mode should stay normal after tab switch');
+                assert.strictEqual(editor2.options.cursorStyle, vscode.TextEditorCursorStyle.Block);
             });
         });
     });

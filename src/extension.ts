@@ -73,16 +73,25 @@ async function onDidChangeTextEditorSelection(vimState: VimState, e: TextEditorS
 async function onDidChangeActiveTextEditor(vimState: VimState, editor: TextEditor | undefined): Promise<void> {
     console.log(`Active editor changed: ${editor?.document.uri.toString()}`);
 
+    await enterMode(vimState, editor, getModeForActiveEditor(vimState, editor));
+}
+
+function getModeForActiveEditor(vimState: VimState, editor: TextEditor | undefined): Mode {
     // 選択の状態によって preferredMode / visual / select に遷移
     // エディタが存在しない場合 (巨大ファイル、エディタグループが空など) は allEmpty 扱いにする
     const allEmpty = !editor || editor.selections.every((selection) => selection.isEmpty);
     if (!allEmpty) {
-        await enterMode(vimState, editor, getSelectionModeForSourceMode(vimState.mode));
-    } else if (vimState.mode === 'visual' || vimState.mode === 'select') {
-        await enterMode(vimState, editor, getPreferredMode());
-    } else {
-        // インサートモードではインサートモードをキープする
+        return getSelectionModeForSourceMode(vimState.mode);
     }
+
+    if (vimState.mode === 'visual' || vimState.mode === 'select') {
+        return getPreferredMode();
+    }
+
+    // normal/insert ではモードを維持する。
+    // モードが変わらない場合でも enterMode を経由して
+    // 新しいアクティブエディタへカーソル形状とステータス表示を再適用する。
+    return vimState.mode;
 }
 
 async function onDidChangeConfiguration(vimState: VimState, e: ConfigurationChangeEvent): Promise<void> {
