@@ -174,6 +174,62 @@ suite('Native Commands Tests', () => {
             assert.strictEqual(vimState.mode, 'visual', 'Should switch back to visual mode');
         });
 
+        test('waltz.toggleVisualSelectionEnds should align all selections to the primary start edge', async () => {
+            const doc = await vscode.workspace.openTextDocument({ content: 'alpha beta\ngamma delta\nepsilon zeta' });
+            const editor = await vscode.window.showTextDocument(doc);
+            editor.selections = [
+                new Selection(new Position(0, 0), new Position(0, 5)),
+                new Selection(new Position(1, 5), new Position(1, 0)),
+                new Selection(new Position(2, 0), new Position(2, 7)),
+            ];
+
+            const vimState = await getVimState();
+            await vscode.commands.executeCommand('waltz.enterVisual');
+            await wait(50);
+            assert.strictEqual(vimState.mode, 'visual', 'Should start in visual mode');
+
+            await vscode.commands.executeCommand('waltz.toggleVisualSelectionEnds');
+            await wait(50);
+
+            assert.deepStrictEqual(
+                editor.selections.map((selection) => [selection.anchor.character, selection.active.character]),
+                [
+                    [5, 0],
+                    [5, 0],
+                    [7, 0],
+                ],
+                'All selections should move their active edge to the start edge chosen by the primary selection',
+            );
+        });
+
+        test('waltz.toggleVisualSelectionEnds should align all selections to the primary end edge on the second toggle', async () => {
+            const doc = await vscode.workspace.openTextDocument({ content: 'alpha beta\ngamma delta\nepsilon zeta' });
+            const editor = await vscode.window.showTextDocument(doc);
+            editor.selections = [
+                new Selection(new Position(0, 0), new Position(0, 5)),
+                new Selection(new Position(1, 5), new Position(1, 0)),
+                new Selection(new Position(2, 0), new Position(2, 7)),
+            ];
+
+            await vscode.commands.executeCommand('waltz.enterVisual');
+            await wait(50);
+            await vscode.commands.executeCommand('waltz.toggleVisualSelectionEnds');
+            await wait(50);
+
+            await vscode.commands.executeCommand('waltz.toggleVisualSelectionEnds');
+            await wait(50);
+
+            assert.deepStrictEqual(
+                editor.selections.map((selection) => [selection.anchor.character, selection.active.character]),
+                [
+                    [0, 5],
+                    [0, 5],
+                    [0, 7],
+                ],
+                'A second toggle should move every selection active edge to the end edge',
+            );
+        });
+
         test('select mode typing should replace selection and return to insert mode', async () => {
             const doc = await vscode.workspace.openTextDocument({ content: 'hello world' });
             const editor = await vscode.window.showTextDocument(doc);

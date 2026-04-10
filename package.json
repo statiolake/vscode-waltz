@@ -101,12 +101,8 @@
                 "title": "Waltz: Enter Normal Mode"
             },
             {
-                "command": "waltz.enterInsertAtSelectionStart",
-                "title": "Waltz: Enter Insert Mode at Selection Start (Visual i)"
-            },
-            {
-                "command": "waltz.enterInsertAtSelectionEnd",
-                "title": "Waltz: Enter Insert Mode at Selection End (Visual a)"
+                "command": "waltz.toggleVisualSelectionEnds",
+                "title": "Waltz: Toggle Visual Selection Active Edge (o)"
             },
             {
                 "command": "waltz.toggleMode",
@@ -2282,16 +2278,6 @@
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual' && waltz.mode != 'select'"
             },
             {
-                "key": "i",
-                "command": "waltz.enterInsertAtSelectionStart",
-                "when": "editorTextFocus && waltz.mode == 'visual'"
-            },
-            {
-                "key": "a",
-                "command": "waltz.enterInsertAtSelectionEnd",
-                "when": "editorTextFocus && waltz.mode == 'visual'"
-            },
-            {
                 "key": "shift+i",
                 "command": "waltz.enterInsertAtLineStart",
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual' && waltz.mode != 'select'"
@@ -2305,6 +2291,11 @@
                 "key": "o",
                 "command": "waltz.enterInsertAtNewLineBelow",
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual' && waltz.mode != 'select'"
+            },
+            {
+                "key": "o",
+                "command": "waltz.toggleVisualSelectionEnds",
+                "when": "editorTextFocus && waltz.mode == 'visual'"
             },
             {
                 "key": "shift+o",

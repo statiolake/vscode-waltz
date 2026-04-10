@@ -2,6 +2,20 @@ import * as vscode from 'vscode';
 import { enterMode } from '../modes';
 import type { VimState } from '../vimState';
 
+function selectionEndsWithActive(selection: vscode.Selection): boolean {
+    return selection.active.isEqual(selection.end);
+}
+
+function orientSelection(selection: vscode.Selection, activeEdge: 'start' | 'end'): vscode.Selection {
+    if (selection.isEmpty) {
+        return selection;
+    }
+
+    return activeEdge === 'start'
+        ? new vscode.Selection(selection.end, selection.start)
+        : new vscode.Selection(selection.start, selection.end);
+}
+
 /**
  * モード切替コマンド
  */
@@ -76,33 +90,17 @@ export function registerModeCommands(context: vscode.ExtensionContext, getVimSta
         }),
     );
 
-    // i in Visual mode - Insert at start of selection
+    // o in Visual mode - Toggle active edge and align all selections to the primary selection
     context.subscriptions.push(
-        vscode.commands.registerCommand('waltz.enterInsertAtSelectionStart', () => {
+        vscode.commands.registerCommand('waltz.toggleVisualSelectionEnds', () => {
             const editor = vscode.window.activeTextEditor;
-            if (editor) {
-                // Move cursor to start of each selection
-                editor.selections = editor.selections.map((selection) => {
-                    const start = selection.start;
-                    return new vscode.Selection(start, start);
-                });
+            if (!editor || editor.selections.length === 0) {
+                return;
             }
-            enterMode(getVimState(), editor, 'insert');
-        }),
-    );
 
-    // a in Visual mode - Insert at end of selection
-    context.subscriptions.push(
-        vscode.commands.registerCommand('waltz.enterInsertAtSelectionEnd', () => {
-            const editor = vscode.window.activeTextEditor;
-            if (editor) {
-                // Move cursor to end of each selection
-                editor.selections = editor.selections.map((selection) => {
-                    const end = selection.end;
-                    return new vscode.Selection(end, end);
-                });
-            }
-            enterMode(getVimState(), editor, 'insert');
+            const primary = editor.selection;
+            const nextActiveEdge = selectionEndsWithActive(primary) ? 'start' : 'end';
+            editor.selections = editor.selections.map((selection) => orientSelection(selection, nextActiveEdge));
         }),
     );
 }

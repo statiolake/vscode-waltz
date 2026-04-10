@@ -185,11 +185,10 @@ const modeSwitching = [
     { key: 'Escape', command: 'waltz.escapeKey', when: ALL_MODES },
     { key: 'i', command: 'waltz.enterInsert', when: NORMAL },
     { key: 'a', command: 'waltz.enterInsert', when: NORMAL },  // Same as i (I-beam model)
-    { key: 'i', command: 'waltz.enterInsertAtSelectionStart', when: VISUAL },
-    { key: 'a', command: 'waltz.enterInsertAtSelectionEnd', when: VISUAL },
     { key: 'shift+i', command: 'waltz.enterInsertAtLineStart', when: NORMAL },
     { key: 'shift+a', command: 'waltz.enterInsertAtLineEnd', when: NORMAL },
     { key: 'o', command: 'waltz.enterInsertAtNewLineBelow', when: NORMAL },
+    { key: 'o', command: 'waltz.toggleVisualSelectionEnds', when: VISUAL },
     { key: 'shift+o', command: 'waltz.enterInsertAtNewLineAbove', when: NORMAL },
     { key: 'v', command: 'waltz.enterVisual', when: NORMAL },
     { key: 'ctrl+g', command: 'waltz.toggleVisualSelect', when: VISUAL_OR_SELECT },
