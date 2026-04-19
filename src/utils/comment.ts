@@ -32,6 +32,7 @@ const LANGUAGE_COMMENT_CONFIG: Record<string, CommentConfig> = {
     shellscript: { lineComment: '#' },
     bash: { lineComment: '#' },
     sh: { lineComment: '#' },
+    powershell: { lineComment: '#' },
     // HTML/XML
     html: { lineComment: undefined },
     xml: { lineComment: undefined },
@@ -45,6 +46,27 @@ const LANGUAGE_COMMENT_CONFIG: Record<string, CommentConfig> = {
     lua: { lineComment: '--' },
     // Vim
     vim: { lineComment: '"' },
+    // Config / data formats
+    toml: { lineComment: '#' },
+    yaml: { lineComment: '#' },
+    ini: { lineComment: ';' },
+    properties: { lineComment: '#' },
+    dockerfile: { lineComment: '#' },
+    makefile: { lineComment: '#' },
+    // その他の言語
+    perl: { lineComment: '#' },
+    r: { lineComment: '#' },
+    julia: { lineComment: '#' },
+    elixir: { lineComment: '#' },
+    swift: { lineComment: '//' },
+    kotlin: { lineComment: '//' },
+    dart: { lineComment: '//' },
+    scala: { lineComment: '//' },
+    groovy: { lineComment: '//' },
+    haskell: { lineComment: '--' },
+    tex: { lineComment: '%' },
+    latex: { lineComment: '%' },
+    bibtex: { lineComment: '%' },
 };
 
 export class CommentConfigProvider {

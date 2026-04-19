@@ -161,6 +161,10 @@
                 "title": "Waltz: Delete to End of Line (D)"
             },
             {
+                "command": "waltz.joinLines",
+                "title": "Waltz: Join Lines (J)"
+            },
+            {
                 "command": "waltz.surround",
                 "title": "Waltz: Surround (ys)"
             },
@@ -2347,7 +2351,7 @@
             },
             {
                 "key": "shift+j",
-                "command": "editor.action.joinLines",
+                "command": "waltz.joinLines",
                 "when": "editorTextFocus && waltz.mode != 'insert' && waltz.mode != 'visual' && waltz.mode != 'select'"
             },
             {

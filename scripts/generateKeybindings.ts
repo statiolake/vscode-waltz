@@ -206,7 +206,7 @@ const editCommands = [
     { key: 'shift+s', command: 'waltz.change', args: { line: true }, when: NORMAL },  // S = cc
     { key: 'shift+d', command: 'waltz.deleteToEnd', when: NORMAL },
     { key: 'shift+c', command: 'waltz.changeToEndOfLine', when: NORMAL },
-    { key: 'shift+j', command: 'editor.action.joinLines', when: NORMAL },
+    { key: 'shift+j', command: 'waltz.joinLines', when: NORMAL },
     { key: 'p', command: 'editor.action.clipboardPasteAction', when: NORMAL },
     { key: 'shift+p', command: 'editor.action.clipboardPasteAction', when: NORMAL },
     // Visual mode edits (use native commands - mode change handled by selection event)
