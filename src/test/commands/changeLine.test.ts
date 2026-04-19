@@ -91,11 +91,7 @@ suite('S (cc): executeChangeLineViaEdit vs executeChangeLineNative parity', () =
 
     test('multi-cursor on different content lines', async () => {
         const content = 'line1\nline2\nline3\nline4';
-        const selections = [
-            new Selection(0, 2, 0, 2),
-            new Selection(1, 2, 1, 2),
-            new Selection(3, 2, 3, 2),
-        ];
+        const selections = [new Selection(0, 2, 0, 2), new Selection(1, 2, 1, 2), new Selection(3, 2, 3, 2)];
         const { native, edit } = await runBoth(content, selections);
         assert.deepStrictEqual(edit, native);
     });

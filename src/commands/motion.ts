@@ -128,13 +128,21 @@ function findPrevWORDEnd(document: vscode.TextDocument, position: Position): Pos
 /**
  * Execute movement command on all cursors
  * Handles multi-cursor by operating on editor.selections (plural)
+ *
+ * editor が取れないときは native の word motion (区切り基準が異なる) にフォールバック。
+ * WORD (whitespace-delimited) と word (word-separator-delimited) は意味論的に違うが、
+ * 巨大ファイルで shift+W が無反応になるよりは「進む」ほうがストレスが小さい。
  */
-function executeMovement(
+async function executeMovement(
     findPosition: (document: vscode.TextDocument, position: Position) => Position,
     select: boolean,
-): void {
+    fallbackCommand: string,
+): Promise<void> {
     const editor = vscode.window.activeTextEditor;
-    if (!editor) return;
+    if (!editor) {
+        await vscode.commands.executeCommand(fallbackCommand);
+        return;
+    }
 
     editor.selections = editor.selections.map((selection) => {
         const newPos = findPosition(editor.document, selection.active);
@@ -150,35 +158,35 @@ function executeMovement(
 export function registerMotionCommands(context: vscode.ExtensionContext): void {
     context.subscriptions.push(
         // W - move to position before next WORD
-        vscode.commands.registerCommand('waltz.cursorWhitespaceWordStartRight', () => {
-            executeMovement(findNextWORDStart, false);
-        }),
-        vscode.commands.registerCommand('waltz.cursorWhitespaceWordStartRightSelect', () => {
-            executeMovement(findNextWORDStart, true);
-        }),
+        vscode.commands.registerCommand('waltz.cursorWhitespaceWordStartRight', () =>
+            executeMovement(findNextWORDStart, false, 'cursorWordStartRight'),
+        ),
+        vscode.commands.registerCommand('waltz.cursorWhitespaceWordStartRightSelect', () =>
+            executeMovement(findNextWORDStart, true, 'cursorWordStartRightSelect'),
+        ),
 
         // B - move to position before previous WORD
-        vscode.commands.registerCommand('waltz.cursorWhitespaceWordStartLeft', () => {
-            executeMovement(findPrevWORDStart, false);
-        }),
-        vscode.commands.registerCommand('waltz.cursorWhitespaceWordStartLeftSelect', () => {
-            executeMovement(findPrevWORDStart, true);
-        }),
+        vscode.commands.registerCommand('waltz.cursorWhitespaceWordStartLeft', () =>
+            executeMovement(findPrevWORDStart, false, 'cursorWordStartLeft'),
+        ),
+        vscode.commands.registerCommand('waltz.cursorWhitespaceWordStartLeftSelect', () =>
+            executeMovement(findPrevWORDStart, true, 'cursorWordStartLeftSelect'),
+        ),
 
         // E - move to position after current/next WORD
-        vscode.commands.registerCommand('waltz.cursorWhitespaceWordEndRight', () => {
-            executeMovement(findNextWORDEnd, false);
-        }),
-        vscode.commands.registerCommand('waltz.cursorWhitespaceWordEndRightSelect', () => {
-            executeMovement(findNextWORDEnd, true);
-        }),
+        vscode.commands.registerCommand('waltz.cursorWhitespaceWordEndRight', () =>
+            executeMovement(findNextWORDEnd, false, 'cursorWordEndRight'),
+        ),
+        vscode.commands.registerCommand('waltz.cursorWhitespaceWordEndRightSelect', () =>
+            executeMovement(findNextWORDEnd, true, 'cursorWordEndRightSelect'),
+        ),
 
         // gE - move to position after previous WORD
-        vscode.commands.registerCommand('waltz.cursorWhitespaceWordEndLeft', () => {
-            executeMovement(findPrevWORDEnd, false);
-        }),
-        vscode.commands.registerCommand('waltz.cursorWhitespaceWordEndLeftSelect', () => {
-            executeMovement(findPrevWORDEnd, true);
-        }),
+        vscode.commands.registerCommand('waltz.cursorWhitespaceWordEndLeft', () =>
+            executeMovement(findPrevWORDEnd, false, 'cursorWordEndLeft'),
+        ),
+        vscode.commands.registerCommand('waltz.cursorWhitespaceWordEndLeftSelect', () =>
+            executeMovement(findPrevWORDEnd, true, 'cursorWordEndLeftSelect'),
+        ),
     );
 }

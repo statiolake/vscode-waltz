@@ -1,5 +1,5 @@
+import type { Range, TextEditor } from 'vscode';
 import * as vscode from 'vscode';
-import { type Range, type TextEditor } from 'vscode';
 import { enterMode } from '../modes';
 import { collapseSelections } from '../utils/selection';
 import type { VimState } from '../vimState';
