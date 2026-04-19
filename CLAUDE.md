@@ -59,11 +59,39 @@ Following VS Code naming conventions:
 
 ### Implementation Notes
 
-- Use VS Code's native commands when available
+- Use VS Code's native commands when available (see **Editor Dependency Policy** below)
 - Do NOT implement Visual Line mode (use VS Code's native line selection)
 - Do NOT implement custom keybindings feature
 - Keybindings are defined in `package.json` (generated via `scripts/generateKeybindings.ts`)
 - **JIS keyboard layout only**: To avoid combinatorial explosion of keybindings, only JIS keyboard layout is supported
+
+### Editor Dependency Policy
+
+Waltz aims to feel identical in huge files as in normal ones. When a file exceeds VS Code's
+size threshold, `vscode.window.activeTextEditor` becomes `undefined` and the document API is
+restricted, so any command that depends on the `editor` object stops working. A file that
+looks normal but where half the keys are dead is painful — so **frequently-used commands,
+especially cursor motions, must avoid `editor` dependency**.
+
+Implementation priority:
+
+1. **If it can be done without `editor`, do it without `editor`.** Compose native commands
+   (`cursorLeft`, `cursorWordStartRight`, `editor.action.clipboardCutAction`, ...) instead of
+   reimplementing them against the document. Do not build a compatibility layer that papers
+   over differences between VS Code's and Vim's native behavior — users should get used to
+   VS Code's semantics.
+2. **If `editor` gives a meaningfully better UX but isn't strictly required, use it — with a
+   fallback.** When an `editor`-based implementation reduces stress without changing the
+   essential behavior, it's allowed, **as long as there is a fallback path for the case
+   where `editor` is `undefined`**. Example: `waltz.joinLines` uses `editor` to strip
+   comment prefixes on continuation lines, but falls back to `editor.action.joinLines`
+   (without prefix stripping) when no editor is available.
+3. **If the feature is impossible without `editor`, use `editor`.** Text objects, surround,
+   WORD (whitespace-delimited) motion, f/t in-line char search, paragraph motion, etc. fall
+   here. Accept that these degrade in huge files.
+
+When in doubt, ask "how bad is it if this command dies in a huge file?" — `hjkl` / `wbe`
+dying is catastrophic, `cs"'` dying is acceptable.
 
 ### Architecture
 

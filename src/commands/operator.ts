@@ -34,26 +34,13 @@ async function executeChange(vimState: VimState, args: OperatorArgs): Promise<vo
     await collapseSelections(editor);
 
     if (args.line) {
-        const isSingleLineDocument = !!editor && editor.document.lineCount === 1;
-        const allCursorsOnFirstLine =
-            !!editor &&
-            editor.selections.length > 0 &&
-            editor.selections.every((selection) => selection.active.line === 0);
-        const allCursorsOnLastLine =
-            !!editor &&
-            editor.selections.length > 0 &&
-            editor.selections.every((selection) => selection.active.line === editor.document.lineCount - 1);
-
+        // 行そのものは削除せず、中身を選択して切り取ってから再インデントする。
+        // 行の削除を伴わないので最終行・単一行などの位置判定が不要になり、
+        // editor が取れない巨大ファイルでも挙動が安定する。
+        await vscode.commands.executeCommand('cursorLineStart');
+        await vscode.commands.executeCommand('cursorEndSelect');
         await vscode.commands.executeCommand('editor.action.clipboardCutAction');
-
-        if (!isSingleLineDocument) {
-            await vscode.commands.executeCommand(
-                allCursorsOnLastLine && !allCursorsOnFirstLine
-                    ? 'editor.action.insertLineAfter'
-                    : 'editor.action.insertLineBefore',
-            );
-        }
-
+        await vscode.commands.executeCommand('editor.action.reindentselectedlines');
         await enterMode(vimState, editor, 'insert');
     } else {
         if (!args.selectCommand) return;
