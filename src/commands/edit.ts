@@ -53,11 +53,18 @@ async function visualYank(vimState: VimState): Promise<void> {
 }
 
 async function changeToEndOfLine(vimState: VimState): Promise<void> {
-    // Delete to end of line
-    await vscode.commands.executeCommand('deleteAllRight');
-
-    // Enter insert mode
-    enterMode(vimState, vscode.window.activeTextEditor, 'insert');
+    const editor = vscode.window.activeTextEditor;
+    await vscode.commands.executeCommand('cursorEndSelect');
+    // 選択がすべて非空のときだけ cut。空選択での "cut whole line" 副作用を避けるため。
+    // editor が取れないときは check できないので常時 cut にフォールバック (行末カーソルだと
+    // 行が消える可能性があるが巨大ファイルのエッジケース)。
+    const shouldCut = !editor || editor.selections.every((s) => !s.isEmpty);
+    if (shouldCut) {
+        await vscode.commands.executeCommand('editor.action.clipboardCutAction');
+    } else {
+        await collapseSelections(editor);
+    }
+    enterMode(vimState, editor, 'insert');
 }
 
 async function deleteChar(_vimState: VimState): Promise<void> {
@@ -86,8 +93,16 @@ async function replaceChar(_vimState: VimState): Promise<void> {
 }
 
 async function deleteToEnd(_vimState: VimState): Promise<void> {
-    // Delete to end of line
-    await vscode.commands.executeCommand('deleteAllRight');
+    const editor = vscode.window.activeTextEditor;
+    await vscode.commands.executeCommand('cursorEndSelect');
+    // 選択がすべて非空のときだけ cut。空選択での "cut whole line" 副作用を避けるため。
+    // editor が取れないときは check できないので常時 cut にフォールバック。
+    const shouldCut = !editor || editor.selections.every((s) => !s.isEmpty);
+    if (shouldCut) {
+        await vscode.commands.executeCommand('editor.action.clipboardCutAction');
+    } else {
+        await collapseSelections(editor);
+    }
 }
 
 /**
