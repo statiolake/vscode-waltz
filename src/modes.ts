@@ -3,6 +3,7 @@ import * as vscode from 'vscode';
 import { registerTypeCommand, unregisterTypeCommand } from './extension';
 import type { Mode } from './modesTypes';
 import { getCursorStyleForMode } from './utils/cursorStyle';
+import { switchImeOff, switchImeOn } from './utils/ime';
 import { getModeDisplayText } from './utils/modeDisplay';
 import { collapseSelections } from './utils/selection';
 import type { VimState } from './vimState';
@@ -18,11 +19,14 @@ export async function enterMode(vimState: VimState, editor: TextEditor | undefin
         vimState.visualModeEnteredAt = undefined;
     }
 
-    // insert/select モードに入るときは type コマンドを解除し、出るときは登録する
+    // insert/select モードに入るときは type コマンドを解除し、出るときは登録する。
+    // 併せて、IME を切り替える設定が有効な場合は IME 切替コマンドを実行する。
     if (isNativeInputMode(mode) && !isNativeInputMode(oldMode)) {
         unregisterTypeCommand(vimState);
+        switchImeOn();
     } else if (!isNativeInputMode(mode) && isNativeInputMode(oldMode)) {
         registerTypeCommand(vimState);
+        switchImeOff();
     }
 
     reinitUiForState(vimState, editor);

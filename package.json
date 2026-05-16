@@ -2518,6 +2518,61 @@
                     "type": "string",
                     "default": "-- VISUAL --",
                     "description": "Display text for visual mode in the status bar."
+                },
+                "waltz.imeSwitching": {
+                    "type": "string",
+                    "default": "never",
+                    "description": "Controls IME switching on mode transitions. \"never\": do nothing. \"switchOff\": run imeSwitchOffCommand when leaving insert/select mode. \"restore\": additionally run imeSwitchOnCommand when entering insert/select mode, only if imeStatusCommand reported the IME as ON at the moment of leaving.",
+                    "enum": [
+                        "never",
+                        "switchOff",
+                        "restore"
+                    ]
+                },
+                "waltz.imeSwitchOffCommand.macOS": {
+                    "type": "string",
+                    "default": "",
+                    "description": "Shell command to execute to switch IME off when leaving insert/select mode (macOS). Example: \"im-select com.apple.keylayout.ABC\"."
+                },
+                "waltz.imeSwitchOffCommand.windows": {
+                    "type": "string",
+                    "default": "",
+                    "description": "Shell command to execute to switch IME off when leaving insert/select mode (Windows)."
+                },
+                "waltz.imeSwitchOffCommand.linux": {
+                    "type": "string",
+                    "default": "",
+                    "description": "Shell command to execute to switch IME off when leaving insert/select mode (Linux and other platforms). Example: \"fcitx-remote -c\"."
+                },
+                "waltz.imeSwitchOnCommand.macOS": {
+                    "type": "string",
+                    "default": "",
+                    "description": "Shell command to execute to switch IME on when entering insert/select mode (macOS). Used only when imeSwitching is \"restore\"."
+                },
+                "waltz.imeSwitchOnCommand.windows": {
+                    "type": "string",
+                    "default": "",
+                    "description": "Shell command to execute to switch IME on when entering insert/select mode (Windows). Used only when imeSwitching is \"restore\"."
+                },
+                "waltz.imeSwitchOnCommand.linux": {
+                    "type": "string",
+                    "default": "",
+                    "description": "Shell command to execute to switch IME on when entering insert/select mode (Linux and other platforms). Used only when imeSwitching is \"restore\". Example: \"fcitx-remote -o\"."
+                },
+                "waltz.imeStatusCommand.macOS": {
+                    "type": "string",
+                    "default": "",
+                    "description": "Shell command to query the current IME status (macOS). Convention: exit 0 means IME is currently OFF, non-zero means ON. Used only when imeSwitching is \"restore\"."
+                },
+                "waltz.imeStatusCommand.windows": {
+                    "type": "string",
+                    "default": "",
+                    "description": "Shell command to query the current IME status (Windows). Convention: exit 0 means IME is currently OFF, non-zero means ON. Used only when imeSwitching is \"restore\"."
+                },
+                "waltz.imeStatusCommand.linux": {
+                    "type": "string",
+                    "default": "",
+                    "description": "Shell command to query the current IME status (Linux and other platforms). Convention: exit 0 means IME is currently OFF, non-zero means ON. Used only when imeSwitching is \"restore\". Example: \"fcitx-remote | grep -qv '^0$'\"."
                 }
             }
         }
