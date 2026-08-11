@@ -67,8 +67,29 @@ async function changeToEndOfLine(vimState: VimState): Promise<void> {
     enterMode(vimState, editor, 'insert');
 }
 
-async function deleteChar(_vimState: VimState): Promise<void> {
-    await vscode.commands.executeCommand('deleteRight');
+async function deleteChar(vimState: VimState): Promise<void> {
+    const editor = vscode.window.activeTextEditor;
+
+    // Select the character to the right so the deletion is also available on the clipboard.
+    await vscode.commands.executeCommand('cursorRightSelect');
+
+    if (!editor) {
+        // Keep the native-command fallback for editors that are unavailable (for example, huge files).
+        await vscode.commands.executeCommand('editor.action.clipboardCutAction');
+    } else if (editor.selections.every((selection) => !selection.isEmpty)) {
+        await vscode.commands.executeCommand('editor.action.clipboardCutAction');
+    } else if (editor.selections.some((selection) => !selection.isEmpty)) {
+        // clipboardCutAction cuts the whole line for an empty selection. Avoid that when a
+        // multi-cursor command includes a cursor already at the end of a line.
+        const selectedText = editor.selections
+            .filter((selection) => !selection.isEmpty)
+            .map((selection) => editor.document.getText(selection))
+            .join('\n');
+        await vscode.env.clipboard.writeText(selectedText);
+        await vscode.commands.executeCommand('deleteRight');
+    }
+
+    await enterMode(vimState, editor, 'normal');
 }
 
 async function substituteChar(vimState: VimState): Promise<void> {

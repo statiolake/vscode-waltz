@@ -45,7 +45,7 @@ Operators act on text defined by motions or text objects. Used in Normal mode by
 
 | Keys | Description |
 |-|-|
-| `x` | Delete character at cursor |
+| `x` | Delete character after cursor (cuts to clipboard) |
 | `dd` | Delete entire line |
 | `yy` | Yank entire line |
 | `D` | Delete to end of line |
@@ -309,7 +309,7 @@ Waltz prioritizes smooth integration with VS Code over strict Vim compatibility.
 
 - **Cursor can exceed line length**: In Normal mode, the cursor can go one position past the last character due to VS Code's selection model.
 
-- **No registers**: The `d` operator copies to clipboard when deleting, so deleted text is available for pasting.
+- **No registers**: Delete operations such as `d`, `x`, `D`, and `C` copy deleted text to the clipboard, so it is available for pasting.
 
 - **Different `f` and `t` motions**:
   - `t` takes one character

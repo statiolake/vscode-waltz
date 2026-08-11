@@ -411,6 +411,54 @@ suite('Native Commands Tests', () => {
     });
 
     suite('Edit commands', () => {
+        test('waltz.deleteChar should make the deleted character available for pasting', async () => {
+            const previousClipboard = await vscode.env.clipboard.readText();
+            await vscode.env.clipboard.writeText('sentinel');
+
+            try {
+                const doc = await vscode.workspace.openTextDocument({ content: 'abc' });
+                const editor = await vscode.window.showTextDocument(doc);
+                editor.selection = new Selection(new Position(0, 0), new Position(0, 0));
+
+                await vscode.commands.executeCommand('waltz.escapeKey');
+                await wait(50);
+
+                await vscode.commands.executeCommand('waltz.deleteChar');
+                await wait(50);
+
+                assert.strictEqual(doc.getText(), 'bc', 'x should delete the character to the right');
+                assert.strictEqual(await vscode.env.clipboard.readText(), 'a', 'x should update the clipboard');
+            } finally {
+                await vscode.env.clipboard.writeText(previousClipboard);
+            }
+        });
+
+        test('waltz.deleteChar should not cut a whole line at the end of line', async () => {
+            const previousClipboard = await vscode.env.clipboard.readText();
+            await vscode.env.clipboard.writeText('sentinel');
+
+            try {
+                const doc = await vscode.workspace.openTextDocument({ content: 'hello' });
+                const editor = await vscode.window.showTextDocument(doc);
+                editor.selection = new Selection(new Position(0, 5), new Position(0, 5));
+
+                await vscode.commands.executeCommand('waltz.escapeKey');
+                await wait(50);
+
+                await vscode.commands.executeCommand('waltz.deleteChar');
+                await wait(50);
+
+                assert.strictEqual(doc.getText(), 'hello', 'x at the end of line should be a no-op');
+                assert.strictEqual(
+                    await vscode.env.clipboard.readText(),
+                    'sentinel',
+                    'a no-op x should not overwrite the clipboard',
+                );
+            } finally {
+                await vscode.env.clipboard.writeText(previousClipboard);
+            }
+        });
+
         test('waltz.changeToEndOfLine should delete to end and enter insert mode', async () => {
             const doc = await vscode.workspace.openTextDocument({ content: 'hello world' });
             const editor = await vscode.window.showTextDocument(doc);
