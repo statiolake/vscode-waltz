@@ -1,34 +1,21 @@
-# Source files (bundled by esbuild)
-src/**
-scripts/**
+# Everything is excluded by default; only the entries re-included below ship.
+**
 
-# Build artifacts
-dist/**/*.map
-out/**
+# Shipped files. Adding a new runtime asset (icon, walkthrough image,
+# extra bundle chunk)? Re-include it here or it will NOT be packaged.
+!package.json
+!README.md
+!CHANGELOG.md
+!LICENSE.txt
+!dist/extension.js
 
-# Development files
-.vscode/**
-.vscode-test/**
-.devcontainer/**
-.github/**
-.husky/**
-.mypy_cache/**
-.pahcer-ui/**
-.claude/**
-
-# Config files
-.gitignore
-.vscode-test.mjs
-tsconfig.json
-tslint.json
-eslint.config.mjs
-biome.json
-esbuild.js
-CLAUDE.md
-
-# Package manager
-node_modules/**
-package-lock.json
-
-# Old VSIX files
+# Never ship secrets, even if a rule above is loosened later.
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.pfx
+.ovsx-token
+.vsce-token
 *.vsix

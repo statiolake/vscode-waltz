@@ -2,7 +2,7 @@
     "name": "waltz",
     "displayName": "Waltz",
     "description": "Graceful modal editing for VS Code. A Vim-inspired editor with VS Code-native selection handling.",
-    "version": "0.11.5",
+    "version": "0.12.0",
     "license": "MIT",
     "publisher": "statiolake",
     "repository": {
@@ -2580,7 +2580,7 @@
     "scripts": {
         "vscode:prepublish": "npm run package-extension",
         "compile": "npm run check-types && node esbuild.js",
-        "compile-tests": "tsc -p . --outDir out",
+        "compile-tests": "node -e \"fs.rmSync('out',{force:true,recursive:true})\" && tsc -p . --outDir out",
         "watch": "npm-run-all -p watch:*",
         "watch:esbuild": "node esbuild.js --watch",
         "watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
@@ -2590,10 +2590,12 @@
         "format": "eslint src --ext ts --fix && biome check --write",
         "prepare": "husky",
         "package": "vsce package",
-        "publish": "vsce publish",
+        "publish": "npm run publish:vsce && npm run publish:ovsx",
         "pretest": "npm run compile-tests && npm run compile && npm run lint",
         "test": "vscode-test",
-        "generate-keybindings": "ts-node scripts/generateKeybindings.ts"
+        "generate-keybindings": "ts-node scripts/generateKeybindings.ts",
+        "publish:vsce": "vsce publish",
+        "publish:ovsx": "ovsx publish"
     },
     "lint-staged": {
         "*.{ts,js,mjs,json}": [
@@ -2605,8 +2607,8 @@
         "@types/mocha": "^10.0.10",
         "@types/node": "24.7.2",
         "@types/vscode": "^1.75.0",
-        "@vscode/test-cli": "^0.0.11",
-        "@vscode/test-electron": "^2.5.2",
+        "@vscode/test-cli": "^0.0.15",
+        "@vscode/test-electron": "^3.1.0",
         "@vscode/vsce": "^3.6.2",
         "esbuild": "^0.27.2",
         "eslint": "9.37.0",
@@ -2615,6 +2617,7 @@
         "lint-staged": "^16.2.4",
         "mocha": "^11.7.4",
         "npm-run-all": "^4.1.5",
+        "ovsx": "^1.1.1",
         "ts-node": "^10.9.2",
         "typescript": "5.9.3",
         "typescript-eslint": "^8.46.0"
